@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from myanimelist.items import MyanimelistItem
+from myanimeliststats.items import MyanimeliststatsItem
 from bs4.dammit import EntitySubstitution
 import unicodedata
 import urllib
@@ -61,95 +61,50 @@ class MyanimelistspiderSpider(scrapy.Spider):
 			manga_url.append("http://myanimelist.net"+str(url)+"/stats")
 		
 		for i in range (0, len(manga_url)):
-			item = MyanimelistItem(manga_link=manga_url[i], manga_name=manga_name[i])
+			item = MyanimeliststatsItem(manga_link=manga_url[i], manga_name=manga_name[i])
 			request = scrapy.Request(str(manga_url[i]),callback=self.parse_manga, meta={'item':item, 'dont_retry':False, 'download_timeout':8000}, priority=80000)
 
 			yield request
 
-		nextPage = "http://myanimelist.net/topmanga.php"
+		# nextPage = "http://myanimelist.net/topmanga.php"
 
-		next = response.xpath('//*[@id="content"]/div[2]/div[2]/div/a[2]/@href').extract()
-		if len (next) == 0:
-			next = response.xpath('//*[@id="content"]/div[2]/div[2]/div/a/@href').extract()
-		nextPage = nextPage + str(next[0])
-		print nextPage
-		if nextPage.find("limit=14550") != -1:
-		 	return
-		req_next = scrapy.Request(nextPage)
-		yield req_next
+		# next = response.xpath('//*[@id="content"]/div[2]/div[2]/div/a[2]/@href').extract()
+		# if len (next) == 0:
+		# 	next = response.xpath('//*[@id="content"]/div[2]/div[2]/div/a/@href').extract()
+		# nextPage = nextPage + str(next[0])
+		# print nextPage
+		# if nextPage.find("limit=14550") != -1:
+		#  	return
+		# req_next = scrapy.Request(nextPage)
+		# yield req_next
 
 	def parse_manga(self, response):
 		
 		item = response.meta['item']
 		print response.url
 
-		manga_img = response.xpath('//div[@id="content"]/table/tr/td[1]/div[@style="text-align: center;"]/a/img/@src').extract()
-		print manga_img
-		item["manga_img"] = manga_img
-				
-		manga_favorites = response.xpath('//div[@id="content"]/table/tr/td[1]/div/text()').extract()[-1]
-		print "favorites " + str(manga_favorites)
-		manga_favorites = num(manga_favorites)
-		item["manga_favorites"] = manga_favorites
+		reading = response.xpath('//*[@id="content"]/table/tr/td[2]/div[2]/div[1]/text()').extract()
+		print "reading: " + str(reading[0])
+		item['reading'] = num(reading[0])
+		completed = response.xpath('//*[@id="content"]/table/tr/td[2]/div[2]/div[2]/text()').extract()
+		print "completed: " + str(completed[0])
+		item['completed'] = num(completed[0])
+		onHold = response.xpath('//*[@id="content"]/table/tr/td[2]/div[2]/div[3]/text()').extract()
+		print "on hold: " + str(onHold[0])
+		item['onHold'] = num(onHold[0])
+		dropped = response.xpath('//*[@id="content"]/table/tr/td[2]/div[2]/div[4]/text()').extract()
+		print "dropped: " + str(dropped[0])
+		item['dropped'] = num(dropped[0])
+		planToRead = response.xpath('//*[@id="content"]/table/tr/td[2]/div[2]/div[5]/text()').extract()
+		print "plan to read: " + str(planToRead[0])
+		item['planToRead'] = num(planToRead[0])
+		showAll = response.xpath('//*[@id="content"]/table/tr/td[2]/div[2]/div[6]/text()').extract()
+		print "show all: " + str(showAll[0])
+		item['showAll'] = num(showAll[0])
+		total = response.xpath('//*[@id="content"]/table/tr/td[2]/div[2]/div[7]/text()').extract()
+		print "total: " + str(total[0])
+		item['total'] = num(total[0])
 
-		manga_members = response.xpath('//div[@id="content"]/table/tr/td[1]/div/text()').extract()[-2]
-		print "members " + str(manga_members)
-		manga_members = num(manga_members)
-		item["manga_members"] = manga_members
-
-		manga_popularity = response.xpath('//div[@id="content"]/table/tr/td[1]/div/text()').extract()[-3]
-		manga_popularity = manga_popularity.split("#")[-1]
-		print "popularity " + str(manga_popularity)
-		item["manga_popularity"] = manga_popularity
-
-		manga_rank = response.xpath('//div[@id="content"]/table/tr/td[1]/div/text()').extract()[-4]
-		manga_rank = manga_rank.split("#")[-1]
-		print "rank " + str(manga_rank)
-		item["manga_rank"] = manga_rank
-
-		manga_score = response.xpath('//div[@id="content"]/table/tr/td[1]/div/text()').extract()[-6]
-		print "score " + str(manga_score)
-		item["manga_score"] = manga_score		
-		
-		#stats_url = str(response.url) + "/stats"
-
-		manga_infos = response.xpath('//div[@id="content"]/table/tr/td[2]/div/table/tr[1]/td[1]/text()').extract()
-		manga_info = []
-		for info in manga_infos:
-			normalizedInfo = unicodedata.normalize('NFKD', info).encode('ASCII', 'ignore')
-			#print normalizedName
-			info = [x.lower() for x in normalizedInfo]
-			info = ''.join(str(e) for e in info)
-			info = info.strip()
-			#info = ''.join(str(e) for e in info)
-			if info == '':
-				continue
-			import HTMLParser
-			htmlp = HTMLParser.HTMLParser()
-			manga_info.append(htmlp.unescape(info))
-		#manga_info.remove('')
-		#print manga_info
-		
-
-		manga_background = ' '.join(str(e) for e in manga_info)
-		item["manga_background"] = manga_background
-
-		
-		recommends =  response.xpath('//div[@id="content"]/table/tr/td[2]/div/table/tr[2]/td/div[@class="borderClass"]/table/tr/td[2]/div[@style="margin-bottom: 2px;"]/a/strong/text()').extract()
-		print recommends
-		manga_recommend = []
-		for recommend in recommends:
-			normalizedRecommend = unicodedata.normalize('NFKD', recommend).encode('ASCII', 'ignore')
-			#print normalizedName
-			recom = [x.lower() for x in normalizedRecommend ]
-			recom = ''.join(str(e) for e in recom)
-			import HTMLParser
-			htmlp = HTMLParser.HTMLParser()
-			manga_recommend.append(htmlp.unescape(recom))
-	
-		print manga_recommend
-		item["manga_recommend"] = ehLista(manga_recommend)
-		#yield request
 		yield item
 
 

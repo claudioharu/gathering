@@ -16,8 +16,8 @@ NEWSPIDER_MODULE = 'myanimeliststats.spiders'
 OWNLOAD_HANDLERS = {
   's3': None,
 }
-ITEM_PIPELINES = {
-    'myanimeliststats.pipelines.MySQLStorePipeline': 400,
-}
-DOWNLOAD_TIMEOUT = 800;
-DOWNLOAD_DELAY = 0.80;
+# ITEM_PIPELINES = {
+#     'myanimeliststats.pipelines.MySQLStorePipeline': 400,
+# }
+# DOWNLOAD_TIMEOUT = 800;
+# DOWNLOAD_DELAY = 0.80;
