@@ -29,7 +29,7 @@ class MyanimelistspiderSpider(scrapy.Spider):
 	name = "stats"
 	allowed_domains = ["myanimelist.net"]
 	# start_urls = ["http://myanimelist.net/topmanga.php?type=&limit=" + str(i) for i in range (0,14350,50)]
-	start_urls = ["http://myanimelist.net/topmanga.php?type=&limit=0"]
+	start_urls = ["http://myanimelist.net/topmanga.php?type=&limit=14500"]
 
 	def parse(self, response):
 
@@ -66,17 +66,17 @@ class MyanimelistspiderSpider(scrapy.Spider):
 
 			yield request
 
-		# nextPage = "http://myanimelist.net/topmanga.php"
+		nextPage = "http://myanimelist.net/topmanga.php"
 
-		# next = response.xpath('//*[@id="content"]/div[2]/div[2]/div/a[2]/@href').extract()
-		# if len (next) == 0:
-		# 	next = response.xpath('//*[@id="content"]/div[2]/div[2]/div/a/@href').extract()
-		# nextPage = nextPage + str(next[0])
-		# print nextPage
-		# if nextPage.find("limit=14550") != -1:
-		#  	return
-		# req_next = scrapy.Request(nextPage)
-		# yield req_next
+		next = response.xpath('//*[@id="content"]/div[2]/div[2]/div/a[2]/@href').extract()
+		if len (next) == 0:
+			next = response.xpath('//*[@id="content"]/div[2]/div[2]/div/a/@href').extract()
+		nextPage = nextPage + str(next[0])
+		print nextPage
+		if nextPage.find("limit=14550") != -1:
+		 	return
+		req_next = scrapy.Request(nextPage)
+		yield req_next
 
 	def parse_manga(self, response):
 		
@@ -84,27 +84,143 @@ class MyanimelistspiderSpider(scrapy.Spider):
 		print response.url
 
 		reading = response.xpath('//*[@id="content"]/table/tr/td[2]/div[2]/div[1]/text()').extract()
-		print "reading: " + str(reading[0])
+		# print "reading: " + str(reading[0])
 		item['reading'] = num(reading[0])
 		completed = response.xpath('//*[@id="content"]/table/tr/td[2]/div[2]/div[2]/text()').extract()
-		print "completed: " + str(completed[0])
+		# print "completed: " + str(completed[0])
 		item['completed'] = num(completed[0])
 		onHold = response.xpath('//*[@id="content"]/table/tr/td[2]/div[2]/div[3]/text()').extract()
-		print "on hold: " + str(onHold[0])
+		# print "on hold: " + str(onHold[0])
 		item['onHold'] = num(onHold[0])
 		dropped = response.xpath('//*[@id="content"]/table/tr/td[2]/div[2]/div[4]/text()').extract()
-		print "dropped: " + str(dropped[0])
+		# print "dropped: " + str(dropped[0])
 		item['dropped'] = num(dropped[0])
 		planToRead = response.xpath('//*[@id="content"]/table/tr/td[2]/div[2]/div[5]/text()').extract()
-		print "plan to read: " + str(planToRead[0])
+		# print "plan to read: " + str(planToRead[0])
 		item['planToRead'] = num(planToRead[0])
 		showAll = response.xpath('//*[@id="content"]/table/tr/td[2]/div[2]/div[6]/text()').extract()
-		print "show all: " + str(showAll[0])
+		# print "show all: " + str(showAll[0])
 		item['showAll'] = num(showAll[0])
 		total = response.xpath('//*[@id="content"]/table/tr/td[2]/div[2]/div[7]/text()').extract()
-		print "total: " + str(total[0])
+		# print "total: " + str(total[0])
 		item['total'] = num(total[0])
 
+		# Votes
+		indexVote = response.xpath('//*[@id="content"]/table/tr/td[2]/div[2]/table[1]/tr/td[1]/text()').extract()
+		print indexVote
+		votesList = response.xpath('//*[@id="content"]/table/tr/td[2]/div[2]/table[1]/tr/td[2]/div/span/text()').extract()
+		percent = list()
+		for vote in votesList:
+			normalizedVote = unicodedata.normalize('NFKD', vote).encode('ASCII', 'ignore')
+			normalizedVote = normalizedVote.strip()
+			normalizedVote = list(normalizedVote)
+			normalizedVote.pop()
+			normalizedVote = ''.join(str(e) for e in normalizedVote)
+			percent.append(float(normalizedVote))
+
+		votesList = response.xpath('//*[@id="content"]/table/tr/td[2]/div[2]/table[1]/tr/td[2]/div/span/small/text()').extract()
+		votes = list()
+		for vote in votesList:
+			normalizedVote = unicodedata.normalize('NFKD', vote).encode('ASCII', 'ignore')
+			#print normalizedVote
+			normalizedVote = normalizedVote.strip()
+			normalizedVote = normalizedVote.split(" ")
+			normalizedVote = list(normalizedVote)
+			normalizedVote.pop()
+			normalizedVote = ''.join(str(e) for e in normalizedVote)
+			normalizedVote = normalizedVote.split("(")
+			normalizedVote =normalizedVote.pop()
+			normalizedVote = ''.join(str(e) for e in normalizedVote)
+			votes.append(normalizedVote)
+
+
+		if u'10' in indexVote:
+			index = indexVote.index(u'10')
+			item['percent10'] = percent[index]
+			item['votes10'] = votes[index]
+		else:
+			item['percent10'] = "0"
+			item['votes10'] = "0"
+
+
+		if u'9' in indexVote:
+			index = indexVote.index(u'9')
+			item['percent9'] = percent[index]
+			item['votes9'] = votes[index]
+
+		else:
+			item['percent9'] = "0"
+			item['votes9'] = "0"
+
+		if u'8' in indexVote:
+			index = indexVote.index(u'8')
+			item['percent8'] = percent[index]
+			item['votes8'] =  votes[index]
+		else:
+			item['percent8'] = "0"
+			item['votes8'] = "0"
+		
+		if u'7' in indexVote:
+			index = indexVote.index(u'7')
+			item['percent7'] = percent[index]
+			item['votes7'] = votes[index]
+		else:
+			item['percent7'] = "0"
+			item['votes7'] = "0"
+		
+		if u'6' in indexVote:
+			index = indexVote.index(u'6')
+			item['percent6'] = percent[index]
+			item['votes6'] = votes[index]
+		else:
+			item['percent6'] = "0"
+			item['votes6'] = "0"
+
+		if u'5' in indexVote:
+			index = indexVote.index(u'5')
+			item['percent5'] = percent[index]
+			item['votes5'] = votes[index]
+
+		else:
+			item['percent5'] = "0"
+			item['votes5'] = "0"
+
+
+		if u'4' in indexVote:
+			index = indexVote.index(u'4')
+			item['percent4'] = percent[index]
+			item['votes4'] = votes[index]
+		else:
+			item['percent4'] = "0"
+			item['votes4'] = "0"
+
+
+		if u'3' in indexVote:
+			index = indexVote.index(u'3')
+			item['percent3'] = percent[index]
+			item['votes3'] = votes[index]
+		else:
+			item['percent3'] = "0"
+			item['votes3'] = "0"
+		
+		if u'2' in indexVote:
+			index = indexVote.index(u'2')
+			item['percent2'] = percent[index]
+			item['votes2'] = votes[index]
+		else:
+			item['percent2'] = "0"
+			item['votes2'] = "0"
+
+		if u'1' in indexVote:
+			index = indexVote.index(u'1')
+			item['percent1'] = percent[index]
+			item['votes1'] = votes[index]
+		else:
+			item['percent1'] = "0"
+			item['votes1'] = "0"
+		
+
+		#print percent
 		yield item
 
 

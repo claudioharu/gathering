@@ -40,23 +40,36 @@ def insert_mangas(connection, mangas):
 		return
 	
 	link = ehLista(mangas["manga_link"])
-	img = ehLista(mangas["manga_img"])
-	rank = ehLista(mangas["manga_rank"])
-	score = ehLista(mangas["manga_score"])
-	popul = ehLista(mangas["manga_popularity"])
-	members = ehLista(mangas["manga_members"])
-	favor = ehLista(mangas["manga_favorites"])
-	info = ehLista(mangas["manga_background"])
-	recommend = ehLista(mangas["manga_recommend"])
+	votes1 = ehLista(mangas["votes1"])
+	votes2 = ehLista(mangas["votes2"])
+	votes3 = ehLista(mangas["votes3"])
+	votes4 = ehLista(mangas["votes4"])
+	votes5 = ehLista(mangas["votes5"])
+	votes6 = ehLista(mangas["votes6"])
+	votes7 = ehLista(mangas["votes7"])
+	votes8 = ehLista(mangas["votes8"])
+	votes9 = ehLista(mangas["votes9"])
+	votes10 = ehLista(mangas["votes10"])
+	percent1 = ehLista(mangas["percent1"])
+	percent2 = ehLista(mangas["percent2"])
+	percent3 = ehLista(mangas["percent3"])
+	percent4 = ehLista(mangas["percent4"])
+	percent5 = ehLista(mangas["percent5"])
+	percent6 = ehLista(mangas["percent6"])
+	percent7 = ehLista(mangas["percent7"])
+	percent8 = ehLista(mangas["percent8"])
+	percent9 = ehLista(mangas["percent9"])
+	percent10 = ehLista(mangas["percent10"])
+
 
 	#print "\n\n\n"
 	#print name
 	#print votes
 	
 	#Define insercao dos tempos no banco de dados
-	add_mangas= "INSERT INTO MangaMyanimelist_Mangas (name, link, img, rank, score, popul, members, favor, info, recommend) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+	add_mangas= "INSERT INTO MangaMyanimelist_Stats (name, link, votes1, votes2, votes3, votes4, votes5, votes6, votes7, votes8, votes9, votes10, percent1, percent2, percent3, percent4, percent5, percent6, percent7, percent8, percent9, percent10) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
-	args = (name, link, img, int(rank), float(score), int(popul), int(members), int(favor), info, recommend)
+	args = (name, link,  votes1, votes2, votes3, votes4, votes5, votes6, votes7, votes8, votes9, votes10, percent1, percent2, percent3, percent4, percent5, percent6, percent7, percent8, percent9, percent10)
 
 	#Insere dados do jogo no banco
 	cursor = connection.cursor()
