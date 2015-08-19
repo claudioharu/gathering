@@ -17,7 +17,7 @@ class CategSpider(scrapy.Spider):
     name = "categ"
     allowed_domains = ["mangahere.co"]
     # start_urls = ['http://www.mangahere.co/action/']
-    start_urls = ["http://www.mangahere.co/seinen/"+str(i) +".htm" for i in range (1,66)]
+    start_urls = ["http://www.mangahere.co/yuri/"+str(i) +".htm" for i in range (1,11)]
 
     def parse(self, response):
 
@@ -25,7 +25,7 @@ class CategSpider(scrapy.Spider):
             manga_url = sel.xpath('//ul/li/div[@class="manga_text"]/div[@class="title"]/a/@href').extract()
 
         for i in range (0, len(manga_url)):
-            item = CategoriesItem(link=manga_url[i],categ="seinen",site="mangahere")
+            item = CategoriesItem(link=manga_url[i],categ="yuri",site="mangahere")
             request = scrapy.Request(str(manga_url[i]),callback=self.parse_manga, meta={'item':item})
             #request.meta['item'] = item
             yield request

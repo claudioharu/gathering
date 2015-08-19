@@ -1,0 +1,45 @@
+<style>
+form {
+                width:500px;
+                margin:50px auto;
+}
+.search {
+                padding:8px 15px;
+                background:rgba(50, 50, 50, 0.2);
+                border:0px solid #dbdbdb;
+}
+.buttonS {
+                position:relative;
+                padding:6px 15px;
+                left:-8px;
+                border:2px solid #207cca;
+                background-color:#207cca;
+                color:#fafafa;
+                outline-width: 0;
+}
+.buttonS:hover  {
+                background-color:#fafafa;
+                color:#207cca;
+}
+.arrow {
+	position: relative;
+	left:-8px;
+	background: #207cca;
+	padding: 8px 15px;
+}
+.arrow:after{
+	right: 100%;
+	top: 50%;
+	border: solid transparent;
+	content:  " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	border-color: rgba(32,124,202,0);
+	border-right-color: #207cca;
+	border-width: 10px;
+	margin-top: -10px;
+
+}
+
+</style>
