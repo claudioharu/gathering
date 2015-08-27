@@ -1,0 +1,33 @@
+#mangalist .list{letter-spacing:-3px;color:#818181}
+#mangalist .list li{width:290px;letter-spacing:0;vertical-align:top;display:inline;zoom:1;margin:0 8px 10px 0;float:left}
+#mangalist .list li .manga_img{position:relative;float:left;border:1px #e5e5e5 solid;width:100px;height:124px;margin-right:10px;padding:1px}
+#mangalist .list li .manga_img img{width:100px}
+#mangalist .list li .manga_img div{width:100px;height:124px;float:left;overflow:hidden}
+
+#mangalist .list li .manga_text{float:left;width:176px;overflow:hidden}
+#mangalist .list li .manga_text p{line-height:21px;clear:left}
+#mangalist .list li .manga_text p label{color:#666;margin-right:6px}
+#mangalist .list li .manga_text p span{float:left}
+#mangalist .list li .manga_text p span.stars{margin-top:2px}
+#mangalist .list li .manga_text p span.rate{margin-left:4px;color:#ff9000}
+#mangalist .list li .manga_text p.info{font-size:11px;line-height:16px}
+#mangalist .list li a{color:#4F4993;font-weight:400}
+#mangalist .list li a:hover span{text-decoration:underline}
+#mangalist .list li a.title{text-align: left;color:#FF5400;font-size:14px;font-weight:700;display:block; margin-left: auto;  margin-right: auto;  width: 10em}
+#mangalist .list li a.title:hover{color:#8f2f20}
+#mangalist .list li p.latest span{cursor:hand;margin-right:5px;max-width:140px}
+
+.manga_list{width:465px;float:left}
+.manga_list ul{background:none repeat scroll 0 0 #FFFBEB;float:left;position:relative;width:421px;margin:2px;padding:30px 20px 20px}
+.manga_list ul em{color:#8f2f20;font-family:Verdana,Arial,Helvetica,sans-serif;font-size:18px;font-style:normal;font-weight:700;left:10px;position:absolute;top:5px}
+.manga_list ul li{margin:5px 0}
+.manga_list ul .top{position:absolute;top:8px;right:8px;background:url(../return.png) right top no-repeat;width:16px;height:16px}
+.manga_list ul li a{font-weight:400}
+
+.container-3{
+	float: left;
+	width: 200px;
+	height: 100px;
+	margin: 1em;
+	background: black;
+}
