@@ -87,23 +87,7 @@ if (array_key_exists("infos", $_REQUEST)){
 			<ul class="list">
 				<script language="php">
 					
-					// echo $search;
-
-
-					$servername = "localhost";
-					$username = "root";
-					$password = "123456";
-
-					try {
-						$conn = new PDO("mysql:host=$servername;dbname=mangas", $username, $password);
-						// set the PDO error mode to exception
-						$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-					}
-					catch(PDOException $e)
-					{
-						echo "Connection failed: " . $e->getMessage();
-					}
+					include "con.php";
 
 					$sql = 'SELECT name, img FROM MangaFox_Mangas WHERE name  LIKE  "%'. $search . '%"';
 					// $sql = 'SELECT name, img FROM MangaFox_Mangas WHERE name  LIKE  "%naruto%"';
@@ -114,12 +98,16 @@ if (array_key_exists("infos", $_REQUEST)){
 
 							print "<li>";
 							print '<a class="manga_img">';
-							print '<div style="float:left;overflow:hidden">';
-							print '<img id="'. $row ["name"] . '" src="' . $row["img"] . ' width="100" onclick="handleClick(this);" >';
+							print '<div style="float:left; overflow:hidden">';
+							$name = $row ["name"];
+
+							$name = strtr ($name, array ('"' => '¬'));	
+							
+							print '<img id="'. $name . '" src="' . $row["img"] . ' width="100" onclick="handleClick(this);" >';
 							print '</div>';
 							print '</a>';
 
-							print '<div class="manga_text" id="'. $row ["name"] .'" onclick="handleClick(this);">';
+							print '<div class="manga_text" id="'. $name .'" onclick="handleClick(this);">';
 							print '<a class="title" >';
 							print $row ["name"]; 
 							print "</a>";
@@ -127,8 +115,9 @@ if (array_key_exists("infos", $_REQUEST)){
 							print '</li>';
 						}
 
-					}		
-				
+					}
+					//closing connection		
+					$conn = null;
 				</script>
 			</ul>
 			

@@ -21,6 +21,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 		{
 			Redirect('./visualizer.php', false);
 		}
+		$search = strtr ($search, array ('¬' => '"'));
 	}
 }
 ?>
@@ -74,8 +75,97 @@ if (array_key_exists("mangaName", $_REQUEST)){
 <div id="wrapper">
 
 	<div id="featured-wrapper">
+		<div class="container">
+		<script language="php">
+					require "func.php";
+					include "con.php";
+					// echo $search;
+					
+					$positions = array();
+					$pos = -1;
+					while (($pos = strpos($search, '"', $pos+1)) !== false) {
+					    $positions[] = $pos;
+					}
+
+					if(count($positions > 0)){
+						// $result = implode(', ', $positions);
+						// print_r($positions);
+						for ($i = count($positions)-1; $i >=0; $i-- )
+						{
+
+							$search = stringInsert($search,$positions[$i],'\\');
+							// echo $name;
+						}
+					}
+
+					$sql = 'SELECT name, info, img FROM MangaMyanimelist_Mangas WHERE name  = "'. $search . '"';
+					// echo ($sql);
+					$temAlgo = false;
+					$result = $conn->query($sql);
+					if (count($result) > 0){
+
+						foreach ($result as $row){
+							
+
+							$pos = strripos($row ["info"], "no background information has been added to this title");
+							// echo $pos;
+							if(! ($pos > -1)){
+								print "<li>";
+
+								print '<div class="manga_text" >';
+								print '<a class="title" >';
+								print $row ["name"]; 
+								print "</a>";
+								print '<p style="text-align:left;font-size:15px;line-height:26px;">';
+								print $row ["info"];
+								print "</p>";
+								print "</div>";
+								print '</li>';
+								$temAlgo = true;
+							}
+							else{
+								$temAlgo = false;
+								break;
+							}
+						}
+						if($temAlgo == false)
+						{
+							$sql = 'SELECT name, info, img FROM MangaFox_Mangas WHERE name  = "'. $search . '"';
+							$result = $conn->query($sql);
+
+							foreach ($result as $row){
+
+								// print "<li>";
+								print '<div id="series_info">';
+								print '<div class="cover">';
+								print '<img src="' . $row["img"] . ' width="200"  >';
+								print '</div>';
+								print '</div>';
+
+
+								print '<div id="title" >';
+								print '<h1 style="font-size:28px" >';
+								print $row ["name"]; 
+								print "</h1>";
+								print '<p style="text-align:left;font-size:15px;line-height:26px;">';
+								if(!empty($row["info"]))
+									print $row ["info"];
+								else 
+									print "Sorry, there is no information here";
+								print "</p>";
+								print "</div>";
+								// print '</li>';
+							}
+						}
+
+
+					}
+
+					//closing connection		
+					$conn = null;
+		</script>
 		
-		
+		</div>
 
 	</div>
 </div>
