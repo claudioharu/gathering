@@ -75,7 +75,8 @@ if (array_key_exists("mangaName", $_REQUEST)){
 <div id="wrapper">
 
 	<div id="featured-wrapper">
-		<div class="container">
+		<div id="container">
+		<table style="width:80%; margin-left:40px; margin-top:50px; ">
 		<script language="php">
 					require "func.php";
 					include "con.php";
@@ -98,7 +99,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 						}
 					}
 
-					$sql = 'SELECT name, info, img FROM MangaMyanimelist_Mangas WHERE name  = "'. $search . '"';
+					$sql = 'SELECT name, info FROM MangaMyanimelist_Mangas WHERE name  = "'. $search . '"';
 					// echo ($sql);
 					$temAlgo = false;
 					$result = $conn->query($sql);
@@ -110,7 +111,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 							$pos = strripos($row ["info"], "no background information has been added to this title");
 							// echo $pos;
 							if(! ($pos > -1)){
-								print "<li>";
+								// print "<li>";
 
 								print '<div class="manga_text" >';
 								print '<a class="title" >';
@@ -120,7 +121,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 								print $row ["info"];
 								print "</p>";
 								print "</div>";
-								print '</li>';
+								// print '</li>';
 								$temAlgo = true;
 							}
 							else{
@@ -130,31 +131,63 @@ if (array_key_exists("mangaName", $_REQUEST)){
 						}
 						if($temAlgo == false)
 						{
-							$sql = 'SELECT name, info, img FROM MangaFox_Mangas WHERE name  = "'. $search . '"';
+							$sql = 'SELECT name, info, img, author, artist FROM MangaFox_Mangas WHERE name  = "'. $search . '"';
 							$result = $conn->query($sql);
 
 							foreach ($result as $row){
 
-								// print "<li>";
-								print '<div id="series_info">';
-								print '<div class="cover">';
-								print '<img src="' . $row["img"] . ' width="200"  >';
-								print '</div>';
-								print '</div>';
-
-
-								print '<div id="title" >';
 								print '<h1 style="font-size:28px" >';
-								print $row ["name"]; 
+								print  strtoupper($row ["name"]); 
 								print "</h1>";
-								print '<p style="text-align:left;font-size:15px;line-height:26px;">';
-								if(!empty($row["info"]))
-									print $row ["info"];
-								else 
-									print "Sorry, there is no information here";
-								print "</p>";
-								print "</div>";
+
+								print '<tr>';
+									print '<td rowspan="4">';
+										print '<div id="left">';
+										print '<img src="' . $row["img"] . ' width="200" style=" padding:1px; border:2px solid #021a40;" >';
+										print '</div>';
+									print '</td>';
+								print '</tr>';
+
+								print '<tr>';
+									print '<td  style="width: 50px;">';
+									print '</td>';
+									print '<td style="font-size:15px; color:#454445; font-weight:bold; font-style:italic;">';
+										print "Summary:";
+									print '</td>';
+								print '</tr>';
+
+								print '<tr>';
+									print '<td  style="width: 50px;">';
+									print '</td>';
+									print '<td>';
+										print '<div id="right" >';
+										print '<p style="text-align:left;font-size:15px;line-height:26px;">';
+										if(!empty($row["info"]))
+											print $row ["info"];
+										else 
+											print "Sorry, there is no information here";
+										print "</p>";
+										print "</div>";
+									print '</td>';
 								// print '</li>';
+								print '</tr>';
+
+								print '<tr>';
+									print '<td  style="width: 100px;">';
+									print '</td>';
+									print '<td>';
+										print '<span style="font-size:15px; color:#454445; font-weight:bold; font-style:italic;">';
+											print "Author:";
+										print '</span>';
+										print '<a href="./author.php">';
+											print '<span  style="padding-left: 25px">';
+											print $row['author'];
+											print '</span>';
+										print '</a>';
+
+									print '</td>';
+								// print '</li>';
+								print '</tr>';
 							}
 						}
 
@@ -164,6 +197,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					//closing connection		
 					$conn = null;
 		</script>
+		</table>
 		
 		</div>
 

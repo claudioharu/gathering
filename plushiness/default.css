@@ -57,6 +57,7 @@ a:hover
 {
 	margin: 0px auto;
 	width: 1200px;
+	position: relative;
 
 	/*width: auto;*/
 }
