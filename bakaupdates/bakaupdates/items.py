@@ -11,6 +11,8 @@ import scrapy
 class BakaupdatesItem(scrapy.Item):
 	manga_name = scrapy.Field()
 	manga_link = scrapy.Field()
+	author = scrapy.Field()
+	artist = scrapy.Field()
 	avg = scrapy.Field()
 	bayesian = scrapy.Field()
 	totalVotes = scrapy.Field()
