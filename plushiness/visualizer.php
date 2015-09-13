@@ -30,19 +30,19 @@
 <div id="menu-wrapper">
 		<div id="menu">
 			<ul>
-				<li class="current_page_item"><a href="#" accesskey="1" title="">Homepage</a></li>
-				<li><a href="#" accesskey="2" title="">Our Clients</a></li>
-				<li><a href="#" accesskey="3" title="">About Us</a></li>
-				<li><a href="#" accesskey="4" title="">Careers</a></li>
-				<li><a href="#" accesskey="5" title="">Contact Us</a></li>
-				<li accesskey="6" title="">
+				<li class="current_page_item"><a href="./visualizer.php" accesskey="1" title="">Home</a></li>
+				<li><a href="#" accesskey="2" title="">Databases</a></li>
+				<li><a href="./people.php" accesskey="3" title="">People</a></li>
+				<li><a href="./mangas.php" accesskey="4" title="">Titles</a></li>
+				<li><a href="./about.php" accesskey="5" title="">About</a></li>
+				<!-- <li accesskey="6" title="">
 					<div class="container-2">
 						<form name="form1" action="search.php"  >
 							<input name="infos" type="search" id="search" placeholder="Search..."/>
 							<input type="submit" style="visibility: hidden; position: absolute;"/>
 						</form>
 					</div>
-				</li>
+				</li> -->
 			</ul>
 		</div>
 </div>
@@ -50,11 +50,20 @@
 <div id="wrapper">
 
 	<div id="featured-wrapper">
+		<div style="color:black; font-size: 1.5em; font-weight: 250; ">
+		<table style="width:70%; margin-left:250px; margin-top:10px; ">
+			<tr><td align="left"><p>Bem vindo ao ....</p></td></tr>
+			<tr><td align="left"><p>Este site é o resultado final do trabalho de conclusão de curso em computação. Ele possui o propósito de fornecer informações sobre três bancos de dados:</p></td></tr>
 		
-			<ul class="style2">
-				<li> galo </li>
-				<li> galo </li>
-			</ul>
+			<tr style=" margin-left:600px;"><td align="center">MangaFox</td></tr>
+			<tr style=" margin-left:600px;"><td align="center">MangaHere</td></tr>
+			<tr style=" margin-left:600px;"><td align="center">MangaHost</td></tr>
+			<tr><td><p></p></td></tr>
+			<tr><td align="left"><p>Além disto, o site permitirá que os leitores pesquisem informações sobre determinada obra, autor ou ilustrador.</p></td></tr>
+		
+		</table>
+		</div>
+		
 		
 	
 	<!-- 
