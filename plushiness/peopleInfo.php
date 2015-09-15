@@ -22,8 +22,10 @@ if (array_key_exists("personName", $_REQUEST)){
 			Redirect('./visualizer.php', false);
 		}
 		$search = strtr ($search, array ('¬' => '"'));
+		$_SESSION['ringValue'] = $search;
 	}
 }
+
 ?>
 
 
@@ -37,6 +39,11 @@ if (array_key_exists("personName", $_REQUEST)){
 <link href="default.css" rel="stylesheet" type="text/css" media="all" />
 <link href="fonts.css" rel="stylesheet" type="text/css" media="all" />
 <link rel="stylesheet" type="text/css" href="search2.css">
+<script src="http://www.d3plus.org/js/d3.js"></script>
+<script src="http://www.d3plus.org/js/d3plus.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script  src="jquery.js"></script>
+
 
 <!--[if IE 6]><link href="default_ie6.css" rel="stylesheet" type="text/css" /><![endif]-->
 
@@ -75,7 +82,7 @@ if (array_key_exists("personName", $_REQUEST)){
 <div id="wrapper">
 
 	<div id="featured-wrapper">
-		<div id="container">
+		<div id="container" class="div1">
 		<table style="width:80%; margin-left:40px; margin-top:50px; ">
 		<script language="php">
 					require "func.php";
@@ -112,9 +119,6 @@ if (array_key_exists("personName", $_REQUEST)){
 						$imgB = $row['img'];
 					}
 
-					// 	// echo $pos;
-					// if(! ($pos > -1)){
-						// print "<li>";
 					print '<h1 style="font-size:28px" >';
 					print  strtoupper($nameB); 
 					print "</h1>";
@@ -123,7 +127,6 @@ if (array_key_exists("personName", $_REQUEST)){
 						print '<td rowspan="4">';
 							print '<div id="left">';
 							if ($imgB == null){
-								// $img = "http://weblogs.pbspaces.com/stingrays/files/2011/10/silhouette-question-mark.jpg";
 								print '<img src="http://www.grammarly.com/blog/wp-content/uploads/2015/01/Silhouette-question-mark.jpeg" width="200" style=" padding:1px; border:2px solid #021a40;" >';
 							}
 							else{
@@ -156,33 +159,97 @@ if (array_key_exists("personName", $_REQUEST)){
 							print "</p>";
 							print "</div>";
 						print '</td>';
-					// print '</li>';
 					print '</tr>';
 
-					// print '<tr>';
-					// 	print '<td  style="width: 100px;">';
-					// 	print '</td>';
-					// 	print '<td>';
-					// 		print '<span style="font-size:15px; color:#454445; font-weight:bold; font-style:italic;">';
-					// 			print "Author:";
-					// 		print '</span>';
-					// 		print '<a href="./author.php">';
-					// 			print '<span  style="padding-left: 25px">';
-					// 			print $authorB;
-					// 			print '</span>';
-					// 		print '</a>';
-
-					// 	print '</td>';
-					// // print '</li>';
-					// print '</tr>';
-					// }
-							
 					$conn = null;
 		</script>
 		</table>
-		
 		</div>
 
+		<div id="container" class="div2">
+
+			<table  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
+				<tr>
+					<td  style="width: 50%; height:100%;">
+						<div id="container" class="div3" >
+							
+						</div>
+					<!-- 	<div id="container" class="temp">
+
+						</div> -->
+					</td>
+				<!-- </tr> -->
+				<!-- <tr> -->
+					<td style="width: 50%; height:100%;">
+						<div id="container" class="div4">
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<script>
+
+		d3.json("firstTitleRing.php", function(error, root){
+			console.log(root);
+			var connections = root;
+			var value = root[0].source;
+			console.log(root[0].source);
+			var visualization = d3plus.viz()
+			.container(".div4")
+			.type("rings")
+			.edges(connections)
+			.focus({
+				"tooltip" : false,
+				"value" : value
+			})
+			.draw()
+		});
+
+		d3.json("ringPeople.php", function(error, root){
+
+			var connections = root;
+			var value = root[0].source;
+		
+			var visualization = d3plus.viz()
+			.container(".div3")
+			.type("rings")
+			.edges(connections)
+			.focus({
+				"tooltip" : false,
+				"value" : value
+			}, function(value){
+				
+				$.ajax({
+		            type: "POST",
+		            url: 'ringTitles.php',
+		            data: {'value' : value},
+
+		            success: function(data){
+		            	// $(".temp").remove();
+		              	console.log(data);
+						var connectionsM = data;
+						var valueM = data[0].source;
+
+
+						var visualization2 = d3plus.viz()
+							.container(".div4")
+							.type("rings")
+							.edges(connectionsM)
+							.focus({
+								"tooltip" : false,
+								"value" : valueM
+							})
+							.draw()
+		            }
+		        });
+				
+				
+			})
+			.draw()
+		});
+
+		</script>
 	</div>
 </div>
 <div id="stamp" class="container">

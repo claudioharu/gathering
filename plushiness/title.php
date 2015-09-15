@@ -186,12 +186,15 @@ if (array_key_exists("mangaName", $_REQUEST)){
 							
 
 							if($authorA != "N/A" && !empty($authorA)){
-								$aux = str_replace(' ', '+', $authorA);								
+								$aux = str_replace(' ', '+', $authorA);	
+								$_REQUEST['personName'] = $authorA;						
 							}
 							else
 							{
-								if (!empty($authorB))
+								if (!empty($authorB)){
 									$aux = str_replace(' ', '+', $authorB);
+									$_REQUEST['personName'] = $authorB;
+								}
 							}
 						
 							print '<a href="./peopleInfo.php?personName=' . $aux . '">';
@@ -210,12 +213,19 @@ if (array_key_exists("mangaName", $_REQUEST)){
 							print '</a>';
 
 							if($artistA != "N/A" && !empty($artistA)){
-								$auxB = str_replace(' ', '+', $artistA);								
+								$auxB = str_replace(' ', '+', $artistA);
+								$_REQUEST['personName'] = $artistA;
+				
 							}
 							else
 							{
-								if (!empty($artistB))
+								if (!empty($artistB)){
 									$auxB = str_replace(' ', '+', $artistB);
+									$_REQUEST['personName'] = $artistB;
+
+								}
+
+
 							}
 						
 
@@ -241,78 +251,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 						print '</td>';
 					// print '</li>';
 					print '</tr>';
-					//}
-					// 		$temAlgo = true;
-					// 	}
-					// 	else{
-					// 		$temAlgo = false;
-					// 		break;
-					// 	}
-					// 	// }
-					// 	if($temAlgo == false)
-					// 	{
-					// 		$sql = 'SELECT name, info, img, author, artist FROM MangaFox_Mangas WHERE name  = "'. $search . '"';
-					// 		$result = $conn->query($sql);
-
-					// 		foreach ($result as $row){
-
-					// 			print '<h1 style="font-size:28px" >';
-					// 			print  strtoupper($row ["name"]); 
-					// 			print "</h1>";
-
-					// 			print '<tr>';
-					// 				print '<td rowspan="4">';
-					// 					print '<div id="left">';
-					// 					print '<img src="' . $row["img"] . ' width="200" style=" padding:1px; border:2px solid #021a40;" >';
-					// 					print '</div>';
-					// 				print '</td>';
-					// 			print '</tr>';
-
-					// 			print '<tr>';
-					// 				print '<td  style="width: 50px;">';
-					// 				print '</td>';
-					// 				print '<td style="font-size:15px; color:#454445; font-weight:bold; font-style:italic;">';
-					// 					print "Summary:";
-					// 				print '</td>';
-					// 			print '</tr>';
-
-					// 			print '<tr>';
-					// 				print '<td  style="width: 50px;">';
-					// 				print '</td>';
-					// 				print '<td>';
-					// 					print '<div id="right" >';
-					// 					print '<p style="text-align:left;font-size:15px;line-height:26px;">';
-					// 					if(!empty($row["info"]))
-					// 						print $row ["info"];
-					// 					else 
-					// 						print "Sorry, there is no information here";
-					// 					print "</p>";
-					// 					print "</div>";
-					// 				print '</td>';
-					// 			// print '</li>';
-					// 			print '</tr>';
-
-					// 			print '<tr>';
-					// 				print '<td  style="width: 100px;">';
-					// 				print '</td>';
-					// 				print '<td>';
-					// 					print '<span style="font-size:15px; color:#454445; font-weight:bold; font-style:italic;">';
-					// 						print "Author:";
-					// 					print '</span>';
-					// 					print '<a href="./author.php">';
-					// 						print '<span  style="padding-left: 25px">';
-					// 						print $row['author'];
-					// 						print '</span>';
-					// 					print '</a>';
-
-					// 				print '</td>';
-					// 			// print '</li>';
-					// 			print '</tr>';
-					// 		}
-					// 	}
-
-
-					// }
+				
 
 					//closing connection		
 					$conn = null;
