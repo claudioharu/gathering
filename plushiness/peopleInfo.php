@@ -43,6 +43,9 @@ if (array_key_exists("personName", $_REQUEST)){
 <script src="http://www.d3plus.org/js/d3plus.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 <script  src="jquery.js"></script>
+<link href="https://nvd3-community.github.io/nvd3/build/nv.d3.min.css" rel="stylesheet">
+<script src="https://nvd3-community.github.io/nvd3/build/nv.d3.js"></script>
+
 
 
 <!--[if IE 6]><link href="default_ie6.css" rel="stylesheet" type="text/css" /><![endif]-->
@@ -108,7 +111,7 @@ if (array_key_exists("personName", $_REQUEST)){
 
 					$nameB = $search;
 
-					$sqlBaka = 'SELECT person, info, img FROM bakaUpdates_People WHERE person  = "'. $search . '"';
+					$sqlBaka = 'SELECT person, info, img, birthPlace, birthDate, website, facebook, twitter FROM bakaUpdates_People WHERE person  = "'. $search . '"';
 					$resultB = $conn->query($sqlBaka);
 					// echo count($resultB);
 
@@ -117,20 +120,25 @@ if (array_key_exists("personName", $_REQUEST)){
 						$nameB = $row['person'];
 						$infoB = $row['info'];
 						$imgB = $row['img'];
+						$birthPlace = $row['birthPlace'];
+						$birthDate = $row['birthDate'];
+						$website = $row['website'];
+						$facebook = $row['facebook'];
+						$twitter = $row['twitter'];
 					}
 
-					print '<h1 style="font-size:28px" >';
+					print '<h1 style="font-size:28px" class = "personName" >';
 					print  strtoupper($nameB); 
 					print "</h1>";
 
 					print '<tr>';
-						print '<td rowspan="4">';
+						print '<td rowspan="5">';
 							print '<div id="left">';
 							if ($imgB == null){
-								print '<img src="http://www.grammarly.com/blog/wp-content/uploads/2015/01/Silhouette-question-mark.jpeg" width="200" style=" padding:1px; border:2px solid #021a40;" >';
+								print '<img src="http://www.grammarly.com/blog/wp-content/uploads/2015/01/Silhouette-question-mark.jpeg" width="200" height="100" style=" padding:1px; border:2px solid #021a40;" >';
 							}
 							else{
-								print '<img src="data:image/jpeg;base64,' .  base64_encode($imgB) . '" width="200" style=" padding:1px; border:2px solid #021a40;" >';
+								print '<img src="data:image/jpeg;base64,' .  base64_encode($imgB) . '" width="200" height="250" style=" padding:1px; border:2px solid #021a40;" >';
 
 							}
 							print '</div>';
@@ -161,6 +169,50 @@ if (array_key_exists("personName", $_REQUEST)){
 						print '</td>';
 					print '</tr>';
 
+					print '<tr>';
+						print '<td  style="width: 50px;">';
+						print '</td>';
+						print '<td>';
+							print '<span style="font-size:15px; color:#454445; font-weight:bold; font-style:italic;">';
+								print "Birth Place:";
+							print '</span>';
+							print '<span style="padding-left: 20px">';
+								print $birthPlace;
+							print '</span>';
+							print '<span style="font-size:15px; color:#454445; font-weight:bold; font-style:italic; padding-left: 20px;">';
+								print "Birth Date:";
+							print '</span>';
+							print '<span style="padding-left: 20px">';
+								print $birthDate;
+							print '</span>';
+						print '</td>';
+					print '</tr>';
+
+					print '<tr>';
+						print '<td  style="width: 50px;">';
+						print '</td>';
+						print '<td>';
+							print '<span style="font-size:15px; color:#454445; font-weight:bold; font-style:italic;">';
+								print "WebSite:";
+							print '</span>';
+							print '<span style="padding-left: 20px">';
+								print $website;
+							print '</span>';
+							print '<span style="font-size:15px; color:#454445; font-weight:bold; font-style:italic; padding-left: 20px;">';
+								print "Twitter:";
+							print '</span>';
+							print '<span style="padding-left: 20px">';
+								print $twitter;
+							print '</span>';
+							print '<span style="font-size:15px; color:#454445; font-weight:bold; font-style:italic; padding-left: 20px;">';
+								print "Facebook:";
+							print '</span>';
+							print '<span style="padding-left: 20px">';
+								print $facebook;
+							print '</span>';
+						print '</td>';
+					print '</tr>';
+
 					$conn = null;
 		</script>
 		</table>
@@ -170,17 +222,20 @@ if (array_key_exists("personName", $_REQUEST)){
 
 			<table  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
 				<tr>
-					<td  style="width: 50%; height:100%;">
-						<div id="container" class="div3" >
-							
-						</div>
-					<!-- 	<div id="container" class="temp">
-
-						</div> -->
+					<td>
+						<h1 align="center" style="font-size:20px">Network of relationships between authors and artists </h1>
 					</td>
-				<!-- </tr> -->
-				<!-- <tr> -->
-					<td style="width: 50%; height:100%;">
+					<td>
+						<h1 align="center" style="font-size:20px">Network of relationships between authors and titles </h1>
+					</td>
+				</tr>
+
+				<tr>
+					<td  style="width: 50%; height:90%;">
+						<div id="container" class="div3" >	
+						</div>
+					</td>
+					<td style="width: 50%; height:90%;">
 						<div id="container" class="div4">
 						</div>
 					</td>
@@ -188,66 +243,299 @@ if (array_key_exists("personName", $_REQUEST)){
 			</table>
 		</div>
 
+		<div id="container" class="div5">
+
+			<table  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
+				<tr style="margin-bottom:100px;"> 
+					<td >
+						<h1 align="center" style="font-size:20px">Network of relationships between authors and artists </h1>
+					</td>
+				</tr>
+			<!-- 	<tr sytle="height: 200px">
+				<tr/> -->
+
+
+				<tr>
+					<td  style="width: 50%; height:90%;">
+						
+						<svg id="rank" >	
+						</svg>
+					</td>
+				</tr>
+			</table>
+				
+		</div>
+
 		<script>
 
-		d3.json("firstTitleRing.php", function(error, root){
-			console.log(root);
-			var connections = root;
-			var value = root[0].source;
-			console.log(root[0].source);
-			var visualization = d3plus.viz()
-			.container(".div4")
-			.type("rings")
-			.edges(connections)
-			.focus({
-				"tooltip" : false,
-				"value" : value
-			})
-			.draw()
-		});
+			d3.json("firstTitleRing.php", function(error, root){
+				// console.log(root);
+				var connections = root;
+				var value = root[0].source;
+				// console.log(root[0].source);
+				var visualization = d3plus.viz()
+				.container(".div4")
+				.type("rings")
+				.edges(connections)
+				.focus({
+					"tooltip" : false,
+					"value" : value
+				})
+				.draw()
+			});
 
-		d3.json("ringPeople.php", function(error, root){
+			d3.json("ringPeople.php", function(error, root){
 
-			var connections = root;
-			var value = root[0].source;
-		
-			var visualization = d3plus.viz()
-			.container(".div3")
-			.type("rings")
-			.edges(connections)
-			.focus({
-				"tooltip" : false,
-				"value" : value
-			}, function(value){
-				
-				$.ajax({
-		            type: "POST",
-		            url: 'ringTitles.php',
-		            data: {'value' : value},
+				var connections = root;
+				var value = $('h1.personName').text().toLowerCase();
+				// root[0].source;
+				console.log(connections.length);
 
-		            success: function(data){
-		            	// $(".temp").remove();
-		              	console.log(data);
-						var connectionsM = data;
-						var valueM = data[0].source;
+				if(connections.length == 1 && root[0].source == root[0].target)
+				{
+					  var data = [
+					    {"value": 100, "name": root[0].source}
+					  ]
+					  d3plus.viz()
+					    .container(".div3")
+					    .data(data)
+					    .type("pie")
+					    .id("name")
+					    .size("value")
+					    .timing(10)
+					    .tooltip({
+					      "value" : false
+					    })
+					    .height(180)
+					    .draw();
+				}
+				else{
+					var visualization = d3plus.viz()
+					.container(".div3")
+					.type("rings")
+					.edges(connections)
+					.focus({
+						"tooltip" : false,
+						"value" : value
+					}, function(value){
+						
+						$.ajax({
+				            type: "POST",
+				            url: 'ringTitles.php',
+				            data: {'value' : value},
+
+				            success: function(data){
+
+								var connectionsM = data;
+								var valueM = data[0].source;
 
 
-						var visualization2 = d3plus.viz()
-							.container(".div4")
-							.type("rings")
-							.edges(connectionsM)
-							.focus({
-								"tooltip" : false,
-								"value" : valueM
-							})
-							.draw()
-		            }
-		        });
-				
-				
-			})
-			.draw()
-		});
+								var visualization2 = d3plus.viz()
+									.container(".div4")
+									.type("rings")
+									.edges(connectionsM)
+									.focus({
+										"tooltip" : false,
+										"value" : valueM
+									})
+									.draw()
+				            }
+				        });
+
+				        $.ajax({
+				            type: "POST",
+				            url: 'getRankTitlePerAuthor.php',
+				            data: {'valueAuthorBar' : value},
+
+				            success: function(datas){
+				            	console.log(datas);
+				            	nv.addGraph(function() {
+									var chart = nv.models.multiBarHorizontalChart()
+										.x(function(d) { return d.label })
+										.y(function(d) { return d.value })
+										.margin({top: 30, right: 10, bottom: 50, left: 295})						// .width(600)
+										// .height(500)
+										.showValues(true)           //Show bar value next to each bar.
+										// .tooltips(true)             //Show tooltips on hover.
+										// .transitionDuration(350)
+										.forceY([0,10])
+										.showControls(false);        //Allow user to switch between "Grouped" and "Stacked" mode.
+										
+
+									chart.tooltip.enabled(true);
+
+									var thickMark = [0,1,2,3,4,5,6,7,8,9,10];
+									chart.yAxis
+										.tickValues(thickMark)
+										.tickFormat(function(d){ console.log(d); return d });
+
+									  // chart.xAxis
+								   //    .tickFormat(function(d){ return d/100 });
+								   chart.groupSpacing(0.3);
+
+									d3.select('#rank ')
+										.datum(datas)
+										.transition()
+										.duration(350)
+										.call(chart);
+
+									nv.utils.windowResize(chart.update);
+
+									return chart;
+								});
+								
+				            }
+				        });
+
+
+
+				       
+					})
+					.draw()
+				}
+			});
+
+			d3.json('firstGetRankTitlePerAuthor.php', function(data) {
+				console.log(data);
+				nv.addGraph(function() {
+					var chart = nv.models.multiBarHorizontalChart()
+						.x(function(d) { return d.label })
+						.y(function(d) { return d.value })
+						.margin({top: 30, right: 10, bottom: 50, left: 295})						// .width(600)
+						// .height(500)
+						.showValues(true)           //Show bar value next to each bar.
+						// .tooltips(true)             //Show tooltips on hover.
+						// .transitionDuration(350)
+						.forceY([0,10])
+						.showControls(false);        //Allow user to switch between "Grouped" and "Stacked" mode.
+						
+
+					chart.tooltip.enabled(true);
+
+					var thickMark = [0,1,2,3,4,5,6,7,8,9,10];
+					chart.yAxis
+						.tickValues(thickMark)
+						.tickFormat(function(d){ console.log(d); return d });
+
+					  // chart.xAxis
+				   //    .tickFormat(function(d){ return d/100 });
+				   chart.groupSpacing(0.3);
+
+					d3.select('#rank ')
+						.datum(data)
+						.transition()
+						.duration(350)
+						.call(chart);
+
+					nv.utils.windowResize(chart.update);
+
+					return chart;
+				});
+			});
+
+			// (function(){
+
+			//     var margin = {top: 50, bottom: 50, left:250, right: 40};
+			//     var width = 900 - margin.left - margin.right;
+			//     var height = 450 - margin.top - margin.bottom;
+
+			//     var xScale = d3.scale.linear().range([0, width]);
+			//     var yScale = d3.scale.ordinal().rangeRoundBands([0, height], 1.8,0);
+
+			//     var numTicks = 5;
+			//     var xAxis = d3.svg.axis().scale(xScale)
+			//                     .orient("top")
+			//                     .tickSize((-height))
+			//                     .ticks(numTicks);
+
+			//     var svg = d3.select(".rank").append("svg")
+			//                 .attr("width", width+margin.left+margin.right)
+			//                 .attr("height", height+margin.top+margin.bottom)
+			//                 .attr("class", "base-svg");
+
+			//     var barSvg = svg.append("g")
+			//                 .attr("transform", "translate("+margin.left+","+margin.top+")")
+			//                 .attr("class", "bar-svg");
+
+			//     var x = barSvg.append("g")
+			//             .attr("class", "x-axis");
+
+			//     var url = "data.json";
+
+			//     d3.json(url, function(data) {
+
+			//         var xMax = d3.max(data, function(d) { return d.rate; } );
+			//         var xMin = 0;
+			//         xScale.domain([xMin, xMax]);
+			//         yScale.domain(data.map(function(d) { return d.country; }));
+
+			//         d3.select(".base-svg").append("text")
+			//             .attr("x", margin.left)
+			//             .attr("y", (margin.top)/2)
+			//             .attr("text-anchor", "start")
+			//             .text("Narrowly defined unemployment rates: top 20 countries (2010)")
+			//             .attr("class", "title");
+
+			//         var groups = barSvg.append("g").attr("class", "labels")
+			//                     .selectAll("text")
+			//                     .data(data)
+			//                     .enter()
+			//                     .append("g");
+
+			//         groups.append("text")
+			//                 .attr("x", "0")
+			//                 .attr("y", function(d) { return yScale(d.country); })
+			//                 .text(function(d) { return d.country; })
+			//                 .attr("text-anchor", "end")
+			//                 .attr("dy", ".9em")
+			//                 .attr("dx", "-.32em")
+			//                 .attr("id", function(d,i) { return "label"+i; });
+
+			//         var bars = groups
+			//                     .attr("class", "bars")
+			//                     .append("rect")
+			//                     .attr("width", function(d) { return xScale(d.rate); })
+			//                     .attr("height", height/20)
+			//                     .attr("x", xScale(xMin))
+			//                     .attr("y", function(d) { return yScale(d.country); })
+			//                     .attr("id", function(d,i) { return "bar"+i; });
+
+			//         groups.append("text")
+			//                 .attr("x", function(d) { return xScale(d.rate); })
+			//                 .attr("y", function(d) { return yScale(d.country); })
+			//                 .text(function(d) { return d.rate; })
+			//                 .attr("text-anchor", "end")
+			//                 .attr("dy", "1.2em")
+			//                 .attr("dx", "-.32em")
+			//                 .attr("id", "precise-value");
+
+			//         bars
+			//             .on("mouseover", function() {
+			//                 var currentGroup = d3.select(this.parentNode);
+			//                 currentGroup.select("rect").style("fill", "brown");
+			//                 currentGroup.select("text").style("font-weight", "bold");
+			//             })
+			//             .on("mouseout", function() {
+			//                 var currentGroup = d3.select(this.parentNode);
+			//                 currentGroup.select("rect").style("fill", "steelblue");
+			//                 currentGroup.select("text").style("font-weight", "normal");
+			//             });
+
+			//         x.call(xAxis);
+			//         var grid = xScale.ticks(numTicks);
+			//         barSvg.append("g").attr("class", "grid")
+			//             .selectAll("line")
+			//             .data(grid, function(d) { return d; })
+			//             .enter().append("line")
+			//                 .attr("y1", 0)
+			//                 .attr("y2", height+margin.bottom)
+			//                 .attr("x1", function(d) { return xScale(d); })
+			//                 .attr("x2", function(d) { return xScale(d); })
+			//                 .attr("stroke", "white");
+
+			// 		    });
+
+			// })();
 
 		</script>
 	</div>
