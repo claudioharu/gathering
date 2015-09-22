@@ -21,7 +21,10 @@ include "con.php";
 		$author = $row['author'];
 		// $totalVotes = $row['totalVotes'];
 		// $manga = $row["name"].
-		$children[] = array('source' => $artist, 'target' =>$author, "strength" => 1);
+		if (strpos($author,'unknown') !== false || strpos($artist,'unknown') !== false) 
+			continue;
+		else
+			$children[] = array('source' => $artist, 'target' =>$author, "strength" => 1);
 	}
 
 

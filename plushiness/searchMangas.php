@@ -89,13 +89,15 @@ if (array_key_exists("infos", $_REQUEST)){
 					
 					include "con.php";
 
-					$sql = 'SELECT name, img FROM MangaFox_Mangas WHERE name  LIKE  "%'. $search . '%"';
-					// $sql = 'SELECT name, img FROM MangaFox_Mangas WHERE name  LIKE  "%naruto%"';
+					// $sql = 'SELECT name, img FROM MangaFox_Mangas WHERE name  LIKE  "%'. $search . '%"';
+					$sql = 'select * from (select name, img from MangaFox_Mangas UNION all select name, img from MangaHere_Mangas) as X where name LIKE "%'. $search . '%" group by name';
 					$result = $conn->query($sql);
 
-					if (count($result) > 0){
-						foreach ($result as $row){
+					if ($result->rowCount() > 0){
+						// $count = ;
+						// echo $count;
 
+						foreach ($result as $row){
 							print "<li>";
 							print '<a class="manga_img">';
 							print '<div style="float:left; overflow:hidden">';
@@ -103,7 +105,7 @@ if (array_key_exists("infos", $_REQUEST)){
 
 							$name = strtr ($name, array ('"' => '¬'));	
 							
-							print '<img id="'. $name . '" src="' . $row["img"] . ' width="100" onclick="handleClick(this);" >';
+							print '<img id="'. $name . '" src="' . $row["img"] . '" width="100" onclick="handleClick(this);" >';
 							print '</div>';
 							print '</a>';
 

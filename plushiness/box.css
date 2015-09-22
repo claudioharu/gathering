@@ -1,0 +1,54 @@
+.box {
+  font: 10px sans-serif;
+}
+
+.box line,
+.box rect,
+.box circle {
+  fill: steelblue;
+  stroke: #000;
+  stroke-width: 1px;
+}
+
+.box .center {
+  stroke-dasharray: 3,3;
+}
+
+.box .outlier {
+  fill: none;
+  stroke: #000;
+}
+
+.axis {
+  font: 12px sans-serif;
+}
+ 
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+ 
+.x.axis path { 
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+/**
+ * Popup tooltips
+ */
+
+
+.tooltip { 
+  font-size: 10px; 
+  position: absolute; 
+  padding: 5px; 
+  z-index: 100000; 
+  line-height: 1.536em;
+  background-color: #4D4A47; color: #FFFFFF; max-width: 200px; padding: 5px 8px 4px 8px; text-align: left; }
+
+  /* Rounded corners */
+  .tooltip { border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
+  

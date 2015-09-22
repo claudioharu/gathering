@@ -37,6 +37,13 @@ if (array_key_exists("mangaName", $_REQUEST)){
 <link href="default.css" rel="stylesheet" type="text/css" media="all" />
 <link href="fonts.css" rel="stylesheet" type="text/css" media="all" />
 <link rel="stylesheet" type="text/css" href="search2.css">
+<link href="box.css" rel="stylesheet" type="text/css" />
+<script src="http://www.d3plus.org/js/d3.js"></script>
+<script src="http://www.d3plus.org/js/d3plus.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script  src="jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script src="box.js"></script>
 
 <!--[if IE 6]><link href="default_ie6.css" rel="stylesheet" type="text/css" /><![endif]-->
 
@@ -114,7 +121,9 @@ if (array_key_exists("mangaName", $_REQUEST)){
 						$artistA = $row["artist"];
 					}
 
-					$sqlM = 'SELECT name, info, img, author, artist FROM MangaFox_Mangas WHERE name  = "'. $search . '"';
+					// $sqlM = 'SELECT name, info, img, author, artist FROM MangaFox_Mangas WHERE name  = "'. $search . '"';
+					$sqlM = 'select * from (select name, info, img, author, artist from MangaFox_Mangas UNION all select name, info, img, author, artist from MangaHere_Mangas) as X where name = "'. $search . '" group by name';
+
 					$resultB = $conn->query($sqlM);
 					// echo count($resultB);
 
@@ -127,14 +136,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 						$artistB = $row['artist'];
 					}
 
-					// if (count($resultA) > 0){
 
-					// 	// foreach ($result as $row){
-					//$pos = strripos($infoA, "no background information has been added to this title");
-					// 	// echo $pos;
-					//if(! ($pos > -1)){
-						//print "galo";
-						// print "<li>";
 					print '<h1 style="font-size:28px" >';
 					print  strtoupper($nameB); 
 					print "</h1>";
@@ -259,6 +261,248 @@ if (array_key_exists("mangaName", $_REQUEST)){
 		</table>
 		
 		</div>
+
+		<div id="container" class="viz1">
+
+			<table  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
+				<tr>
+					<td>
+						<h1 align="center" style="font-size:20px">Network of relationships between authors and artists </h1>
+					</td>
+				</tr>
+
+				<tr>
+					<td  style="width: 50%; height:90%;" class="charts">
+						<div id="container" class="menu">
+						</div>
+						<div id="container" class="boxPlot" >	
+						</div>
+						<div id="container" class="bar" >
+							<form>
+								<!-- <label><input type="radio" name="mode" value="grouped"> Grouped</label>
+								<label><input type="radio" name="mode" value="stacked" checked> Stacked</label> -->
+							</form>
+						</div>
+					</td>
+				
+				</tr>
+			</table>
+		</div>
+
+		<script type="text/javascript">
+
+
+		  var box = false;
+		  
+		  var sampleData = [
+		    {"group": "bar chart"},
+		    {"group": "box plot chart"}
+		  ]
+		  var toggles = d3plus.form()
+		  	.container(".menu")
+		    .data(sampleData)
+		    .focus("bar chart", function(d){
+		    	if(d == "box plot chart"){
+		    		d3.select("svg").remove();
+		    		// d3.select(".boxPlot").remove();
+		    		var labels = true; // show the text labels beside individual boxplots?
+
+					var margin = {top: 30, right: 50, bottom: 70, left: 50};
+					var  width = 800 - margin.left - margin.right;
+					var height = 400 - margin.top - margin.bottom;
+					
+					var min = Infinity,
+					    max = -Infinity;
+					
+					function generate_html(popup) {
+						  var html = "";
+						  var inputs =  popup['inputs'];
+						  for (var input in inputs) {
+						    html += "<strong>" + input + "</strong>" + ": " + inputs[input] + "<br>";
+			  			  }
+					  return html
+					  var c = "red";
+					  return 'Hi there! My color is <span style="color:' + c + '">' + c + '</span>';
+					}
+
+
+
+					var popups =  [
+					  {
+					  'inputs': {
+					    'Name': 'galo'
+					   }},
+					  {
+					  'inputs': {
+					    'Name': 'dog'
+					   }},
+					  {
+					  'inputs': {
+					    'Name': 'dog',
+					    'Occupation': 'barking'
+					   }}
+					];
+
+					var tooltip = d3.select("body")
+						.append("div")
+						.attr("class","tooltip")
+						.style("position", "absolute")
+						.style("z-index", "10")
+						.style("visibility", "hidden");
+
+
+
+					// parse in the data	
+					d3.csv("data.csv", function(error, csv) {
+						// using an array of arrays with
+						// data[n][2] 
+						// where n = number of columns in the csv file 
+						// data[i][0] = name of the ith column
+						// data[i][1] = array of values of ith column
+
+						var data = [];
+						data[0] = [];
+						data[1] = [];
+						// add more rows if your csv file has more columns
+
+						// add here the header of the csv file
+						data[0][0] = "Q1";
+						data[1][0] = "Q2";
+						// add more rows if your csv file has more columns
+
+						data[0][1] = [];
+						data[1][1] = [];
+					  
+						csv.forEach(function(x) {
+							var v1 = Math.floor(x.Q1),
+								v2 = Math.floor(x.Q2);
+								// v3 = Math.floor(x.Q3),
+								// v4 = Math.floor(x.Q4);
+								// add more variables if your csv file has more columns
+								
+							var rowMax = Math.max(v1, Math.max(v2, Math.max(v1,v2)));
+							var rowMin = Math.min(v1, Math.min(v2, Math.min(v1,v2)));
+
+							data[0][1].push(v1);
+							data[1][1].push(v2);
+							// data[2][1].push(v3);
+							// data[3][1].push(v4);
+							 // add more rows if your csv file has more columns
+							 
+							if (rowMax > max) max = rowMax;
+							if (rowMin < min) min = rowMin;	
+						});
+					  
+						var chart = d3.box()
+							.whiskers(iqr(1.5))
+							.height(height)	
+							.domain([min, max])
+							.showLabels(labels);
+
+						var svg = d3.select(".boxPlot").append("svg")
+							.attr("width", width + margin.left + margin.right)
+							.attr("height", height + margin.top + margin.bottom)
+							.attr("class", "box")    
+							.append("g")
+							.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+						
+						// the x-axis
+						var x = d3.scale.ordinal()	   
+							.domain( data.map(function(d) { console.log(d); return d[0] } ) )	    
+							.rangeRoundBands([0 , width], 0.7, 0.3); 		
+
+						var xAxis = d3.svg.axis()
+							.scale(x)
+							.orient("bottom");
+
+						// the y-axis
+						var y = d3.scale.linear()
+							.domain([min, max])
+							.range([height + margin.top, 0 + margin.top]);
+						
+						var yAxis = d3.svg.axis()
+					    .scale(y)
+					    .orient("left");
+
+						// draw the boxplots	
+						svg.selectAll(".box")	   
+					      .data(data)
+						  .enter().append("g")
+							.attr("transform", function(d) { return "translate(" +  x(d[0])  + "," + margin.top + ")"; } )
+					      	// .transition().delay(1000).duration(20000)
+					       // .on("mouseover", function(){return tooltip.style("visibility", "visible");})
+			       		   // .on("mousemove", function(d, i){tooltip.html(generate_html(popups[i])); return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"); })
+					       // .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
+					       .call(chart.width(x.rangeBand()));
+			 
+						
+						      
+						// add a title
+						svg.append("text")
+					        .attr("x", (width / 2))             
+					        .attr("y", 0 + (margin.top / 2))
+					        .attr("text-anchor", "middle")  
+					        .style("font-size", "18px") 
+					        //.style("text-decoration", "underline")  
+					        .text("Revenue 2012");
+					 
+						 // draw y axis
+						svg.append("g")
+					        .attr("class", "y axis")
+					        .call(yAxis)
+							.append("text") // and text1
+							  .attr("transform", "rotate(-90)")
+							  .attr("y", 6)
+							  .attr("dy", ".71em")
+							  .style("text-anchor", "end")
+							  .style("font-size", "16px") 
+							  .text("Revenue in €");		
+						
+						// draw x axis	
+						svg.append("g")
+					      .attr("class", "x axis")
+					      .attr("transform", "translate(0," + (height  + margin.top + 10) + ")")
+					      .call(xAxis)
+						  .append("text")             // text label for the x axis
+					        .attr("x", (width / 2) )
+					        .attr("y",  10 )
+							.attr("dy", ".71em")
+					        .style("text-anchor", "middle")
+							.style("font-size", "16px") 
+					        .text("Quarter"); 
+					});
+
+					// Returns a function to compute the interquartile range.
+					function iqr(k) {
+					  return function(d, i) {
+					    var q1 = d.quartiles[0],
+					        q3 = d.quartiles[2],
+					        iqr = (q3 - q1) * k,
+					        i = -1,
+					        j = d.length;
+					    while (d[++i] < q1 - iqr);
+					    while (d[--j] > q3 + iqr);
+					    return [i, j];
+					  };
+					}
+		    	}
+		    	
+		    	else{
+		    		d3.select("svg").remove();
+		    	}
+		    	
+		    })
+		    .id("group")
+		    // .title("Nested Toggle")
+		    .type("toggle")
+		    .draw()
+
+
+
+		   
+
+	
+		</script>
 
 	</div>
 </div>

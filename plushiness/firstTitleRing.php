@@ -14,7 +14,8 @@ $resultB = $conn->query($sqlBaka);
 foreach ($resultB as $row)
 {
 	$manga = $row["name"];
-	$children[] = array('source' => $search, 'target' =>$manga, "strength" => 1);
+	if ($manga != "unknown")
+		$children[] = array('source' => $search, 'target' =>$manga, "strength" => 1);
 }
 
 header('Content-Type: application/json');

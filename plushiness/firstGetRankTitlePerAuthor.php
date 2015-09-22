@@ -24,7 +24,7 @@ foreach ($resultB as $row)
 	$children[] = array('label' => $name, 'value' =>$rate);
 }
 
-$b[] = array('key' => 'Titles AVG', 'color' =>"#4f99b4", 'values' => $children);
+$b[] = array('key' => 'Titles AVG', 'values' => $children);
 header('Content-Type: application/json');
 echo json_encode($b);
 
