@@ -44,6 +44,8 @@ if (array_key_exists("mangaName", $_REQUEST)){
 <script  src="jquery.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 <script src="box.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+
 
 <!--[if IE 6]><link href="default_ie6.css" rel="stylesheet" type="text/css" /><![endif]-->
 
@@ -278,10 +280,10 @@ if (array_key_exists("mangaName", $_REQUEST)){
 						<div id="container" class="boxPlot" >	
 						</div>
 						<div id="container" class="bar" >
-							<form>
-								<!-- <label><input type="radio" name="mode" value="grouped"> Grouped</label>
-								<label><input type="radio" name="mode" value="stacked" checked> Stacked</label> -->
-							</form>
+							<!-- <form>
+								<label><input type="radio" name="mode" value="grouped"> Grouped</label>
+								<label><input type="radio" name="mode" value="stacked" checked> Stacked</label>
+							</form> -->
 						</div>
 					</td>
 				
@@ -291,38 +293,44 @@ if (array_key_exists("mangaName", $_REQUEST)){
 
 		<script type="text/javascript">
 
+			var csv;
+			// parse in the data	
+			d3.json("boxPlotValues.php", function(error, value){
+				csv = value;
+			});
 
-		  var box = false;
-		  
-		  var sampleData = [
-		    {"group": "bar chart"},
-		    {"group": "box plot chart"}
-		  ]
-		  var toggles = d3plus.form()
-		  	.container(".menu")
-		    .data(sampleData)
-		    .focus("bar chart", function(d){
+		  	var box = false;
+		  	
+			var sampleData = [
+				{"group": "bar chart"},
+				{"group": "box plot chart"}
+			];
+
+			var toggles = d3plus.form()
+			.container(".menu")
+			.data(sampleData)
+			.focus("bar chart", function(d){
 		    	if(d == "box plot chart"){
 		    		d3.select("svg").remove();
 		    		// d3.select(".boxPlot").remove();
 		    		var labels = true; // show the text labels beside individual boxplots?
 
-					var margin = {top: 30, right: 50, bottom: 70, left: 50};
-					var  width = 800 - margin.left - margin.right;
-					var height = 400 - margin.top - margin.bottom;
+					var margin = {top: 20, right: 50, bottom: 70, left: 50};
+					var  width = 900 - margin.left - margin.right;
+					var height = 500 - margin.top - margin.bottom;
 					
 					var min = Infinity,
 					    max = -Infinity;
 					
 					function generate_html(popup) {
-						  var html = "";
-						  var inputs =  popup['inputs'];
-						  for (var input in inputs) {
-						    html += "<strong>" + input + "</strong>" + ": " + inputs[input] + "<br>";
-			  			  }
-					  return html
-					  var c = "red";
-					  return 'Hi there! My color is <span style="color:' + c + '">' + c + '</span>';
+						var html = "";
+						var inputs =  popup['inputs'];
+						for (var input in inputs) {
+							html += "<strong>" + input + "</strong>" + ": " + inputs[input] + "<br>";
+						}
+						return html
+						var c = "red";
+						return 'Hi there! My color is <span style="color:' + c + '">' + c + '</span>';
 					}
 
 
@@ -351,126 +359,126 @@ if (array_key_exists("mangaName", $_REQUEST)){
 						.style("visibility", "hidden");
 
 
+					// console.log(csv);
+					// using an array of arrays with
+					// data[n][2] 
+					// where n = number of columns in the csv file 
+					// data[i][0] = name of the ith column
+					// data[i][1] = array of values of ith column
 
-					// parse in the data	
-					d3.csv("data.csv", function(error, csv) {
-						// using an array of arrays with
-						// data[n][2] 
-						// where n = number of columns in the csv file 
-						// data[i][0] = name of the ith column
-						// data[i][1] = array of values of ith column
+					var data = [];
+					data[0] = [];
+					data[1] = [];
+					// add more rows if your csv file has more columns
 
-						var data = [];
-						data[0] = [];
-						data[1] = [];
-						// add more rows if your csv file has more columns
+					// add here the header of the csv file
+					data[0][0] = "Q1";
+					data[1][0] = "Q2";
+					// add more rows if your csv file has more columns
 
-						// add here the header of the csv file
-						data[0][0] = "Q1";
-						data[1][0] = "Q2";
-						// add more rows if your csv file has more columns
+					data[0][1] = [];
+					data[1][1] = [];
+				  
+					csv.forEach(function(x) {
+						var v1 = Math.floor(x.Q1),
+							v2 = Math.floor(x.Q2);
+							// v3 = Math.floor(x.Q3),
+							// v4 = Math.floor(x.Q4);
+							// add more variables if your csv file has more columns
+							
+						var rowMax = Math.max(v1, Math.max(v2, Math.max(v1,v2)));
+						var rowMin = Math.min(v1, Math.min(v2, Math.min(v1,v2)));
 
-						data[0][1] = [];
-						data[1][1] = [];
-					  
-						csv.forEach(function(x) {
-							var v1 = Math.floor(x.Q1),
-								v2 = Math.floor(x.Q2);
-								// v3 = Math.floor(x.Q3),
-								// v4 = Math.floor(x.Q4);
-								// add more variables if your csv file has more columns
-								
-							var rowMax = Math.max(v1, Math.max(v2, Math.max(v1,v2)));
-							var rowMin = Math.min(v1, Math.min(v2, Math.min(v1,v2)));
+						data[0][1].push(v1);
+						data[1][1].push(v2);
+						// data[2][1].push(v3);
+						// data[3][1].push(v4);
+						 // add more rows if your csv file has more columns
+						 
+						if (rowMax > max) max = rowMax;
+						if (rowMin < min) min = rowMin;	
+					});
+				  
+					var chart = d3.box()
+						.whiskers(iqr(1.5))
+						.height(height)	
+						.domain([min, max])
+						.showLabels(labels);
 
-							data[0][1].push(v1);
-							data[1][1].push(v2);
-							// data[2][1].push(v3);
-							// data[3][1].push(v4);
-							 // add more rows if your csv file has more columns
-							 
-							if (rowMax > max) max = rowMax;
-							if (rowMin < min) min = rowMin;	
-						});
-					  
-						var chart = d3.box()
-							.whiskers(iqr(1.5))
-							.height(height)	
-							.domain([min, max])
-							.showLabels(labels);
+					var svg = d3.select(".boxPlot").append("svg")
+						.attr("width", width + margin.left + margin.right)
+						.attr("height", height + margin.top + margin.bottom)
+						.attr("class", "box")    
+						.append("g")
+						.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+					
+					// svg.call(tip);
 
-						var svg = d3.select(".boxPlot").append("svg")
-							.attr("width", width + margin.left + margin.right)
-							.attr("height", height + margin.top + margin.bottom)
-							.attr("class", "box")    
-							.append("g")
-							.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-						
-						// the x-axis
-						var x = d3.scale.ordinal()	   
-							.domain( data.map(function(d) { console.log(d); return d[0] } ) )	    
-							.rangeRoundBands([0 , width], 0.7, 0.3); 		
+					// the x-axis
+					var x = d3.scale.ordinal()	   
+						.domain( data.map(function(d) { return d[0] } ) )	    
+						.rangeRoundBands([0 , width], 0.7, 0.3); 		
 
-						var xAxis = d3.svg.axis()
-							.scale(x)
-							.orient("bottom");
+					var xAxis = d3.svg.axis()
+						.scale(x)
+						.orient("bottom");
 
-						// the y-axis
-						var y = d3.scale.linear()
-							.domain([min, max])
-							.range([height + margin.top, 0 + margin.top]);
-						
-						var yAxis = d3.svg.axis()
+					// the y-axis
+					var y = d3.scale.linear()
+						.domain([min, max])
+						.range([height + margin.top, 0 + margin.top]);
+					
+					var yAxis = d3.svg.axis()
 					    .scale(y)
 					    .orient("left");
 
-						// draw the boxplots	
-						svg.selectAll(".box")	   
-					      .data(data)
-						  .enter().append("g")
-							.attr("transform", function(d) { return "translate(" +  x(d[0])  + "," + margin.top + ")"; } )
-					      	// .transition().delay(1000).duration(20000)
-					       // .on("mouseover", function(){return tooltip.style("visibility", "visible");})
-			       		   // .on("mousemove", function(d, i){tooltip.html(generate_html(popups[i])); return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"); })
-					       // .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
-					       .call(chart.width(x.rangeBand()));
-			 
+					// draw the boxplots	
+					svg.selectAll(".box")	   
+				      .data(data)
+					  .enter().append("g")
+						.attr("transform", function(d) { return "translate(" +  x(d[0])  + "," + margin.top + ")"; } )
+				      	// .transition().delay(1000).duration(20000)
+				       // .on("mouseover", function(){return tooltip.style("visibility", "visible");})
+		       		   // .on("mousemove", function(d, i){tooltip.html(generate_html(popups[i])); return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"); })
+				       // .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
+				       .call(chart.width(x.rangeBand()));
+		 
+					
+					      
+					// add a title
+					svg.append("text")
+				        .attr("x", (width / 2))             
+				        .attr("y", 0 + (margin.top / 2))
+				        .attr("text-anchor", "middle")  
+				        .style("font-size", "18px") 
+				        //.style("text-decoration", "underline")  
+				        .text("Revenue 2012");
+				 
+					 // draw y axis
+					svg.append("g")
+				        .attr("class", "y axis")
+				        .call(yAxis)
+						.append("text") // and text1
+						  .attr("transform", "rotate(-90)")
+						  .attr("y", 6)
+						  .attr("dy", ".71em")
+						  .style("text-anchor", "end")
+						  .style("font-size", "16px") 
+						  .text("Revenue in €");		
 						
-						      
-						// add a title
-						svg.append("text")
-					        .attr("x", (width / 2))             
-					        .attr("y", 0 + (margin.top / 2))
-					        .attr("text-anchor", "middle")  
-					        .style("font-size", "18px") 
-					        //.style("text-decoration", "underline")  
-					        .text("Revenue 2012");
-					 
-						 // draw y axis
-						svg.append("g")
-					        .attr("class", "y axis")
-					        .call(yAxis)
-							.append("text") // and text1
-							  .attr("transform", "rotate(-90)")
-							  .attr("y", 6)
-							  .attr("dy", ".71em")
-							  .style("text-anchor", "end")
-							  .style("font-size", "16px") 
-							  .text("Revenue in €");		
-						
-						// draw x axis	
-						svg.append("g")
-					      .attr("class", "x axis")
-					      .attr("transform", "translate(0," + (height  + margin.top + 10) + ")")
-					      .call(xAxis)
-						  .append("text")             // text label for the x axis
-					        .attr("x", (width / 2) )
-					        .attr("y",  10 )
-							.attr("dy", ".71em")
-					        .style("text-anchor", "middle")
-							.style("font-size", "16px") 
-					        .text("Quarter"); 
-					});
+					// draw x axis	
+					svg.append("g")
+				      .attr("class", "x axis")
+				      .attr("transform", "translate(0," + (height  + margin.top + 10) + ")")
+				      .call(xAxis)
+					  .append("text")             // text label for the x axis
+				        .attr("x", (width / 2) )
+				        .attr("y",  10 )
+						.attr("dy", ".71em")
+				        .style("text-anchor", "middle")
+						.style("font-size", "16px") 
+				        .text("Quarter"); 
+					
 
 					// Returns a function to compute the interquartile range.
 					function iqr(k) {
@@ -488,7 +496,143 @@ if (array_key_exists("mangaName", $_REQUEST)){
 		    	}
 		    	
 		    	else{
+
+					
 		    		d3.select("svg").remove();
+					var n = 10, // number of layers
+					m = 2, // number of samples per layer
+					stack = d3.layout.stack(),
+					layers = stack(d3.range(n).map(function() { return bumpLayer(m, 1 ); })),
+					yGroupMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y; }); }),
+					yStackMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y+10; }); });
+					// console.log(layers);
+
+					var tip = d3.tip()
+					.attr('class', 'd3-tip')
+					.offset([-10, 0])
+					.html(function(d) {
+						console.log(d);
+						return "<strong>Frequency:</strong> <span style='color:red'>" + d.y + "</span>";
+					});
+
+
+					var margin = {top: 40, right: 10, bottom: 20, left: 50},
+						width = 960 - margin.left - margin.right,
+						height = 500 - margin.top - margin.bottom;
+
+					// console.log(yStackMax);
+					var x = d3.scale.ordinal()
+						.domain(d3.range(m))
+						.rangeRoundBands([0, width], .08);
+
+					var y = d3.scale.linear()
+						.domain([0, yGroupMax])
+						.range([height, 0]);
+
+					var color = d3.scale.linear()
+						.domain([0, n - 1])
+						.range(["#aad", "#556"]);
+
+					var xAxis = d3.svg.axis()
+						.scale(x)
+						.tickSize(0)
+						.tickPadding(6)
+						.orient("bottom");
+
+					var yAxis = d3.svg.axis()
+						.scale(y)
+    					.orient("left")
+    					.ticks(10);
+
+					var svg = d3.select(".bar").append("svg")
+						.attr("width", width + margin.left + margin.right)
+						.attr("height", height + margin.top + margin.bottom)
+						.append("g")
+						.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+					var layer = svg.selectAll(".layer")
+						.data(layers)
+						.enter().append("g")
+						.attr("class", "layer")
+						.style("fill", function(d, i) { console.log(d,i + "galo"); return color(i); });
+
+					var rect = layer.selectAll("rect")
+						.data(function(d) { return d; })
+						.enter().append("rect")
+						.attr("x", function(d) { return x(d.x); })
+						.attr("y", height)
+						.attr("width", x.rangeBand())
+						.attr("height", 0)
+
+						.on('mouseover', tip.show)
+      					.on('mouseout', tip.hide);
+
+					rect.transition()
+						.delay(function(d, i) { return i * 10; })
+						.attr("y", function(d) { return y(5-d.y); })
+						.attr("height", function(d) { return y(d.y); });
+
+					svg.append("g")
+						.attr("class", "x axis")
+						.attr("transform", "translate(0," + height + ")")
+						.call(xAxis);
+
+					svg.append("g")
+						.attr("class", "y axis")
+						.call(yAxis)
+						.append("text")
+						.attr("transform", "rotate(-90)")
+						.attr("y", 6)
+						.attr("dy", ".71em")
+						.style("text-anchor", "end")
+						.text("Votes");
+
+					d3.selectAll("input").on("change", change);
+
+					var timeout = setTimeout(function() {
+						console.log("here");
+						transitionGrouped();
+						// d3.select("input[value=\"grouped\"]").property("checked", true).each(change);
+					}, 200);
+
+					function change() {
+						clearTimeout(timeout);
+						transitionGrouped();
+					}
+
+					function transitionGrouped() {
+						y.domain([0, yGroupMax]);
+
+						rect.transition()
+							.duration(400)
+							.delay(function(d, i) { return i * 10; })
+							.attr("x", function(d, i, j) { return x(d.x) + x.rangeBand() / n * j; })
+							.attr("width", x.rangeBand() / n)
+							.transition()
+							.attr("y", function(d) { return y(d.y); })
+							.attr("height", function(d) { return height - y(d.y); });
+					}
+
+
+					// Inspired by Lee Byron's test data generator.
+					function bumpLayer(n, o) {
+
+						function bump(a) {
+							var x = 1 / (.1 + Math.random()),
+							y = 2 * Math.random() - .5,
+							z = 10 / (.1 + Math.random());
+							for (var i = 0; i < n; i++) {
+								var w = (i / n - y) * z;
+								a[i] += x * Math.exp(-w * w);
+							}
+						}
+
+						var a = [], i;
+						for (i = 0; i < n; ++i) a[i] = o + o * Math.random();
+						for (i = 0; i < 5; ++i) bump(a);
+						// console.log( a.map(function(d, i) { return {x: i, y: Math.max(0, d)}; }));
+						return a.map(function(d, i) { return {x: i, y: Math.max(0, d)}; });
+					}
 		    	}
 		    	
 		    })
