@@ -372,8 +372,8 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					// add more rows if your csv file has more columns
 
 					// add here the header of the csv file
-					data[0][0] = "Q1";
-					data[1][0] = "Q2";
+					data[0][0] = "MangaHere";
+					data[1][0] = "MangaFox";
 					// add more rows if your csv file has more columns
 
 					data[0][1] = [];
@@ -502,18 +502,18 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					var n = 10, // number of layers
 					m = 2, // number of samples per layer
 					stack = d3.layout.stack(),
-					layers = stack(d3.range(n).map(function() { return bumpLayer(m, 1 ); })),
+					layers = bumpLayer(),
 					yGroupMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y; }); }),
 					yStackMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y+10; }); });
-					// console.log(layers);
+					console.log(layers);
 
-					var tip = d3.tip()
-					.attr('class', 'd3-tip')
-					.offset([-10, 0])
-					.html(function(d) {
-						console.log(d);
-						return "<strong>Frequency:</strong> <span style='color:red'>" + d.y + "</span>";
-					});
+					// var tip = d3.tip()
+					// .attr('class', 'd3-tip')
+					// .offset([-10, 0])
+					// .html(function(d) {
+					// 	console.log(d);
+					// 	return "<strong>Frequency:</strong> <span style='color:red'>" + d.y + "</span>";
+					// });
 
 
 					var margin = {top: 40, right: 10, bottom: 20, left: 50},
@@ -529,9 +529,13 @@ if (array_key_exists("mangaName", $_REQUEST)){
 						.domain([0, yGroupMax])
 						.range([height, 0]);
 
+					var maxColor =  d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y; }); });
+					var minColor =  d3.min(layers, function(layer) { return d3.min(layer, function(d) { return d.y; }); });
+					console.log("maxColor: " + maxColor + " minColor: "+minColor);
+					
 					var color = d3.scale.linear()
-						.domain([0, n - 1])
-						.range(["#aad", "#556"]);
+						.domain([0,10, 15, 20, 25,35,40, 45,50, 55,60,65, 70,75,80,85, 90,95, 100])
+						.range(["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"]);
 
 					var xAxis = d3.svg.axis()
 						.scale(x)
@@ -553,8 +557,8 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					var layer = svg.selectAll(".layer")
 						.data(layers)
 						.enter().append("g")
-						.attr("class", "layer")
-						.style("fill", function(d, i) { console.log(d,i + "galo"); return color(i); });
+						.attr("class", "layer");
+						// .style("fill", function(d, i) { console.log(d[0].y + " " + i ); return color(d[0].y); });
 
 					var rect = layer.selectAll("rect")
 						.data(function(d) { return d; })
@@ -563,9 +567,43 @@ if (array_key_exists("mangaName", $_REQUEST)){
 						.attr("y", height)
 						.attr("width", x.rangeBand())
 						.attr("height", 0)
+						.style("fill", function(d, i) { 
+							console.log(d.y + " " + i );
+							if(i == 0){
+								// console.log(d.y/91971 *100);
+								return color(d.y);
+							}
+							else {
+								// console.log(d.y/86420 *100);
+								return color(d.y); 
+							}
+						})
+						.style("stroke", "black")
 
-						.on('mouseover', tip.show)
-      					.on('mouseout', tip.hide);
+						.on("mouseover", function() { tooltip.style("display", null); })
+						.on("mouseout", function() { tooltip.style("display", "none"); })
+						.on("mousemove", function(d) {
+							var xPosition = d3.mouse(this)[0] - 10;
+							var yPosition = d3.mouse(this)[1] - 25;
+							tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+							tooltip.select("text").text((d.votes));
+						});
+
+					var tooltip = svg.append("g")
+						.attr("class", "tooltip")
+						.style("display", "none");
+
+					tooltip.append("rect")
+						.attr("width", 50)
+						.attr("height", 20)
+						.attr("fill", "orange")
+						.style("opacity", 0.5);
+						tooltip.append("text")
+						.attr("x", 25)
+						.attr("dy", "1.2em")
+						.style("text-anchor", "middle")
+						.attr("font-size", "12px")
+						.attr("font-weight", "bold");
 
 					rect.transition()
 						.delay(function(d, i) { return i * 10; })
@@ -617,21 +655,18 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					// Inspired by Lee Byron's test data generator.
 					function bumpLayer(n, o) {
 
-						function bump(a) {
-							var x = 1 / (.1 + Math.random()),
-							y = 2 * Math.random() - .5,
-							z = 10 / (.1 + Math.random());
-							for (var i = 0; i < n; i++) {
-								var w = (i / n - y) * z;
-								a[i] += x * Math.exp(-w * w);
-							}
+
+						console.log(csv);
+						var arr = [];
+						for (i =0; i < csv.length; i++){
+							var aux = [];
+							aux.push({x: 0, y: Number(csv[i]['Q1']), votes: Number(csv[i]['Q1Votes'])});
+							aux.push({x: 1, y: Number(csv[i]['Q2']), votes: Number(csv[i]['Q2Votes'])});
+							arr.push(aux);
 						}
 
-						var a = [], i;
-						for (i = 0; i < n; ++i) a[i] = o + o * Math.random();
-						for (i = 0; i < 5; ++i) bump(a);
-						// console.log( a.map(function(d, i) { return {x: i, y: Math.max(0, d)}; }));
-						return a.map(function(d, i) { return {x: i, y: Math.max(0, d)}; });
+						// console.log(arr);
+						return arr;
 					}
 		    	}
 		    	

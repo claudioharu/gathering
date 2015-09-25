@@ -17,7 +17,7 @@ foreach ($resultB as $row)
 	$rate = $row['avg'];
 
 	if (strlen($name) > 53){
-		$name =  substr($name, 0, 50);
+		$name =  substr($name, 0, 48);
 		$name = $name . " ...";
 	}
 	$children[] = array('label' => $name, 'value' =>$rate);

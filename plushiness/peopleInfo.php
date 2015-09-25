@@ -426,6 +426,7 @@ if (array_key_exists("personName", $_REQUEST)){
 						// .tooltips(true)             //Show tooltips on hover.
 						// .transitionDuration(350)
 						.forceY([0,10])
+						// .color(d3.scale.category20().range([0,10]))
 						.showControls(false);        //Allow user to switch between "Grouped" and "Stacked" mode.
 						
 
@@ -440,11 +441,21 @@ if (array_key_exists("personName", $_REQUEST)){
 				   //    .tickFormat(function(d){ return d/100 });
 				   chart.groupSpacing(0.3);
 
+
 					d3.select('#rank ')
 						.datum(data)
 						.transition()
 						.duration(350)
 						.call(chart);
+
+					d3.selectAll(".nv-bar > rect")
+						.style("fill", function(d, i){
+							console.log(i); 
+							console.log('oi');
+							return i > 1 ? "red":"blue";
+						});
+
+
 
 					nv.utils.windowResize(chart.update);
 
