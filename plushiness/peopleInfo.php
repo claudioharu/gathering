@@ -267,7 +267,19 @@ if (array_key_exists("personName", $_REQUEST)){
 		// id="zoom" g id="data"
 		// var color = $('#d3plus_viz').find('#data').find('d3plus_rect').eq(0).find('path.d3plus_data').attr('fill');
 		// console.log(color);
+		var counts = 0;
+		var intervalId = setInterval(function() {
 
+			if (++counts === 5) {
+		       window.clearInterval(intervalId);
+		    }
+			d3.selectAll('.nv-bar')
+						.style("fill", $("rect.d3plus_data", $('.div3')).eq(0).attr("fill"));
+	    }, 300);
+
+
+		// var color = d3.scale.category10().range();
+		var color = d3plus.color.scale.range();
 
 		if($('h1.personName').text() != "UNKNOWN"){
 			d3.json("firstTitleRing.php", function(error, root){
@@ -309,8 +321,12 @@ if (array_key_exists("personName", $_REQUEST)){
 				{
 					  var data = [
 					    {"value": 100, "name": root[0].source}
+					  ];
+
+					  var attributes = [
+					    {"name": root[0].source, "colors": color[0]},
 					  ]
-					  d3plus.viz()
+					  var pie = d3plus.viz()
 					    .container(".div3")
 					    .data(data)
 					    .type("pie")
@@ -321,7 +337,13 @@ if (array_key_exists("personName", $_REQUEST)){
 					      "value" : false
 					    })
 					    .height(180)
+					    // .attrs(attributes)
+					    // .color("colors")
 					    .draw();
+
+					  
+									  
+
 				}
 				else{
 					var visualization = d3plus.viz()
@@ -332,6 +354,15 @@ if (array_key_exists("personName", $_REQUEST)){
 						"tooltip" : false,
 						"value" : value
 					}, function(value){
+						var count = 0;
+						var intervalId = setInterval(function() {
+
+							if (++count === 5) {
+						       window.clearInterval(intervalId);
+						    }
+							d3.selectAll('.nv-bar')
+										.style("fill", $("rect.d3plus_data", $('.div3')).eq(0).attr("fill"));
+						    }, 300);
 						
 						$.ajax({
 				            type: "POST",
@@ -352,7 +383,7 @@ if (array_key_exists("personName", $_REQUEST)){
 										"tooltip" : false,
 										"value" : valueM
 									})
-									.draw()
+									.draw();
 				            }
 				        });
 
@@ -392,6 +423,10 @@ if (array_key_exists("personName", $_REQUEST)){
 										.transition()
 										.duration(350)
 										.call(chart);
+					// 				var color = d3.scale().category20().range();
+									// d3.selectAll('.nv-bar')
+										// .style("fill", $("rect.d3plus_data", $('.div3')).eq(0).attr("fill"));
+									// console.log(previousColor);
 
 									nv.utils.windowResize(chart.update);
 
@@ -448,12 +483,9 @@ if (array_key_exists("personName", $_REQUEST)){
 						.duration(350)
 						.call(chart);
 
-					d3.selectAll(".nv-bar > rect")
-						.style("fill", function(d, i){
-							console.log(i); 
-							console.log('oi');
-							return i > 1 ? "red":"blue";
-						});
+					
+
+					
 
 
 
