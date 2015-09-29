@@ -22,6 +22,8 @@ if (array_key_exists("mangaName", $_REQUEST)){
 			Redirect('./visualizer.php', false);
 		}
 		$search = strtr ($search, array ('¬' => '"'));
+
+		$_SESSION['boxInfos'] = $search;
 	}
 }
 ?>
@@ -55,8 +57,8 @@ if (array_key_exists("mangaName", $_REQUEST)){
 	<div id="header" class="container">
 		<div id="logo">
 			<span class="icon icon-globe"></span>
-			<h1><a href="./visualizer.php">Plushiness</a></h1>
-			<span>Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a></span>
+			<h1><a href="./visualizer.php">MangaVis</a></h1>
+			<!-- <span>Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a></span> -->
 		</div>
 		<div id="triangle-up"></div>
 	</div>
@@ -65,7 +67,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 		<div id="menu">
 			<ul>
 				<li class="current_page_item"><a href="./visualizer.php" accesskey="1" title="">Home</a></li>
-				<li><a href="#" accesskey="2" title="">Databases</a></li>
+				<li><a href="./database.php" accesskey="2" title="">Databases</a></li>
 				<li><a href="./people.php" accesskey="3" title="">People</a></li>
 				<li><a href="./mangas.php" accesskey="4" title="">Title</a></li>
 				<li><a href="./about.php" accesskey="5" title="">About</a></li>
@@ -334,7 +336,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					
 					var color = d3.scale.linear()
 						.domain([0,10, 15, 20, 25,35,40, 45,50, 55,60,65, 70,75,80,85, 90,95, 100])
-						.range(["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"]);
+						.range(['rgb(49,54,149)', 'rgb(69,117,180)', 'rgb(116,173,209)', 'rgb(171,217,233)', 'rgb(224,243,248)', 'rgb(255,255,191)', 'rgb(254,224,144)', 'rgb(253,174,97)', 'rgb(244,109,67)', 'rgb(215,48,39)', 'rgb(165,0,38)']);
 
 					var xAxis = d3.svg.axis()
 						.scale(x)
@@ -374,14 +376,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 						.attr("height", 0)
 						.style("fill", function(d, i) { 
 							console.log(d.y + " " + i );
-							// if(i == 0){
-								// console.log(d.y/91971 *100);
-								return color(d.y);
-							// }
-							// else {
-							// 	// console.log(d.y/86420 *100);
-							// 	return color(d.y); 
-							// }
+							return color(d.y);
 						})
 						.style("stroke", "black")
 
@@ -512,21 +507,21 @@ if (array_key_exists("mangaName", $_REQUEST)){
 
 
 
-					var popups =  [
-					  {
-					  'inputs': {
-					    'Name': 'galo'
-					   }},
-					  {
-					  'inputs': {
-					    'Name': 'dog'
-					   }},
-					  {
-					  'inputs': {
-					    'Name': 'dog',
-					    'Occupation': 'barking'
-					   }}
-					];
+					// var popups =  [
+					//   {
+					//   'inputs': {
+					//     'Name': 'galo'
+					//    }},
+					//   {
+					//   'inputs': {
+					//     'Name': 'dog'
+					//    }},
+					//   {
+					//   'inputs': {
+					//     'Name': 'dog',
+					//     'Occupation': 'barking'
+					//    }}
+					// ];
 
 					var tooltip = d3.select("body")
 						.append("div")
@@ -534,14 +529,6 @@ if (array_key_exists("mangaName", $_REQUEST)){
 						.style("position", "absolute")
 						.style("z-index", "10")
 						.style("visibility", "hidden");
-
-
-					// console.log(csv);
-					// using an array of arrays with
-					// data[n][2] 
-					// where n = number of columns in the csv file 
-					// data[i][0] = name of the ith column
-					// data[i][1] = array of values of ith column
 
 					var data = [];
 					data[0] = [];
@@ -608,7 +595,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					var yAxis = d3.svg.axis()
 					    .scale(y)
 					    .orient("left");
-
+					console.log("box" + data);
 					// draw the boxplots	
 					svg.selectAll(".box")	   
 				      .data(data)
@@ -712,7 +699,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					
 					var color = d3.scale.linear()
 						.domain([0,10, 15, 20, 25,35,40, 45,50, 55,60,65, 70,75,80,85, 90,95, 100])
-						.range(["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"]);
+						.range(['rgb(49,54,149)', 'rgb(69,117,180)', 'rgb(116,173,209)', 'rgb(171,217,233)', 'rgb(224,243,248)', 'rgb(255,255,191)', 'rgb(254,224,144)', 'rgb(253,174,97)', 'rgb(244,109,67)', 'rgb(215,48,39)', 'rgb(165,0,38)']);
 
 					var xAxis = d3.svg.axis()
 						.scale(x)

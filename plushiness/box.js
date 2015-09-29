@@ -17,7 +17,11 @@ d3.box = function() {
   // For each small multiple…
   function box(g) {
     g.each(function(data, i) {
-	  var d = data[1].sort(d3.ascending);
+    
+    var dNotSorted =   weightedMean(data[1]);;
+    // console.log("eu" + dNotSorted);
+    var d = data[1].sort(d3.ascending);
+
 
       var g = d3.select(this),
           n = d.length,
@@ -26,6 +30,8 @@ d3.box = function() {
 
       // Compute quartiles. Must return exactly 3 elements.
       var quartileData = d.quartiles = quartiles(d);
+      quartileData[3] = dNotSorted;
+      // console.log("quartiledata" + quartileData);
 
       // Compute whiskers. Must return exactly 2 elements, or null.
       var whiskerIndices = whiskers && whiskers.call(this, d, i),
@@ -114,9 +120,9 @@ d3.box = function() {
       medianLine.enter().append("line")
           .attr("class", "median")
           .attr("x1", 0)
-          .attr("y1", x0)
+          .attr("y1", 10)
           .attr("x2", width)
-          .attr("y2", x0)
+          .attr("y2", 10)
         .transition()
           .duration(duration)
           .attr("y1", x1)
@@ -126,6 +132,29 @@ d3.box = function() {
           .duration(duration)
           .attr("y1", x1)
           .attr("y2", x1);
+
+      // Update median line.
+      var meanLine = g.selectAll("line.mean")
+          .data([quartileData[3]]);
+
+      meanLine.enter().append("line")
+          .attr("class", "mean")
+          .style("stroke-dasharray", ("3, 3"))
+          .style("stroke", "#e31a1c")
+          .attr("x1", 0)
+          .attr("y1", 15)
+          .attr("x2", width)
+          .attr("y2", 15)
+        .transition()
+          .duration(duration)
+          .attr("y1", x1)
+          .attr("y2", x1);
+
+      meanLine.transition()
+          .duration(duration)
+          .attr("y1", x1)
+          .attr("y2", x1);
+
 
       // Update whiskers.
       var whisker = g.selectAll("line.whisker")
@@ -303,12 +332,24 @@ function boxWhiskers(d) {
   return [0, d.length - 1];
 }
 
-function boxQuartiles(d) {
+function boxQuartiles(d, dNotSorted) {
+  // console.log(d3.mean(d));
   return [
     d3.quantile(d, .25),
     d3.quantile(d, .5),
     d3.quantile(d, .75)
+    // weightedMean(d)
   ];
+}
+
+function weightedMean(d){
+  // console.log("weightedMean" + d);
+  var wmean = 0;
+  for (i = 0; i < d.length; i++){
+    wmean += (i+1)*d[i];
+  }
+  // console.log("weightedMean: " + wmean/d3.sum(d) );
+  return wmean/d3.sum(d);
 }
 
 })();

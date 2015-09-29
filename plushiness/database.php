@@ -35,14 +35,14 @@
 				<li><a href="./people.php" accesskey="3" title="">People</a></li>
 				<li><a href="./mangas.php" accesskey="4" title="">Titles</a></li>
 				<li><a href="./about.php" accesskey="5" title="">About</a></li>
-				<li accesskey="6" title="">
+				<!-- <li accesskey="6" title="">
 					<div class="container-2">
-						<form name="form1" action="searchPeople.php"  >
-							<input name="infos" type="search" id="search" placeholder="Search People"/>
+						<form name="form1" action="search.php"  >
+							<input name="infos" type="search" id="search" placeholder="Search..."/>
 							<input type="submit" style="visibility: hidden; position: absolute;"/>
 						</form>
 					</div>
-				</li>
+				</li> -->
 			</ul>
 		</div>
 </div>
@@ -50,18 +50,13 @@
 <div id="wrapper">
 
 	<div id="featured-wrapper">
-
-		
 		<div style="color:black; font-size: 1.5em; font-weight: 250; ">
 			<table style="width:70%; margin-left:250px; margin-top:-50px; ">
-				<tr><td>	Here you can blábláblá <br> Use the searchbar to ....</td></tr>
 				<tr><td align="center"><img src='http://cyberd.org/img/3/Under-Construction-Anime.jpg' width='400' height='400'/></td></tr>
 		
 			</table>
 		</div>
-
-
-		</div>	
+	</div>	
 
 	</div>
 </div>

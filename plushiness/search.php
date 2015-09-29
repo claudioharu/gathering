@@ -49,8 +49,8 @@ if (array_key_exists("infos", $_REQUEST)){
 	<div id="header" class="container">
 		<div id="logo">
 			<span class="icon icon-globe"></span>
-			<h1><a href="./visualizer.php">Plushiness</a></h1>
-			<span>Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a></span>
+			<h1><a href="./visualizer.php">MangaVis</a></h1>
+			<!-- <span>Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a></span> -->
 		</div>
 		<div id="triangle-up"></div>
 	</div>

@@ -56,8 +56,8 @@ if (array_key_exists("personName", $_REQUEST)){
 	<div id="header" class="container">
 		<div id="logo">
 			<span class="icon icon-globe"></span>
-			<h1><a href="./visualizer.php">Plushiness</a></h1>
-			<span>Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a></span>
+			<h1><a href="./visualizer.php">MangaVis</a></h1>
+			<!-- <span>Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a></span> -->
 		</div>
 		<div id="triangle-up"></div>
 	</div>
@@ -66,7 +66,7 @@ if (array_key_exists("personName", $_REQUEST)){
 		<div id="menu">
 			<ul>
 				<li class="current_page_item"><a href="./visualizer.php" accesskey="1" title="">Home</a></li>
-				<li><a href="#" accesskey="2" title="">Databases</a></li>
+				<li><a href="./database.php" accesskey="2" title="">Databases</a></li>
 				<li><a href="./people.php" accesskey="3" title="">People</a></li>
 				<li><a href="./mangas.php" accesskey="4" title="">Title</a></li>
 				<li><a href="./about.php" accesskey="5" title="">About</a></li>
@@ -248,7 +248,7 @@ if (array_key_exists("personName", $_REQUEST)){
 			<table  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
 				<tr style="margin-bottom:100px;"> 
 					<td >
-						<h1 align="center" style="font-size:20px">Network of relationships between authors and artists </h1>
+						<h1 align="center" style="font-size:20px">Rank of artist's titles </h1>
 					</td>
 				</tr>
 
@@ -270,12 +270,24 @@ if (array_key_exists("personName", $_REQUEST)){
 		var counts = 0;
 		var intervalId = setInterval(function() {
 
-			if (++counts === 5) {
+			if (++counts === 10) {
 		       window.clearInterval(intervalId);
 		    }
-			d3.selectAll('.nv-bar')
-						.style("fill", $("rect.d3plus_data", $('.div3')).eq(0).attr("fill"));
-	    }, 300);
+		    if($("path.d3plus_data").length){
+		    	d3.selectAll('.nv-bar')
+					.style("fill", $("path.d3plus_data", $('.div3')).attr("fill"));
+				d3.selectAll('circle.nv-legend-symbol')
+					.style("fill", $("path.d3plus_data", $('.div3')).attr("fill"));
+			}
+			else{
+				d3.selectAll('.nv-bar')
+					.style("fill", $("rect.d3plus_data", $('.div3')).eq(0).attr("fill"));
+				d3.selectAll('circle.nv-legend-symbol')
+					.style("fill", $("rect.d3plus_data", $('.div3')).eq(0).attr("fill"));
+				d3.selectAll('circle.nv-legend-symbol')
+					.style("stroke", $("rect.d3plus_data", $('.div3')).eq(0).attr("fill"));
+			}
+	    }, 100);
 
 
 		// var color = d3.scale.category10().range();
@@ -341,9 +353,6 @@ if (array_key_exists("personName", $_REQUEST)){
 					    // .color("colors")
 					    .draw();
 
-					  
-									  
-
 				}
 				else{
 					var visualization = d3plus.viz()
@@ -357,12 +366,16 @@ if (array_key_exists("personName", $_REQUEST)){
 						var count = 0;
 						var intervalId = setInterval(function() {
 
-							if (++count === 5) {
+							if (++count === 10) {
 						       window.clearInterval(intervalId);
 						    }
 							d3.selectAll('.nv-bar')
-										.style("fill", $("rect.d3plus_data", $('.div3')).eq(0).attr("fill"));
-						    }, 300);
+								.style("fill", $("rect.d3plus_data", $('.div3')).eq(0).attr("fill"));
+							d3.selectAll('circle.nv-legend-symbol')
+								.style("fill", $("rect.d3plus_data", $('.div3')).eq(0).attr("fill"));
+							d3.selectAll('circle.nv-legend-symbol')
+								.style("stroke", $("rect.d3plus_data", $('.div3')).eq(0).attr("fill"));
+						    }, 100);
 						
 						$.ajax({
 				            type: "POST",

@@ -21,8 +21,8 @@
 	<div id="header" class="container">
 		<div id="logo">
 			<span class="icon icon-globe"></span>
-			<h1><a href="./visualizer.php">Plushiness</a></h1>
-			<span>Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a></span>
+			<h1><a href="./visualizer.php">MangaVis</a></h1>
+			<!-- <span>Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a></span> -->
 		</div>
 		<div id="triangle-up"></div>
 	</div>
@@ -31,7 +31,7 @@
 		<div id="menu">
 			<ul>
 				<li class="current_page_item"><a href="./visualizer.php" accesskey="1" title="">Home</a></li>
-				<li><a href="#" accesskey="2" title="">Databases</a></li>
+				<li><a href="./database.php" accesskey="2" title="">Databases</a></li>
 				<li><a href="./people.php" accesskey="3" title="">People</a></li>
 				<li><a href="./mangas.php" accesskey="4" title="">Titles</a></li>
 				<li><a href="./about.php" accesskey="5" title="">About</a></li>
@@ -51,10 +51,12 @@
 
 	<div id="featured-wrapper">
 		
-			<ul class="style2">
-				<li> galo </li>
-				<li> galo </li>
-			</ul>
+			<div style="color:black; font-size: 1.5em; font-weight: 250; ">
+			<table style="width:70%; margin-left:250px; margin-top:-50px; ">
+				<tr><td align="center"><img src='http://cyberd.org/img/3/Under-Construction-Anime.jpg' width='400' height='400'/></td></tr>
+		
+			</table>
+		</div>
 		
 	
 	<!-- 

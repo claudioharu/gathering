@@ -21,8 +21,8 @@
 	<div id="header" class="container">
 		<div id="logo">
 			<span class="icon icon-globe"></span>
-			<h1><a href="./visualizer.php">Plushiness</a></h1>
-			<span>Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a></span>
+			<h1><a href="./visualizer.php">MangaVis</a></h1>
+			<!-- <span>Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a></span> -->
 		</div>
 		<div id="triangle-up"></div>
 	</div>
@@ -31,7 +31,7 @@
 		<div id="menu">
 			<ul>
 				<li class="current_page_item"><a href="./visualizer.php" accesskey="1" title="">Home</a></li>
-				<li><a href="#" accesskey="2" title="">Databases</a></li>
+				<li><a href="./database.php" accesskey="2" title="">Databases</a></li>
 				<li><a href="./people.php" accesskey="3" title="">People</a></li>
 				<li><a href="./mangas.php" accesskey="4" title="">Titles</a></li>
 				<li><a href="./about.php" accesskey="5" title="">About</a></li>
@@ -51,15 +51,15 @@
 
 	<div id="featured-wrapper">
 		<div style="color:black; font-size: 1.5em; font-weight: 250; ">
-		<table style="width:70%; margin-left:250px; margin-top:10px; ">
-			<tr><td align="left"><p>Bem vindo ao ....</p></td></tr>
-			<tr><td align="left"><p>Este site é o resultado final do trabalho de conclusão de curso em computação. Ele possui o propósito de fornecer informações sobre três bancos de dados:</p></td></tr>
+		<table style="width:70%; margin-left:250px; margin-top:-50px; ">
+			<tr><td align="left"><p><b>Wellcome to Mangavis</b></p></td></tr>
+
+			
+
 		
-			<tr style=" margin-left:600px;"><td align="center">MangaFox</td></tr>
-			<tr style=" margin-left:600px;"><td align="center">MangaHere</td></tr>
-			<tr style=" margin-left:600px;"><td align="center">MangaHost</td></tr>
-			<tr><td><p></p></td></tr>
-			<tr><td align="left"><p>Além disto, o site permitirá que os leitores pesquisem informações sobre determinada obra, autor ou ilustrador.</p></td></tr>
+			<tr><td align="left"><p>Mangavis is a tool developed in order to allow authors and publishers to understand how is the comic consumption in scanlators. With it, users are able to access informations of certain titles, authors and illustrators, as well as get an overview of the databases used.</p></td></tr>
+		
+			<tr><td align="left"><p>In the last decades, the field of data visualization has been used in various focus area. Dashboards and others applications allow companies, researchers and even common users to explore their data in new ways. This is also the goal of Mangavis. We want to present users the data contained in two of the major foreign online readers: the MangaFox and the MangaHere. </p></td></tr>
 		
 		</table>
 		</div>
