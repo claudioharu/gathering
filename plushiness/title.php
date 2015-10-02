@@ -131,6 +131,13 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					$resultB = $conn->query($sqlM);
 					// echo count($resultB);
 
+					$sqlReleased = 'select released from MangaFox_Mangas where name = "'. $search . '"';
+					$resultReleased = $conn->query($sqlReleased);
+
+					foreach ($resultReleased as $row){
+						$released = $row['released'];
+					}
+
 					foreach ($resultB as $row)
 					{
 						$nameB = $row['name'];
@@ -146,7 +153,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					print "</h1>";
 
 					print '<tr>';
-						print '<td rowspan="4">';
+						print '<td rowspan="5">';
 							print '<div id="left">';
 							print '<img src="' . $imgB . ' width="200" style=" padding:1px; border:2px solid #021a40;" >';
 							print '</div>';
@@ -180,6 +187,22 @@ if (array_key_exists("mangaName", $_REQUEST)){
 							print "</div>";
 						print '</td>';
 					// print '</li>';
+					print '</tr>';
+
+					print '<tr>';
+						print '<td  style="width: 100px;">';
+						print '</td>';
+						print '<td>';
+							print '<span style="font-size:15px; color:#454445; font-weight:bold; font-style:italic;">';
+								print "Released:";
+							print '</span>';
+							print '<span  style="padding-left: 15px">';
+								if(!empty($released))
+									print $released;
+								else
+									print 'N/A';	
+							print '</span>';
+						print '</td>';
 					print '</tr>';
 
 					print '<tr>';
@@ -494,16 +517,16 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					var min = Infinity,
 					    max = -Infinity;
 					
-					function generate_html(popup) {
-						var html = "";
-						var inputs =  popup['inputs'];
-						for (var input in inputs) {
-							html += "<strong>" + input + "</strong>" + ": " + inputs[input] + "<br>";
-						}
-						return html
-						var c = "red";
-						return 'Hi there! My color is <span style="color:' + c + '">' + c + '</span>';
-					}
+					// function generate_html(popup) {
+					// 	var html = "";
+					// 	var inputs =  popup['inputs'];
+					// 	for (var input in inputs) {
+					// 		html += "<strong>" + input + "</strong>" + ": " + inputs[input] + "<br>";
+					// 	}
+					// 	return html
+					// 	var c = "red";
+					// 	return 'Hi there! My color is <span style="color:' + c + '">' + c + '</span>';
+					// }
 
 
 
@@ -523,12 +546,12 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					//    }}
 					// ];
 
-					var tooltip = d3.select("body")
-						.append("div")
-						.attr("class","tooltip")
-						.style("position", "absolute")
-						.style("z-index", "10")
-						.style("visibility", "hidden");
+					// var tooltip = d3.select("body")
+					// 	.append("div")
+					// 	.attr("class","tooltip")
+					// 	.style("position", "absolute")
+					// 	.style("z-index", "10")
+					// 	.style("visibility", "hidden");
 
 					var data = [];
 					data[0] = [];
@@ -575,8 +598,44 @@ if (array_key_exists("mangaName", $_REQUEST)){
 						.attr("class", "box")    
 						.append("g")
 						.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+					var v1 = [];
+					var v2 = [];
+					i = 0;
+					csv.forEach (function(x) {
+						v1[i] = Number(x.Q1);
+						v2[i] = Number(x.Q2);
+						i++;
+					});
+
+					console.log('oi'+ v1);	
+					function weightedMean(d){
+						console.log(d[0]);
+						var dados;
+						if(d[0] == "MangaHere")
+							dados = v1;
+						else 
+							dados = v2;
+						console.log(dados);
+						var wmean = 0;
+						for (i = 0; i < dados.length; i++){
+							wmean += (i+1)*dados[i];
+						}
+						if (wmean == 0)
+							return 0;
+						// console.log("weightedMean: " + wmean/d3.sum(d) );
+						return wmean/d3.sum(dados);
+					}
 					
-					// svg.call(tip);
+					var tip = d3.tip()
+						.attr('class', 'd3-tip')
+						.offset([-10, 0])
+						.html(function(d) {
+							return "<strong>"+d[0] + "</strong>"+'<br>'+"<strong>Avg: </strong><span style='color:red'>"+ (weightedMean(d)).toFixed(2) + "</span><br>" + "<strong>Median: </strong><span style='color:red'>" +  d3.quantile(d[1], .5)+"</span>" ;
+						});
+
+					svg.call(tip);
+					
 
 					// the x-axis
 					var x = d3.scale.ordinal()	   
@@ -597,14 +656,18 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					    .orient("left");
 					console.log("box" + data);
 					// draw the boxplots	
+
 					svg.selectAll(".box")	   
 				      .data(data)
-					  .enter().append("g")
+					  .enter()
+					  .append("g")
 						.attr("transform", function(d) { return "translate(" +  x(d[0])  + "," + margin.top + ")"; } )
 				      	// .transition().delay(1000).duration(20000)
 				       // .on("mouseover", function(){return tooltip.style("visibility", "visible");})
 		       		   // .on("mousemove", function(d, i){tooltip.html(generate_html(popups[i])); return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"); })
 				       // .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
+				       .on('mouseover', tip.show)
+      		    	   .on('mouseout', tip.hide)
 				       .call(chart.width(x.rangeBand()));
 		 
 					

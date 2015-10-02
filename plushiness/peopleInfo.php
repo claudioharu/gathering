@@ -220,7 +220,7 @@ if (array_key_exists("personName", $_REQUEST)){
 
 		<div id="container" class="div2">
 
-			<table  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
+			<table style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
 				<tr>
 					<td>
 						<h1 align="center" style="font-size:20px">Network of relationships between authors and artists </h1>
@@ -262,8 +262,18 @@ if (array_key_exists("personName", $_REQUEST)){
 			</table>
 				
 		</div>
-
+<button id="hide">Hide</button>
+<button id="show">Show</button>
 		<script>
+		// $(document).ready(function(){
+    $("#hide").click(function(){
+        $(".div2").hide();
+    });
+    $("#show").click(function(){
+        $(".div2").show();
+    });
+// });
+		// $('.pintao').hide();
 		// id="zoom" g id="data"
 		// var color = $('#d3plus_viz').find('#data').find('d3plus_rect').eq(0).find('path.d3plus_data').attr('fill');
 		// console.log(color);

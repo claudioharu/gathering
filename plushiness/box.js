@@ -343,11 +343,14 @@ function boxQuartiles(d, dNotSorted) {
 }
 
 function weightedMean(d){
-  // console.log("weightedMean" + d);
+  console.log("weightedMean" + d);
+
   var wmean = 0;
   for (i = 0; i < d.length; i++){
     wmean += (i+1)*d[i];
   }
+  if (wmean == 0)
+    return 0;
   // console.log("weightedMean: " + wmean/d3.sum(d) );
   return wmean/d3.sum(d);
 }

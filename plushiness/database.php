@@ -237,15 +237,16 @@
               var xText = i * gridSize+10;
               var yText = -5;
               return "translate("  + xText + "," + yText + ") rotate(-60)"
-            });
-		var tip = d3.tip()
-			.attr('class', 'd3-tip')
-			.offset([-10, 0])
-			.html(function(d) {
-			return "<strong>Axis X: </strong><span style='color:red'>"+ d.hour+"</span><br><strong>Axis Y: </strong><span style='color:red'>"+ d.day+"</span><br><strong>Visualizations:</strong> <span style='color:red'>" + d.value + "</span>";
-		});
+              });
 
-		svg.call(tip);
+  		var tip = d3.tip()
+  			.attr('class', 'd3-tip')
+  			.offset([-10, 0])
+  			.html(function(d) {
+  			return "<strong>Axis X: </strong><span style='color:red'>"+ d.hour+"</span><br><strong>Axis Y: </strong><span style='color:red'>"+ d.day+"</span><br><strong>Visualizations:</strong> <span style='color:red'>" + Math.round(Math.log(d.value)) + "</span>";
+  		});
+
+  		svg.call(tip);
 
 
       var heatmapChart = function(jsonFile) {
@@ -272,7 +273,7 @@
               .attr("height", gridSize)
               .style("fill", colors[0])
               .on('mouseover', tip.show)
-      		  .on('mouseout', tip.hide);
+      		    .on('mouseout', tip.hide);
 
           cards.transition().duration(1000)
               .style("fill", function(d) { return colorScale(Math.log(d.value)); });
@@ -349,7 +350,7 @@
           
           days = categ,
           times = categ;
-          datasets = ["heatMapValuesMangaFox.php", "heatMapValuesMangaHere.php"];    
+          datasets = ["heatMapValuesMangaFoxVotos.php", "heatMapValuesMangaHereVotos.php"];    
      
       var svg = d3.select("#chart2").append("svg")
           .attr("width", width + margin.left + margin.right)
@@ -380,7 +381,7 @@
 			.attr('class', 'd3-tip')
 			.offset([-10, 0])
 			.html(function(d) {
-			return "<strong>Axis X: </strong><span style='color:red'>"+ d.hour+"</span><br><strong>Axis Y: </strong><span style='color:red'>"+ d.day+"</span><br><strong>Visualizations:</strong> <span style='color:red'>" + d.value + "</span>";
+			return "<strong>Axis X: </strong><span style='color:red'>"+ d.hour+"</span><br><strong>Axis Y: </strong><span style='color:red'>"+ d.day+"</span><br><strong>Votes: </strong> <span style='color:red'>" + Math.round(Math.log(d.value)) + "</span>";
 		});
 
 		svg.call(tip);
@@ -410,7 +411,7 @@
               .attr("height", gridSize)
               .style("fill", colors[0])
               .on('mouseover', tip.show)
-      		  .on('mouseout', tip.hide);
+      		    .on('mouseout', tip.hide);
 
           cards.transition().duration(1000)
               .style("fill", function(d) { return colorScale(Math.log(d.value)); });
