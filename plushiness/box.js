@@ -17,9 +17,8 @@ d3.box = function() {
   // For each small multiple…
   function box(g) {
     g.each(function(data, i) {
-    
+    console.log(data);
     var dNotSorted =   weightedMean(data[1]);;
-    // console.log("eu" + dNotSorted);
     var d = data[1].sort(d3.ascending);
 
 
@@ -31,6 +30,7 @@ d3.box = function() {
       // Compute quartiles. Must return exactly 3 elements.
       var quartileData = d.quartiles = quartiles(d);
       quartileData[3] = dNotSorted;
+      quartileData[4] = Number(data[2]);
       // console.log("quartiledata" + quartileData);
 
       // Compute whiskers. Must return exactly 2 elements, or null.
@@ -133,7 +133,7 @@ d3.box = function() {
           .attr("y1", x1)
           .attr("y2", x1);
 
-      // Update median line.
+      // Update mean line.
       var meanLine = g.selectAll("line.mean")
           .data([quartileData[3]]);
 
@@ -151,6 +151,28 @@ d3.box = function() {
           .attr("y2", x1);
 
       meanLine.transition()
+          .duration(duration)
+          .attr("y1", x1)
+          .attr("y2", x1);
+
+       // Update bayer line.
+      var bayerLine = g.selectAll("line.bayer")
+          .data([quartileData[4]]);
+
+      bayerLine.enter().append("line")
+          .attr("class", "bayer")
+          .style("stroke-dasharray", ("3, 3"))
+          .style("stroke", "white")
+          .attr("x1", 0)
+          .attr("y1", 15)
+          .attr("x2", width)
+          .attr("y2", 15)
+        .transition()
+          .duration(duration)
+          .attr("y1", x1)
+          .attr("y2", x1);
+
+      bayerLine.transition()
           .duration(duration)
           .attr("y1", x1)
           .attr("y2", x1);

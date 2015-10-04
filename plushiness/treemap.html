@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dsnap - Charts</title>
+<style>
+body {
+    margin: auto;
+    position: relative;
+}
+
+.node {
+    border: solid 1px white;
+    font: 14px sans-serif;
+    line-height: 12px;
+    overflow: hidden;
+    position: absolute;
+    text-indent: 2px;
+    font-weight: bold;
+    color:#fff;
+}
+
+#tooltip {
+    position: absolute;
+    width: auto;
+    height: auto;
+    padding: 10px;
+    line-height: 1;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 2px;
+    pointer-events: none;
+}
+
+#tooltip.hidden {
+    display : none;
+}
+
+#tooltip span {
+    color: red;
+}
+
+
+    </style>
+</head>
+<body>
+	<div id="wrapper">
+
+	</div>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script>
+		var root = {
+                 "name": "HMM",
+                 "children": [
+                  {
+                   "name": "Alcohal Abuse",
+                   "children": [
+                    {
+                     "name": "cluster",
+                     "children": [
+                      {"name": "Liver Disease", "size": 3938},
+                      {"name": "Obesity", "size": 3812},
+                      {"name": "Neurologic", "size": 6714},
+                      {"name": "Heart", "size": 743}
+                     ]
+                    },
+                    {
+                     "name": "graph",
+                     "children": [
+                      {"name": "Paralysis", "size": 3534},
+                      {"name": "Asthma ", "size": 5731},
+                      {"name": "Periculas", "size": 7840},
+                      {"name": "Anaemia", "size": 5914},
+                      {"name": "Peptic Alcer", "size": 3416}
+                     ]
+                    },
+                    {
+                     "name": "graph",
+                     "children": [
+                      {"name": "Paralysis", "size": 3534},
+                      {"name": "Asthma ", "size": 5731},
+                      {"name": "Periculas", "size": 7840},
+                      {"name": "Anaemia", "size": 5914},
+                      {"name": "Peptic Alcer", "size": 3416}
+                     ]
+                    }
+                    ]
+                  }]
+                };
+                    
+        var margin = {top: 0, right: 10, bottom: 20, left: 10},
+                      width = 960 - margin.left - margin.right,
+                      height = 400 - margin.top - margin.bottom;
+
+        //var color = d3.scale.category10();
+        color = d3.scale.linear().domain([0,15]).range(['hsla(195, 100%, 50%, 1)','hsla(195, 100%, 31%, 1)']);
+
+        var treemap = d3.layout.treemap()
+                          .size([width,height])
+                          .sticky(true)
+                          .value(function(d) { return d.size; });
+       
+        var mousemove = function(d) {
+            var xPosition = d3.event.pageX + 5;
+            var yPosition = d3.event.pageY + 5;
+
+            d3.select("#tooltip")
+                .style("left", xPosition + "px")
+                .style("top", yPosition + "px");
+            d3.select("#tooltip #heading")
+                .text(d.name+": ");
+            d3.select("#tooltip #percentage")
+                .text(d.value);
+            // d3.select("#tooltip #revenue")
+                // .text(d.size.toFixed(0));
+            d3.select("#tooltip").classed("hidden", false);
+        };
+
+        var mouseout = function() {
+            d3.select("#tooltip").classed("hidden", true);
+        };
+
+
+        var div = d3.select("#wrapper").append("div")
+                          .style("position", "relative")
+                          .style("width", (width + margin.left + margin.right) + "px")
+                          .style("height", (height + margin.top + margin.bottom) + "px")
+                          .style("left", margin.left + "px")
+                          .style("top", margin.top + "px");
+
+          var node = div.datum(root).selectAll(".node")
+              .data(treemap.nodes)
+            .enter().append("div")
+              .attr("class", "node")
+              .call(position)
+              .style("background", function(d,i) { console.log(i); return d.children ? color(i) : null; })
+              .text(function(d) { return d.children ? null : d.name; })
+              .on("mousemove", mousemove)
+              .on("mouseout", mouseout);
+
+
+            node
+                .data(treemap.value(function(d) { return d.size; }).nodes)
+              .transition()
+                .duration(1500)
+                .call(position);
+
+        function position() {
+              this.style("left", function(d) { return d.x + "px"; })
+                  .style("top", function(d) { return d.y + "px"; })
+                  .style("width", function(d) { return Math.max(0, d.dx - 1) + "px"; })
+                  .style("height", function(d) { return Math.max(0, d.dy - 1) + "px"; });
+            }
+
+        d3.selectAll('.node').on('mouseover',function(){
+          d3.select(this).style('box-shadow','3px 0px 30px #fff');
+        });
+        d3.selectAll('.node').on('mouseout',function(){
+          d3.select(this).style('box-shadow','none');
+        });
+	</script>
+<div id="tooltip" class="hidden">
+  <p>
+    <strong id="heading">
+    </strong>
+    <span id="percentage">
+    </span>
+  </p>
+  <p><span id="revenue"></span></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{
+
+    "name": "Alcohal Abuse",
+    "children": [
+        {
+            "name": "cluster",
+            "index" : 0,
+            "children": [
+                {"name": "Liver Disease", "size": 3938},
+                {"name": "Obesity", "size": 3812},
+                {"name": "Neurologic", "size": 6714},
+                {"name": "Heart", "size": 743}
+            ]
+        },
+        {
+            "name": "graph",
+            "index" : 1,
+            "children": [
+                {"name": "Paralysis", "size": 3534},
+                {"name": "Asthma ", "size": 5731},
+                {"name": "Periculas", "size": 7840},
+                {"name": "Anaemia", "size": 5914},
+                {"name": "Peptic Alcer", "size": 3416}
+            ]
+        },
+        {
+            "name": "galo",
+            "index" : 2,
+            "children": [
+                {"name": "Paralysis", "size": 3534},
+                {"name": "Asthma ", "size": 5731},
+                {"name": "Periculas", "size": 7840},
+                {"name": "Anaemia", "size": 5914},
+                {"name": "Peptic Alcer", "size": 3416}
+            ]
+        }
+    ]
+
+}

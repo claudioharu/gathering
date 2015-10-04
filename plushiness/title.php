@@ -331,14 +331,6 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					yStackMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y+10; }); });
 					console.log(layers);
 
-					// var tip = d3.tip()
-					// .attr('class', 'd3-tip')
-					// .offset([-10, 0])
-					// .html(function(d) {
-					// 	console.log(d);
-					// 	return "<strong>Frequency:</strong> <span style='color:red'>" + d.y + "</span>";
-					// });
-
 
 					var margin = {top: 40, right: 10, bottom: 20, left: 50},
 						width = 960 - margin.left - margin.right,
@@ -517,41 +509,6 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					var min = Infinity,
 					    max = -Infinity;
 					
-					// function generate_html(popup) {
-					// 	var html = "";
-					// 	var inputs =  popup['inputs'];
-					// 	for (var input in inputs) {
-					// 		html += "<strong>" + input + "</strong>" + ": " + inputs[input] + "<br>";
-					// 	}
-					// 	return html
-					// 	var c = "red";
-					// 	return 'Hi there! My color is <span style="color:' + c + '">' + c + '</span>';
-					// }
-
-
-
-					// var popups =  [
-					//   {
-					//   'inputs': {
-					//     'Name': 'galo'
-					//    }},
-					//   {
-					//   'inputs': {
-					//     'Name': 'dog'
-					//    }},
-					//   {
-					//   'inputs': {
-					//     'Name': 'dog',
-					//     'Occupation': 'barking'
-					//    }}
-					// ];
-
-					// var tooltip = d3.select("body")
-					// 	.append("div")
-					// 	.attr("class","tooltip")
-					// 	.style("position", "absolute")
-					// 	.style("z-index", "10")
-					// 	.style("visibility", "hidden");
 
 					var data = [];
 					data[0] = [];
@@ -561,12 +518,18 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					// add here the header of the csv file
 					data[0][0] = "MangaHere";
 					data[1][0] = "MangaFox";
+
+					// console.log(csv[0]['BakaBaye']);
+					data[0][2] =	csv[0]['BakaBaye'];
+					data[1][2] =	csv[0]['MyBaye'];
+					// data[1][2] = csv[0]['ListBaye']
 					// add more rows if your csv file has more columns
 
 					data[0][1] = [];
 					data[1][1] = [];
 				  
 					csv.forEach(function(x) {
+						// console.log(x);
 						var v1 = Math.floor(x.Q1),
 							v2 = Math.floor(x.Q2);
 							// v3 = Math.floor(x.Q3),
@@ -608,15 +571,15 @@ if (array_key_exists("mangaName", $_REQUEST)){
 						i++;
 					});
 
-					console.log('oi'+ v1);	
+					// console.log('oi'+ v1);	
 					function weightedMean(d){
-						console.log(d[0]);
+						// console.log(d[0]);
 						var dados;
 						if(d[0] == "MangaHere")
 							dados = v1;
 						else 
 							dados = v2;
-						console.log(dados);
+						// console.log(dados);
 						var wmean = 0;
 						for (i = 0; i < dados.length; i++){
 							wmean += (i+1)*dados[i];
@@ -631,12 +594,12 @@ if (array_key_exists("mangaName", $_REQUEST)){
 						.attr('class', 'd3-tip')
 						.offset([-10, 0])
 						.html(function(d) {
-							return "<strong>"+d[0] + "</strong>"+'<br>'+"<strong>Avg: </strong><span style='color:red'>"+ (weightedMean(d)).toFixed(2) + "</span><br>" + "<strong>Median: </strong><span style='color:red'>" +  d3.quantile(d[1], .5)+"</span>" ;
+							console.log(d);
+							return "<strong>"+d[0] + "</strong>"+'<br><br>'+"<strong>Avg: </strong><span style='color:red'>"+ (weightedMean(d)).toFixed(2) + "</span><br>"+"<strong>Bayer Avg: </strong><span style='color:red'>"+ (Number(d[2])).toFixed(2) + "</span><br>" + "<strong>Median: </strong><span style='color:red'>" +  d3.quantile(d[1], .5)+"</span>" ;
 						});
 
 					svg.call(tip);
 					
-
 					// the x-axis
 					var x = d3.scale.ordinal()	   
 						.domain( data.map(function(d) { return d[0] } ) )	    
@@ -654,7 +617,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					var yAxis = d3.svg.axis()
 					    .scale(y)
 					    .orient("left");
-					console.log("box" + data);
+					// console.log("box" + data);
 					// draw the boxplots	
 
 					svg.selectAll(".box")	   
@@ -732,7 +695,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					layers = bumpLayer(),
 					yGroupMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y; }); }),
 					yStackMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y+10; }); });
-					console.log(layers);
+					// console.log(layers);
 
 					// var tip = d3.tip()
 					// .attr('class', 'd3-tip')
@@ -758,7 +721,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 
 					var maxColor =  d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y; }); });
 					var minColor =  d3.min(layers, function(layer) { return d3.min(layer, function(d) { return d.y; }); });
-					console.log("maxColor: " + maxColor + " minColor: "+minColor);
+					// console.log("maxColor: " + maxColor + " minColor: "+minColor);
 					
 					var color = d3.scale.linear()
 						.domain([0,10, 15, 20, 25,35,40, 45,50, 55,60,65, 70,75,80,85, 90,95, 100])
@@ -861,7 +824,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					d3.selectAll("input").on("change", change);
 
 					var timeout = setTimeout(function() {
-						console.log("here");
+						// console.log("here");
 						transitionGrouped();
 						// d3.select("input[value=\"grouped\"]").property("checked", true).each(change);
 					}, 200);
