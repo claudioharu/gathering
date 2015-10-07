@@ -1,6 +1,55 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<style type="text/css">
+.chart {
+	/*background: #b0e0f8;*/
+	margin: 5px;
+}
+.chart rect {
+	stroke: white;
+	fill: steelblue;
+}
+.chart rect:hover {
+  fill: #64707D;
+}
 
+.chart line {
+  stroke: #c1c1c1;
+}
+
+.chart .rule {
+  fill: #000;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+</style>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -12,6 +61,13 @@
 <link href="default.css" rel="stylesheet" type="text/css" media="all" />
 <link href="fonts.css" rel="stylesheet" type="text/css" media="all" />
 <link rel="stylesheet" type="text/css" href="search2.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script  src="jquery.js"></script>
+<script src="http://www.d3plus.org/js/d3.js"></script>
+<script src="http://www.d3plus.org/js/d3plus.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<script src="rank10.js"></script>
+
 
 <!--[if IE 6]><link href="default_ie6.css" rel="stylesheet" type="text/css" /><![endif]-->
 
@@ -50,18 +106,151 @@
 <div id="wrapper">
 
 	<div id="featured-wrapper">
-		
-		<div style="color:black; font-size: 1.5em; font-weight: 250; ">
-			<table style="width:70%; margin-left:250px; margin-top:-50px; ">
-				<tr><td>	Here you can blábláblá <br> Use the searchbar to ....</td></tr>
-				<tr><td align="center"><img src='http://cyberd.org/img/3/Under-Construction-Anime.jpg' width='400' height='400'/></td></tr>
-		
-			</table>
-		</div>
-		
-	
-	
+			<div id="container" class="div1">
+			<table  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
+				<!-- <tr><td>	Here you can blábláblá <br> Use the searchbar to ....</td></tr> -->
+				<tr>
+					<td align="center">
+						  <div class="Menu1" align="left" style="margin-left:150px">
+					</td>
+				</tr>
+				<tr>					
+					<td  style="width: 100%; height:90%;">
+						<div align="left" style="margin-left:150px">
+							<div class='mode1'>
+								<form>
+										<label><input type="radio" name="mode1" value="total" checked> Total</label>
+										<label><input type="radio" name="mode1" value="ongoing"> Ongoing</label>
+										<label><input type="radio" name="mode1" value="completed" > Completed</label>
+								
+								</form>
+							</div>
+							<div class='mode2'>
+								<form>
+										<label><input type="radio" name="mode2" value="total" checked> Total</label>
+										<label><input type="radio" name="mode2" value="ongoing"> Ongoing</label>
+										<label><input type="radio" name="mode2" value="completed" > Completed</label>
+								</form>
+							</div>
+						</div>
+						<div class="rankTitle">
 
+						</div>
+						
+					</td>
+				</tr>
+				<tr>					
+					<td  style="width: 100%; height:90%;">
+					
+						<div class="rankPublisher">
+
+						</div>
+						
+					</td>
+				</tr>
+			</table>
+			</div>
+		
+		<script type="text/javascript">
+
+			d3.json('popTitleTotal.php', function(data){
+					$('.mode2').hide();
+					$('.mode1').show();
+	 				rankPop(data,'.rankTitle','mangafox','');
+			});
+
+			var sampleDataTreeMap = [
+			  {"group": "MangaFox"},
+			  {"group": "MangaHere"}
+			];
+
+			var togglesMap = d3plus.form()
+			  .container("div.Menu1")
+			  .data(sampleDataTreeMap)
+			  .focus("MangaFox", function(d){
+			      if(d == "MangaFox"){
+			      	d3.select('svg').remove();
+			      	$('.mode2').hide();
+			      	$('.mode1').show();
+			        d3.json('popTitleTotal.php', function(data){
+			 			rankPop(data,'.rankTitle','mangafox','');
+					});
+			      }
+			      else{
+			      	$('.mode2').show();
+			      	$('.mode1').hide();
+			      	d3.select('svg').remove();
+			      	d3.json('popTitleTotal.php', function(data){
+						rankPop(data,'.rankTitle',"mangahere",'');
+					});
+			      }
+			    })
+			  .id("group")
+			  .type("toggle")
+			  .draw();
+
+			
+			$("input[name=mode1]:radio")
+				.change(function () {
+					d3.select('svg').remove();
+					if( $(this).is(":checked") ){ // check if the radio is checked
+						var val = $(this).val();
+						if(val == 'total')
+						{
+							d3.json('popTitleTotal.php', function(data){
+								rankPop(data,'.rankTitle',"mangafox", val);
+							});
+						}
+						else if(val == 'ongoing')
+						{
+							d3.json('popTitleOngoing.php', function(data){
+								rankPop(data,'.rankTitle',"mangafox", val);
+							});
+						}
+						else{
+							d3.json('popTitleCompleted.php', function(data){
+								console.log(data);
+								rankPop(data,'.rankTitle',"mangafox", val);
+							});
+						}
+						
+			           
+			        }
+					
+					
+				});
+
+			$("input[name=mode2]:radio")
+				.change(function () {
+					d3.select('svg').remove();
+					if( $(this).is(":checked") ){ // check if the radio is checked
+						var val = $(this).val();
+						if(val == 'total')
+						{
+							d3.json('popTitleTotal.php', function(data){
+								rankPop(data,'.rankTitle',"mangahere", val);
+							});
+						}
+						else if(val == 'ongoing')
+						{
+							d3.json('popTitleOngoing.php', function(data){
+								rankPop(data,'.rankTitle',"mangahere", val);
+							});
+						}
+						else{
+							d3.json('popTitleCompleted.php', function(data){
+								rankPop(data,'.rankTitle',"mangahere", val);
+							});
+						}
+			           
+			        }
+					
+					
+				});
+			
+
+		</script>
+			
 		</div>	
 
 	</div>
