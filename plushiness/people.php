@@ -1,6 +1,55 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<style type="text/css">
+.chart {
+	/*background: #b0e0f8;*/
+	margin: 5px;
+}
+.chart rect {
+	stroke: white;
+	fill: steelblue;
+}
+.chart rect:hover {
+  fill: #64707D;
+}
 
+.chart line {
+  stroke: #c1c1c1;
+}
+
+.chart .rule {
+  fill: #000;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+</style>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -12,6 +61,14 @@
 <link href="default.css" rel="stylesheet" type="text/css" media="all" />
 <link href="fonts.css" rel="stylesheet" type="text/css" media="all" />
 <link rel="stylesheet" type="text/css" href="search2.css">
+<script src="http://www.d3plus.org/js/d3.js"></script>
+<script src="http://www.d3plus.org/js/d3plus.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script  src="jquery.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<script src="rank10.js"></script>
+
+
 
 <!--[if IE 6]><link href="default_ie6.css" rel="stylesheet" type="text/css" /><![endif]-->
 
@@ -33,7 +90,7 @@
 				<li class="current_page_item"><a href="./visualizer.php" accesskey="1" title="">Home</a></li>
 				<li><a href="./database.php" accesskey="2" title="">Databases</a></li>
 				<li><a href="./people.php" accesskey="3" title="">People</a></li>
-				<li><a href="./mangas.php" accesskey="4" title="">Titles</a></li>
+				<li><a href="./mangas.php" accesskey="4" title="">Title</a></li>
 				<li><a href="./about.php" accesskey="5" title="">About</a></li>
 				<li accesskey="6" title="">
 					<div class="container-2">
@@ -51,18 +108,42 @@
 
 	<div id="featured-wrapper">
 
-		
-		<div style="color:black; font-size: 1.5em; font-weight: 250; ">
-			<table style="width:70%; margin-left:250px; margin-top:-50px; ">
-				<tr><td>	Here you can blábláblá <br> Use the searchbar to ....</td></tr>
-				<tr><td align="center"><img src='http://cyberd.org/img/3/Under-Construction-Anime.jpg' width='400' height='400'/></td></tr>
-		
+		<div id="container" class="div1">
+
+			<table  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
+				<!-- <tr style="margin-bottom:100px;"> 
+					<td >
+						<h1 align="center" style="font-size:20px">10 Most famous authors</h1>
+					</td>
+				</tr> -->
+				
+				<tr>
+					<td>
+						<div class="Menu1" align="left" style="margin-left:150px"></div>
+					</td>
+				</tr>
+
+				<tr>					
+					<td  style="width: 100%; height:90%;">
+					
+						<div class="rank">
+
+						</div>
+						
+					</td>
+				</tr>
 			</table>
+				
 		</div>
 
+		<script>
 
-		</div>	
+			
+			d3.json('rank10AutoresVotos.php', function(data){
+				rank10Autores(data,'.rank');
+			});
 
+		</script>
 	</div>
 </div>
 <div id="stamp" class="container">

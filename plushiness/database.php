@@ -168,8 +168,8 @@
              <div class="Menu3" align="left" style="margin-left:150px">
              <form>
               <label>Order by:</label>
-              <label><input type="radio" name="mode" value="size" checked> Titles</label>
-              <label><input type="radio" name="mode" value="count"> Authors</label>
+              <label><input class="Size" type="radio" name="mode" value="size" checked> Titles</label>
+              <label><input class="Count" type="radio" name="mode" value="count"> Authors</label>
             </form>
             </div>
           </td>
@@ -186,117 +186,158 @@
 
 <script>
 
+var categSetTreeMap = ["treeMapCatMangaHere.php", "treeMapCatMangaFox.php"];    
 
-var w = 1280 - 80,
-    h = 800 - 180,
-    x = d3.scale.linear().range([0, w]),
-    y = d3.scale.linear().range([0, h]),
-    // color = d3.scale.category10(),
-    root,
-    node,
-    color = d3.scale.linear().domain([0,5,10,15,20,25,30,32]).range(['rgb(158,1,66)','rgb(213,62,79)','rgb(244,109,67)','rgb(253,174,97)','rgb(254,224,139)','rgb(255,255,191)','rgb(230,245,152)','rgb(171,221,164)','rgb(102,194,165)','rgb(50,136,189)','rgb(94,79,162)']);
-
-var tips = d3.tip()
-        .attr('class', 'd3-tip')
-        .offset([-10, 0])
-        .html(function(d) {
-          // console.log(d);
-        return "<strong><a style='color:red'>"+ d.parent.name+ "</a></strong><br><strong>Size: </strong><span style='color:red'>"+ d.size + "</span>"+"<br><strong>Count: </strong><span style='color:red'>"+ d.count + "</span>";
-    });
-
-var treemap = d3.layout.treemap()
-    .round(false)
-    .size([w, h])
-    .sticky(true)
-    .value(function(d) { return d.size; });
-
-var svg = d3.select("#chart3").append("div")
-    .attr("class", "chart")
-    .style("width", w + "px")
-    .style("height", h + "px")
-  .append("svg:svg")
-    .attr("width", w)
-    .attr("height", h)
-  .append("svg:g")
-    .attr("transform", "translate(.5,.5)");
-
-svg.call(tips);
-
-d3.json("treeMapCatMangaHere.php", function(data) {
-  node = root = data;
-  console.log(data);
-
-  var nodes = treemap.nodes(root)
-      .filter(function(d) { return !d.children; });
-
-  var cell = svg.selectAll("g")
-      .data(nodes)
-    .enter().append("svg:g")
-      .attr("class", "cell")
-      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
-      // .on("click", function(d) { return zoom(node == d.parent ? root : d.parent); })
-      .on('mouseover', tips.show)
-      .on('mouseout', tips.hide);
-
-
-  cell.append("svg:rect")
-      .attr("width", function(d) { return d.dx - 1; })
-      .attr("height", function(d) { return d.dy - 1; })
-      .style("fill", function(d, i) { console.log(d);return color(d.parent.index); });
-
-  cell.append("svg:text")
-      .attr("x", function(d) { return d.dx / 2; })
-      .attr("y", function(d) { return d.dy / 2; })
-      .attr("dy", ".35em")
-      .attr("text-anchor", "middle")
-      .text(function(d) { return d.name; })
-      .style("opacity", function(d) { d.w = this.getComputedTextLength(); return d.dx > d.w ? 1 : 0; });
-
-  // d3.select(window).on("click", function() { zoom(root); });
-
-  d3.selectAll("input").on("change", function() {
-    // console.log("eu");
-    treemap.value(this.value == "size" ? size : count).nodes(root);
-    zoom(node);
-  });
-
-  // treemap.value(size).nodes(root);
-  // zoom(node);
-
+d3.json(categSetTreeMap[1], function(error, data) {
+  graficoTreeMap(data);
 });
 
 
-function size(d) {
-  return d.size;
+var sampleDataTreeMap = [
+  {"group": "MangaFox"},
+  {"group": "MangaHere"}
+];
+
+var togglesMap = d3plus.form()
+  .container("div.Menu3")
+  .data(sampleDataTreeMap)
+  .focus("MangaFox", function(d){
+      if(d == "MangaFox"){
+        $('.Size').prop('checked',true);
+        $('.Count').prop('checked',false);
+
+        $('#chart3').find('div').remove();
+         d3.json(categSetTreeMap[1], function(error, data) {
+            graficoTreeMap(data);
+          });
+      }
+      else{
+        console.log('mangahere')
+        $('.Size').prop('checked',true);
+        $('.Count').prop('checked',false);
+
+        $('#chart3').find('div').remove();
+        d3.json(categSetTreeMap[0], function(error, data) {
+          console.log(error);
+          graficoTreeMap(data);
+        });
+      }
+    })
+  .id("group")
+  .type("toggle")
+  .draw();
+
+function graficoTreeMap(data){
+  var w = 1280 - 80,
+      h = 800 - 180,
+      x = d3.scale.linear().range([0, w]),
+      y = d3.scale.linear().range([0, h]),
+      // color = d3.scale.category10(),
+      root,
+      node,
+      color = d3.scale.linear().domain([0,5,10,15,20,25,30,32]).range(['rgb(158,1,66)','rgb(213,62,79)','rgb(244,109,67)','rgb(253,174,97)','rgb(254,224,139)','rgb(255,255,191)','rgb(230,245,152)','rgb(171,221,164)','rgb(102,194,165)','rgb(50,136,189)','rgb(94,79,162)']);
+
+  var tips = d3.tip()
+          .attr('class', 'd3-tip')
+          .offset([-10, 0])
+          .html(function(d) {
+            // console.log(d);
+          return "<strong><a style='color:red'>"+ d.parent.name+ "</a></strong><br><strong>Size: </strong><span style='color:red'>"+ d.size + "</span>"+"<br><strong>Count: </strong><span style='color:red'>"+ d.count + "</span>";
+      });
+
+  var treemap = d3.layout.treemap()
+      .round(false)
+      .size([w, h])
+      .sticky(true)
+      .value(function(d) { return d.size; });
+
+  var svg = d3.select("#chart3").append("div")
+      .attr("class", "chart")
+      .style("width", w + "px")
+      .style("height", h + "px")
+    .append("svg:svg")
+      .attr("width", w)
+      .attr("height", h)
+    .append("svg:g")
+      .attr("transform", "translate(.5,.5)");
+
+  svg.call(tips);
+
+  // d3.json("treeMapCatMangaHere.php", function(data) {
+    node = root = data;
+    console.log(data);
+
+    var nodes = treemap.nodes(root)
+        .filter(function(d) { return !d.children; });
+
+    var cell = svg.selectAll("g")
+        .data(nodes)
+      .enter().append("svg:g")
+        .attr("class", "cell")
+        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+        // .on("click", function(d) { return zoom(node == d.parent ? root : d.parent); })
+        .on('mouseover', tips.show)
+        .on('mouseout', tips.hide);
+
+
+    cell.append("svg:rect")
+        .attr("width", function(d) { return d.dx - 1; })
+        .attr("height", function(d) { return d.dy - 1; })
+        .style("fill", function(d, i) { console.log(d);return color(d.parent.index); });
+
+    cell.append("svg:text")
+        .attr("x", function(d) { return d.dx / 2; })
+        .attr("y", function(d) { return d.dy / 2; })
+        .attr("dy", ".35em")
+        .attr("text-anchor", "middle")
+        .text(function(d) { return d.name; })
+        .style("opacity", function(d) { d.w = this.getComputedTextLength(); return d.dx > d.w ? 1 : 0; });
+
+    // d3.select(window).on("click", function() { zoom(root); });
+
+    d3.selectAll("input").on("change", function() {
+      // console.log("eu");
+      treemap.value(this.value == "size" ? size : count).nodes(root);
+      zoom(node);
+    });
+
+    // treemap.value(size).nodes(root);
+    // zoom(node);
+
+  // });
+
+
+  function size(d) {
+    return d.size;
+  }
+
+  function count(d) {
+    return d.count;
+  }
+
+  function zoom(d) {
+
+    var kx = w / d.dx, ky = h / d.dy;
+    x.domain([d.x, d.x + d.dx]);
+    y.domain([d.y, d.y + d.dy]);
+
+    var t = svg.selectAll("g.cell").transition()
+        .duration(d3.event.altKey ? 7500 : 750)
+        .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+
+    t.select("rect")
+        .attr("width", function(d) { return kx * d.dx - 1; })
+        .attr("height", function(d) { var h = ky * d.dy - 1; if (h > 0) return h; else return -h; })
+
+    t.select("text")
+        .attr("x", function(d) { return kx * d.dx / 2; })
+        .attr("y", function(d) { return ky * d.dy / 2; })
+        .style("opacity", function(d) { return kx * d.dx > d.w ? 1 : 0; });
+
+    node = d;
+    d3.event.stopPropagation();
+  }
 }
-
-function count(d) {
-  return d.count;
-}
-
-function zoom(d) {
-
-  var kx = w / d.dx, ky = h / d.dy;
-  x.domain([d.x, d.x + d.dx]);
-  y.domain([d.y, d.y + d.dy]);
-
-  var t = svg.selectAll("g.cell").transition()
-      .duration(d3.event.altKey ? 7500 : 750)
-      .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
-
-  t.select("rect")
-      .attr("width", function(d) { return kx * d.dx - 1; })
-      .attr("height", function(d) { var h = ky * d.dy - 1; if (h > 0) return h; else return -h; })
-
-  t.select("text")
-      .attr("x", function(d) { return kx * d.dx / 2; })
-      .attr("y", function(d) { return ky * d.dy / 2; })
-      .style("opacity", function(d) { return kx * d.dx > d.w ? 1 : 0; });
-
-  node = d;
-  d3.event.stopPropagation();
-}
-
 </script>
 
 <script type="text/javascript">
@@ -357,7 +398,7 @@ function abbreviateNumber(value) {
         .draw();
       
       function grafico(data, i){
-        console.log(data);     
+        // console.log(data);     
         var categ = data.categories;   
 
         var margin = { top: 90, right: 0, bottom: 100, left: 130 },
