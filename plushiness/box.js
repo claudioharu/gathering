@@ -17,8 +17,10 @@ d3.box = function() {
   // For each small multiple…
   function box(g) {
     g.each(function(data, i) {
-    console.log(data);
-    var dNotSorted =   weightedMean(data[1]);;
+
+      console.log(data);
+    // var dNotSorted =   
+    // weightedMean(data[1]);;
     var d = data[1].sort(d3.ascending);
 
 
@@ -29,7 +31,7 @@ d3.box = function() {
 
       // Compute quartiles. Must return exactly 3 elements.
       var quartileData = d.quartiles = quartiles(d);
-      quartileData[3] = dNotSorted;
+      quartileData[3] = Number(data[3]);;
       quartileData[4] = Number(data[2]);
       // console.log("quartiledata" + quartileData);
 
@@ -162,7 +164,7 @@ d3.box = function() {
       bayerLine.enter().append("line")
           .attr("class", "bayer")
           .style("stroke-dasharray", ("3, 3"))
-          .style("stroke", "white")
+          .style("stroke", "black")
           .attr("x1", 0)
           .attr("y1", 15)
           .attr("x2", width)

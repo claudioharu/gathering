@@ -320,7 +320,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 
 			var csv;
 			// parse in the data	
-			d3.json("boxPlotValues.php", function(error, value){
+			d3.json("groupRank.php", function(error, value){
 				csv = value;
 				d3.select("svg").remove();
 					var n = 10, // number of layers
@@ -329,7 +329,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					layers = bumpLayer(),
 					yGroupMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y; }); }),
 					yStackMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y+10; }); });
-					console.log(layers);
+					// console.log(layers);
 
 
 					var margin = {top: 40, right: 10, bottom: 20, left: 50},
@@ -347,7 +347,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 
 					var maxColor =  d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y; }); });
 					var minColor =  d3.min(layers, function(layer) { return d3.min(layer, function(d) { return d.y; }); });
-					console.log("maxColor: " + maxColor + " minColor: "+minColor);
+					// console.log("maxColor: " + maxColor + " minColor: "+minColor);
 					
 					var color = d3.scale.linear()
 						.domain([0,10, 15, 20, 25,35,40, 45,50, 55,60,65, 70,75,80,85, 90,95, 100])
@@ -390,7 +390,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 						.attr("width", x.rangeBand())
 						.attr("height", 0)
 						.style("fill", function(d, i) { 
-							console.log(d.y + " " + i );
+							// console.log(d.y + " " + i );
 							return color(d.y);
 						})
 						.style("stroke", "black")
@@ -443,7 +443,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					d3.selectAll("input").on("change", change);
 
 					var timeout = setTimeout(function() {
-						console.log("here");
+						// console.log("here");
 						transitionGrouped();
 						// d3.select("input[value=\"grouped\"]").property("checked", true).each(change);
 					}, 200);
@@ -471,7 +471,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					function bumpLayer(n, o) {
 
 
-						console.log(csv);
+						// console.log(csv);
 						var arr = [];
 						for (i =0; i < csv.length; i++){
 							var aux = [];
@@ -498,192 +498,199 @@ if (array_key_exists("mangaName", $_REQUEST)){
 			.data(sampleData)
 			.focus("bar chart", function(d){
 		    	if(d == "box plot chart"){
-		    		d3.select("svg").remove();
-		    		// d3.select(".boxPlot").remove();
-		    		var labels = true; // show the text labels beside individual boxplots?
 
-					var margin = {top: 20, right: 50, bottom: 70, left: 50};
-					var  width = 900 - margin.left - margin.right;
-					var height = 500 - margin.top - margin.bottom;
-					
-					var min = Infinity,
-					    max = -Infinity;
-					
+			    	d3.json("boxPlotValues.php", function(dataCsv){
+			    		// console.log(dataCsv);
+			    		d3.select("svg").remove();
+			    		// d3.select(".boxPlot").remove();
+			    		var labels = true; // show the text labels beside individual boxplots?
 
-					var data = [];
-					data[0] = [];
-					data[1] = [];
-					// add more rows if your csv file has more columns
+						var margin = {top: 20, right: 50, bottom: 70, left: 50};
+						var  width = 900 - margin.left - margin.right;
+						var height = 500 - margin.top - margin.bottom;
+						
+						var min = Infinity,
+						    max = -Infinity;
 
-					// add here the header of the csv file
-					data[0][0] = "MangaHere";
-					data[1][0] = "MangaFox";
+						var data = [];
+						data[0] = [];
+						data[1] = [];
+						// add more rows if your csv file has more columns
 
-					// console.log(csv[0]['BakaBaye']);
-					data[0][2] =	csv[0]['BakaBaye'];
-					data[1][2] =	csv[0]['MyBaye'];
-					// data[1][2] = csv[0]['ListBaye']
-					// add more rows if your csv file has more columns
+						// add here the header of the csv file
+						data[0][0] = "MangaHere";
+						data[1][0] = "MangaFox";
 
-					data[0][1] = [];
-					data[1][1] = [];
-				  
-					csv.forEach(function(x) {
-						// console.log(x);
-						var v1 = Math.floor(x.Q1),
-							v2 = Math.floor(x.Q2);
-							// v3 = Math.floor(x.Q3),
-							// v4 = Math.floor(x.Q4);
-							// add more variables if your csv file has more columns
-							
-						var rowMax = Math.max(v1, Math.max(v2, Math.max(v1,v2)));
-						var rowMin = Math.min(v1, Math.min(v2, Math.min(v1,v2)));
+						// console.log(csv[0]['BakaBaye']);
+						data[0][2] =	dataCsv[0]['BakaBaye'];
+						data[1][2] =	dataCsv[0]['MyBaye'];
 
-						data[0][1].push(v1);
-						data[1][1].push(v2);
-						// data[2][1].push(v3);
-						// data[3][1].push(v4);
-						 // add more rows if your csv file has more columns
-						 
-						if (rowMax > max) max = rowMax;
-						if (rowMin < min) min = rowMin;	
-					});
-				  
-					var chart = d3.box()
-						.whiskers(iqr(1.5))
-						.height(height)	
-						.domain([min, max])
-						.showLabels(labels);
+						data[0][3] =	dataCsv[0]['BakaAvg'];
+						data[1][3] =	dataCsv[0]['MyAvg'];
+						// data[1][2] = csv[0]['ListBaye']
+						// add more rows if your csv file has more columns
 
-					var svg = d3.select(".boxPlot").append("svg")
-						.attr("width", width + margin.left + margin.right)
-						.attr("height", height + margin.top + margin.bottom)
-						.attr("class", "box")    
-						.append("g")
-						.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+						data[0][1] = [];
+						data[1][1] = [];
+					  
+						dataCsv.forEach(function(x) {
+							// console.log(x);
+							var v1 = Math.floor(x.Q1),
+								v2 = Math.floor(x.Q2);
+								// v3 = Math.floor(x.Q3),
+								// v4 = Math.floor(x.Q4);
+								// add more variables if your csv file has more columns
+								
+							var rowMax = Math.max(v1, Math.max(v2, Math.max(v1,v2)));
+							var rowMin = Math.min(v1, Math.min(v2, Math.min(v1,v2)));
 
-					var v1 = [];
-					var v2 = [];
-					i = 0;
-					csv.forEach (function(x) {
-						v1[i] = Number(x.Q1);
-						v2[i] = Number(x.Q2);
-						i++;
-					});
+							data[0][1].push(v1);
+							data[1][1].push(v2);
+							// data[2][1].push(v3);
+							// data[3][1].push(v4);
+							 // add more rows if your csv file has more columns
+							 
+							if (rowMax > max) max = rowMax;
+							if (rowMin < min) min = rowMin;	
+						});
+					  
+						var chart = d3.box()
+							.whiskers(iqr(1.5))
+							.height(height)	
+							.domain([min, max])
+							.showLabels(labels);
 
-					// console.log('oi'+ v1);	
-					function weightedMean(d){
-						// console.log(d[0]);
-						var dados;
-						if(d[0] == "MangaHere")
-							dados = v1;
-						else 
-							dados = v2;
-						// console.log(dados);
-						var wmean = 0;
-						for (i = 0; i < dados.length; i++){
-							wmean += (i+1)*dados[i];
-						}
-						if (wmean == 0)
-							return 0;
-						// console.log("weightedMean: " + wmean/d3.sum(d) );
-						return wmean/d3.sum(dados);
-					}
-					
-					var tip = d3.tip()
-						.attr('class', 'd3-tip')
-						.offset([-10, 0])
-						.html(function(d) {
-							console.log(d);
-							return "<strong>"+d[0] + "</strong>"+'<br><br>'+"<strong>Avg: </strong><span style='color:red'>"+ (weightedMean(d)).toFixed(2) + "</span><br>"+"<strong>Bayer Avg: </strong><span style='color:red'>"+ (Number(d[2])).toFixed(2) + "</span><br>" + "<strong>Median: </strong><span style='color:red'>" +  d3.quantile(d[1], .5)+"</span>" ;
+						var svg = d3.select(".boxPlot").append("svg")
+							.attr("width", width + margin.left + margin.right)
+							.attr("height", height + margin.top + margin.bottom)
+							.attr("class", "box")    
+							.append("g")
+							.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+						var v1 = [];
+						var v2 = [];
+						i = 0;
+						dataCsv.forEach (function(x) {
+							v1[i] = Number(x.Q1);
+							v2[i] = Number(x.Q2);
+							i++;
 						});
 
-					svg.call(tip);
-					
-					// the x-axis
-					var x = d3.scale.ordinal()	   
-						.domain( data.map(function(d) { return d[0] } ) )	    
-						.rangeRoundBands([0 , width], 0.7, 0.3); 		
-
-					var xAxis = d3.svg.axis()
-						.scale(x)
-						.orient("bottom");
-
-					// the y-axis
-					var y = d3.scale.linear()
-						.domain([min, max])
-						.range([height + margin.top, 0 + margin.top]);
-					
-					var yAxis = d3.svg.axis()
-					    .scale(y)
-					    .orient("left");
-					// console.log("box" + data);
-					// draw the boxplots	
-
-					svg.selectAll(".box")	   
-				      .data(data)
-					  .enter()
-					  .append("g")
-						.attr("transform", function(d) { return "translate(" +  x(d[0])  + "," + margin.top + ")"; } )
-				      	// .transition().delay(1000).duration(20000)
-				       // .on("mouseover", function(){return tooltip.style("visibility", "visible");})
-		       		   // .on("mousemove", function(d, i){tooltip.html(generate_html(popups[i])); return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"); })
-				       // .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
-				       .on('mouseover', tip.show)
-      		    	   .on('mouseout', tip.hide)
-				       .call(chart.width(x.rangeBand()));
-		 
-					
-					      
-					// add a title
-					svg.append("text")
-				        .attr("x", (width / 2))             
-				        .attr("y", 0 + (margin.top / 2))
-				        .attr("text-anchor", "middle")  
-				        .style("font-size", "18px") 
-				        //.style("text-decoration", "underline")  
-				        .text("Average of votes");
-				 
-					 // draw y axis
-					svg.append("g")
-				        .attr("class", "y axis")
-				        .call(yAxis)
-						.append("text") // and text1
-						  .attr("transform", "rotate(-90)")
-						  .attr("y", 6)
-						  .attr("dy", ".71em")
-						  .style("text-anchor", "end")
-						  .style("font-size", "16px") 
-						  .text("Votes (%)");		
+						// console.log('oi'+ v1);	
+						function weightedMean(d){
+							// console.log(d[0]);
+							var dados;
+							if(d[0] == "MangaHere")
+								dados = v1;
+							else 
+								dados = v2;
+							// console.log(dados);
+							var wmean = 0;
+							for (i = 0; i < dados.length; i++){
+								wmean += (i+1)*dados[i];
+							}
+							if (wmean == 0)
+								return 0;
+							// console.log("weightedMean: " + wmean/d3.sum(d) );
+							return wmean/d3.sum(dados);
+						}
 						
-					// draw x axis	
-					svg.append("g")
-				      .attr("class", "x axis")
-				      .attr("transform", "translate(0," + (height  + margin.top + 10) + ")")
-				      .call(xAxis)
-					  .append("text")             // text label for the x axis
-				        .attr("x", (width / 2) )
-				        .attr("y",  10 )
-						.attr("dy", ".71em")
-				        .style("text-anchor", "middle")
-						.style("font-size", "16px") 
-				        .text("Quarter"); 
-					
+						var tip = d3.tip()
+							.attr('class', 'd3-tip')
+							.offset([-10, 0])
+							.html(function(d) {
+								console.log(d);
+								return "<strong>"+d[0] + "</strong>"+'<br><br>'+"<strong>Avg: </strong><span style='color:red'>"+ d[3].toFixed(2) + "</span><br>"+"<strong>Bayer Avg: </strong><span style='color:red'>"+ (Number(d[2])).toFixed(2) + "</span><br>" + "<strong>Median: </strong><span style='color:red'>" +  d3.quantile(d[1], .5)+"</span>" ;
+							});
 
-					// Returns a function to compute the interquartile range.
-					function iqr(k) {
-					  return function(d, i) {
-					    var q1 = d.quartiles[0],
-					        q3 = d.quartiles[2],
-					        iqr = (q3 - q1) * k,
-					        i = -1,
-					        j = d.length;
-					    while (d[++i] < q1 - iqr);
-					    while (d[--j] > q3 + iqr);
-					    return [i, j];
-					  };
-					}
-		    	}
+						svg.call(tip);
+						
+						// the x-axis
+						var x = d3.scale.ordinal()	   
+							.domain( data.map(function(d) { return d[0] } ) )	    
+							.rangeRoundBands([0 , width], 0.7, 0.3); 		
+
+						var xAxis = d3.svg.axis()
+							.scale(x)
+							.orient("bottom");
+
+						console.log("minmax: " + min + " " + max);
+						// the y-axis
+						var y = d3.scale.linear()
+							.domain([min, max])
+							.range([height + margin.top, 0 + margin.top]);
+						
+						var yAxis = d3.svg.axis()
+						    .scale(y)
+						    .orient("left");
+						// console.log("box" + data);
+						// draw the boxplots	
+
+						svg.selectAll(".box")	   
+					      .data(data)
+						  .enter()
+						  .append("g")
+							.attr("transform", function(d) { return "translate(" +  x(d[0])  + "," + margin.top + ")"; } )
+					      	// .transition().delay(1000).duration(20000)
+					       // .on("mouseover", function(){return tooltip.style("visibility", "visible");})
+			       		   // .on("mousemove", function(d, i){tooltip.html(generate_html(popups[i])); return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"); })
+					       // .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
+					       .on('mouseover', tip.show)
+	      		    	   .on('mouseout', tip.hide)
+					       .call(chart.width(x.rangeBand()));
+			 
+						
+						      
+						// add a title
+						svg.append("text")
+					        .attr("x", (width / 2))             
+					        .attr("y", 0 + (margin.top / 2))
+					        .attr("text-anchor", "middle")  
+					        .style("font-size", "18px") 
+					        //.style("text-decoration", "underline")  
+					        .text("Average of votes");
+					 
+						 // draw y axis
+						svg.append("g")
+					        .attr("class", "y axis")
+					        .call(yAxis)
+							.append("text") // and text1
+							  .attr("transform", "rotate(-90)")
+							  .attr("y", 6)
+							  .attr("dy", ".71em")
+							  .style("text-anchor", "end")
+							  .style("font-size", "16px") 
+							  .text("Votes");		
+							
+						// draw x axis	
+						svg.append("g")
+					      .attr("class", "x axis")
+					      .attr("transform", "translate(0," + (height  + margin.top + 10) + ")")
+					      .call(xAxis)
+						  .append("text")             // text label for the x axis
+					        .attr("x", (width / 2) )
+					        .attr("y",  10 )
+							.attr("dy", ".71em")
+					        .style("text-anchor", "middle")
+							.style("font-size", "16px") 
+					        .text("Quarter"); 
+						
+
+						// Returns a function to compute the interquartile range.
+						function iqr(k) {
+						  return function(d, i) {
+						    var q1 = d.quartiles[0],
+						        q3 = d.quartiles[2],
+						        iqr = (q3 - q1) * k,
+						        i = -1,
+						        j = d.length;
+						    while (d[++i] < q1 - iqr);
+						    while (d[--j] > q3 + iqr);
+						    return [i, j];
+						  };
+						}
+					});
+			    }
 		    	
 		    	else{
 
@@ -852,7 +859,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					function bumpLayer(n, o) {
 
 
-						console.log(csv);
+						// console.log(csv);
 						var arr = [];
 						for (i =0; i < csv.length; i++){
 							var aux = [];
