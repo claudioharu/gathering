@@ -14,7 +14,7 @@ function GroupedBarChart(csv){
 			.html(function(d, i, x) {
 				console.log(x);
 				console.log(d);
-				return "<strong>Vote "+x+ ": </strong>" + "<span style='color:red'>" + d['percent'] +"%</span>" ;
+				return "<strong>Vote "+(x+1)+ ": </strong>" + "<span style='color:red'>" + d['percent'] +"%</span>" ;
 			});
 
 	var margin = {top: 40, right: 10, bottom: 20, left: 50},

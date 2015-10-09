@@ -139,6 +139,38 @@
 						
 					</td>
 				</tr>
+
+				<tr>
+					<td align="center">
+						  <div class="Menu2" align="left" style="margin-left:150px">
+					</td>
+				</tr>
+				<tr>					
+					<td  style="width: 100%; height:90%;">
+						<div align="left" style="margin-left:150px">
+							<div class='mode1w'>
+								<form>
+										<label><input type="radio" name="mode1w" value="total" checked> Total</label>
+										<label><input type="radio" name="mode1w" value="ongoing"> Ongoing</label>
+										<label><input type="radio" name="mode1w" value="completed" > Completed</label>
+								
+								</form>
+							</div>
+							<div class='mode2w'>
+								<form>
+										<label><input type="radio" name="mode2w" value="total" checked> Total</label>
+										<label><input type="radio" name="mode2w" value="ongoing"> Ongoing</label>
+										<label><input type="radio" name="mode2w" value="completed" > Completed</label>
+								</form>
+							</div>
+						</div>
+						<div class="rankTitleWorst">
+
+						</div>
+						
+					</td>
+				</tr>
+
 				<tr>					
 					<td  style="width: 100%; height:90%;">
 					
@@ -159,17 +191,17 @@
 	 				rankPop(data,'.rankTitle','mangafox','');
 			});
 
-			var sampleDataTreeMap = [
+			var sampleDataRankPop = [
 			  {"group": "MangaFox"},
 			  {"group": "MangaHere"}
 			];
 
 			var togglesMap = d3plus.form()
 			  .container("div.Menu1")
-			  .data(sampleDataTreeMap)
+			  .data(sampleDataRankPop)
 			  .focus("MangaFox", function(d){
 			      if(d == "MangaFox"){
-			      	d3.select('svg').remove();
+			      	d3.select('.rankTitle svg').remove();
 			      	$('.mode2').hide();
 			      	$('.mode1').show();
 			        d3.json('popTitleTotal.php', function(data){
@@ -179,7 +211,7 @@
 			      else{
 			      	$('.mode2').show();
 			      	$('.mode1').hide();
-			      	d3.select('svg').remove();
+			      	d3.select('.rankTitle svg').remove();
 			      	d3.json('popTitleTotal.php', function(data){
 						rankPop(data,'.rankTitle',"mangahere",'');
 					});
@@ -189,10 +221,9 @@
 			  .type("toggle")
 			  .draw();
 
-			
 			$("input[name=mode1]:radio")
 				.change(function () {
-					d3.select('svg').remove();
+					d3.select('.rankTitle svg').remove();
 					if( $(this).is(":checked") ){ // check if the radio is checked
 						var val = $(this).val();
 						if(val == 'total')
@@ -213,16 +244,13 @@
 								rankPop(data,'.rankTitle',"mangafox", val);
 							});
 						}
-						
-			           
 			        }
-					
 					
 				});
 
 			$("input[name=mode2]:radio")
 				.change(function () {
-					d3.select('svg').remove();
+					d3.select('.rankTitle svg').remove();
 					if( $(this).is(":checked") ){ // check if the radio is checked
 						var val = $(this).val();
 						if(val == 'total')
@@ -242,13 +270,99 @@
 								rankPop(data,'.rankTitle',"mangahere", val);
 							});
 						}
-			           
+			        }	
+				});
+		</script>
+		<script type="text/javascript">
+
+			d3.json('worstTitleTotal.php', function(data){
+					$('.mode2w').hide();
+					$('.mode1w').show();
+	 				rankWorst(data,'.rankTitleWorst','mangafox','');
+			});
+
+			var sampleDataWorstRank = [
+			  {"group": "MangaFox"},
+			  {"group": "MangaHere"}
+			];
+
+			var togglesMap = d3plus.form()
+			  .container("div.Menu2")
+			  .data(sampleDataWorstRank)
+			  .focus("MangaFox", function(d){
+			      if(d == "MangaFox"){
+			      	d3.select('.rankTitleWorst svg').remove();
+			      	$('.mode2w').hide();
+			      	$('.mode1w').show();
+			        d3.json('worstTitleTotal.php', function(data){
+			 			rankWorst(data,'.rankTitleWorst','mangafox','');
+					});
+			      }
+			      else{
+			      	$('.mode2w').show();
+			      	$('.mode1w').hide();
+			      	d3.select('.rankTitleWorst svg').remove();
+			      	d3.json('worstTitleTotal.php', function(data){
+						rankWorst(data,'.rankTitleWorst',"mangahere",'');
+					});
+			      }
+			    })
+			  .id("group")
+			  .type("toggle")
+			  .draw();
+
+			$("input[name=mode1w]:radio")
+				.change(function () {
+					d3.select('.rankTitleWorst svg').remove();
+					if( $(this).is(":checked") ){ // check if the radio is checked
+						var val = $(this).val();
+						if(val == 'total')
+						{
+							d3.json('worstTitleTotal.php', function(data){
+								rankWorst(data,'.rankTitleWorst',"mangafox", val);
+							});
+						}
+						else if(val == 'ongoing')
+						{
+							d3.json('worstTitleOngoing.php', function(data){
+								rankWorst(data,'.rankTitleWorst',"mangafox", val);
+							});
+						}
+						else{
+							d3.json('worstTitleCompleted.php', function(data){
+								// console.log(data);
+								rankWorst(data,'.rankTitleWorst',"mangafox", val);
+							});
+						}
 			        }
 					
-					
+				});
+
+			$("input[name=mode2w]:radio")
+				.change(function () {
+					d3.select('.rankTitleWorst svg').remove();
+					if( $(this).is(":checked") ){ // check if the radio is checked
+						var val = $(this).val();
+						if(val == 'total')
+						{
+							d3.json('worstTitleTotal.php', function(data){
+								rankWorst(data,'.rankTitleWorst',"mangahere", val);
+							});
+						}
+						else if(val == 'ongoing')
+						{
+							d3.json('worstTitleOngoing.php', function(data){
+								rankWorst(data,'.rankTitleWorst',"mangahere", val);
+							});
+						}
+						else{
+							d3.json('worstTitleCompleted.php', function(data){
+								rankWorst(data,'.rankTitleWorst',"mangahere", val);
+							});
+						}
+			        }	
 				});
 			
-
 		</script>
 			
 		</div>	
