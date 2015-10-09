@@ -212,13 +212,13 @@ var togglesMap = d3plus.form()
           });
       }
       else{
-        console.log('mangahere')
+        // console.log('mangahere')
         $('.Size').prop('checked',true);
         $('.Count').prop('checked',false);
 
         $('#chart3').find('div').remove();
         d3.json(categSetTreeMap[0], function(error, data) {
-          console.log(error);
+          // console.log(error);
           graficoTreeMap(data);
         });
       }
@@ -265,7 +265,7 @@ function graficoTreeMap(data){
 
   // d3.json("treeMapCatMangaHere.php", function(data) {
     node = root = data;
-    console.log(data);
+    // console.log(data);
 
     var nodes = treemap.nodes(root)
         .filter(function(d) { return !d.children; });
@@ -283,7 +283,7 @@ function graficoTreeMap(data){
     cell.append("svg:rect")
         .attr("width", function(d) { return d.dx - 1; })
         .attr("height", function(d) { return d.dy - 1; })
-        .style("fill", function(d, i) { console.log(d);return color(d.parent.index); });
+        .style("fill", function(d, i) { return color(d.parent.index); });
 
     cell.append("svg:text")
         .attr("x", function(d) { return d.dx / 2; })

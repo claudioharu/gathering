@@ -46,6 +46,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 <script  src="jquery.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 <script src="box.js"></script>
+<script src="groupedBars.js"></script>
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 
 
@@ -322,167 +323,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 			// parse in the data	
 			d3.json("groupRank.php", function(error, value){
 				csv = value;
-				d3.select("svg").remove();
-					var n = 10, // number of layers
-					m = 2, // number of samples per layer
-					stack = d3.layout.stack(),
-					layers = bumpLayer(),
-					yGroupMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y; }); }),
-					yStackMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y+10; }); });
-					// console.log(layers);
-
-
-					var margin = {top: 40, right: 10, bottom: 20, left: 50},
-						width = 960 - margin.left - margin.right,
-						height = 500 - margin.top - margin.bottom;
-
-					// console.log(yStackMax);
-					var x = d3.scale.ordinal()
-						.domain(d3.range(m))
-						.rangeRoundBands([0, width], .08);
-
-					var y = d3.scale.linear()
-						.domain([0, yGroupMax])
-						.range([height, 0]);
-
-					var maxColor =  d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y; }); });
-					var minColor =  d3.min(layers, function(layer) { return d3.min(layer, function(d) { return d.y; }); });
-					// console.log("maxColor: " + maxColor + " minColor: "+minColor);
-					
-					var color = d3.scale.linear()
-						.domain([0,10, 15, 20, 25,35,40, 45,50, 55,60,65, 70,75,80,85, 90,95, 100])
-						.range(['rgb(49,54,149)', 'rgb(69,117,180)', 'rgb(116,173,209)', 'rgb(171,217,233)', 'rgb(224,243,248)', 'rgb(255,255,191)', 'rgb(254,224,144)', 'rgb(253,174,97)', 'rgb(244,109,67)', 'rgb(215,48,39)', 'rgb(165,0,38)']);
-
-					var xAxis = d3.svg.axis()
-						.scale(x)
-						.tickSize(0)
-						.tickPadding(6)
-						.tickFormat(function(d) { 
-							if (d == 0)
-								return "MangaHere";
-							else
-								return "MangaFox";
-						})
-						.orient("bottom");
-
-					var yAxis = d3.svg.axis()
-						.scale(y)
-    					.orient("left")
-    					.ticks(10);
-
-					var svg = d3.select(".bar").append("svg")
-						.attr("width", width + margin.left + margin.right)
-						.attr("height", height + margin.top + margin.bottom)
-						.append("g")
-						.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-					var layer = svg.selectAll(".layer")
-						.data(layers)
-						.enter().append("g")
-						.attr("class", "layer");
-						// .style("fill", function(d, i) { console.log(d[0].y + " " + i ); return color(d[0].y); });
-
-					var rect = layer.selectAll("rect")
-						.data(function(d) { return d; })
-						.enter().append("rect")
-						.attr("x", function(d) { return x(d.x); })
-						.attr("y", height)
-						.attr("width", x.rangeBand())
-						.attr("height", 0)
-						.style("fill", function(d, i) { 
-							// console.log(d.y + " " + i );
-							return color(d.y);
-						})
-						.style("stroke", "black")
-
-						.on("mouseover", function() { tooltip.style("display", null); })
-						.on("mouseout", function() { tooltip.style("display", "none"); })
-						.on("mousemove", function(d) {
-							var xPosition = d3.mouse(this)[0] - 10;
-							var yPosition = d3.mouse(this)[1] - 25;
-							tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-							tooltip.select("text").text((d.votes));
-						});
-
-					var tooltip = svg.append("g")
-						.attr("class", "tooltip")
-						.style("display", "none");
-
-					tooltip.append("rect")
-						.attr("width", 50)
-						.attr("height", 20)
-						.attr("fill", "orange")
-						.style("opacity", 0.5);
-						tooltip.append("text")
-						.attr("x", 25)
-						.attr("dy", "1.2em")
-						.style("text-anchor", "middle")
-						.attr("font-size", "12px")
-						.attr("font-weight", "bold");
-
-					rect.transition()
-						.delay(function(d, i) { return i * 10; })
-						.attr("y", function(d) { return y(5-d.y); })
-						.attr("height", function(d) { return y(d.y); });
-
-					svg.append("g")
-						.attr("class", "x axis")
-						.attr("transform", "translate(0," + height + ")")
-						.call(xAxis);
-
-					svg.append("g")
-						.attr("class", "y axis")
-						.call(yAxis)
-						.append("text")
-						.attr("transform", "rotate(-90)")
-						.attr("y", 6)
-						.attr("dy", ".71em")
-						.style("text-anchor", "end")
-						.text("Votes (%)");
-
-					d3.selectAll("input").on("change", change);
-
-					var timeout = setTimeout(function() {
-						// console.log("here");
-						transitionGrouped();
-						// d3.select("input[value=\"grouped\"]").property("checked", true).each(change);
-					}, 200);
-
-					function change() {
-						clearTimeout(timeout);
-						transitionGrouped();
-					}
-
-					function transitionGrouped() {
-						y.domain([0, yGroupMax]);
-
-						rect.transition()
-							.duration(400)
-							.delay(function(d, i) { return i * 10; })
-							.attr("x", function(d, i, j) { return x(d.x) + x.rangeBand() / n * j; })
-							.attr("width", x.rangeBand() / n)
-							.transition()
-							.attr("y", function(d) { return y(d.y); })
-							.attr("height", function(d) { return height - y(d.y); });
-					}
-
-
-					// Inspired by Lee Byron's test data generator.
-					function bumpLayer(n, o) {
-
-
-						// console.log(csv);
-						var arr = [];
-						for (i =0; i < csv.length; i++){
-							var aux = [];
-							aux.push({x: 0, y: Number(csv[i]['Q1']), votes: Number(csv[i]['Q1Votes'])});
-							aux.push({x: 1, y: Number(csv[i]['Q2']), votes: Number(csv[i]['Q2Votes'])});
-							arr.push(aux);
-						}
-
-						// console.log(arr);
-						return arr;
-					}
+				GroupedBarChart(csv);
 			});
 
 
@@ -533,27 +374,52 @@ if (array_key_exists("mangaName", $_REQUEST)){
 						data[0][1] = [];
 						data[1][1] = [];
 					  
-						dataCsv.forEach(function(x) {
+					  	// console.log(dataCsv[0].Q11);
+						dataCsv[0].Q11.forEach(function(x) {
 							// console.log(x);
-							var v1 = Math.floor(x.Q1),
-								v2 = Math.floor(x.Q2);
+							var v1 = Math.floor(x.Q1);
+								// v2 = Math.floor(x.Q2);
 								// v3 = Math.floor(x.Q3),
 								// v4 = Math.floor(x.Q4);
 								// add more variables if your csv file has more columns
 								
-							var rowMax = Math.max(v1, Math.max(v2, Math.max(v1,v2)));
-							var rowMin = Math.min(v1, Math.min(v2, Math.min(v1,v2)));
+							// var rowMax = Math.max(v1, Math.max(v2, Math.max(v1,v2)));
+							// var rowMin = Math.min(v1, Math.min(v2, Math.min(v1,v2)));
 
 							data[0][1].push(v1);
+							// data[1][1].push(v2);
+							// data[2][1].push(v3);
+							// data[3][1].push(v4);
+							 // add more rows if your csv file has more columns
+							 
+							// if (rowMax > max) max = rowMax;
+							// if (rowMin < min) min = rowMin;	
+						});
+
+						dataCsv[0].Q22.forEach(function(x) {
+							// console.log(x);
+							// var v1 = Math.floor(x.Q1),
+							var	v2 = Math.floor(x.Q2);
+								// v3 = Math.floor(x.Q3),
+								// v4 = Math.floor(x.Q4);
+								// add more variables if your csv file has more columns
+								
+							// var rowMax = Math.max(v1, Math.max(v2, Math.max(v1,v2)));
+							// var rowMin = Math.min(v1, Math.min(v2, Math.min(v1,v2)));
+
+							// data[0][1].push(v1);
 							data[1][1].push(v2);
 							// data[2][1].push(v3);
 							// data[3][1].push(v4);
 							 // add more rows if your csv file has more columns
 							 
-							if (rowMax > max) max = rowMax;
-							if (rowMin < min) min = rowMin;	
+							// if (rowMax > max) max = rowMax;
+							// if (rowMin < min) min = rowMin;	
 						});
-					  
+					  	
+					  	min = 0;
+						max = 10;
+					  	// console.log(data);
 						var chart = d3.box()
 							.whiskers(iqr(1.5))
 							.height(height)	
@@ -570,36 +436,24 @@ if (array_key_exists("mangaName", $_REQUEST)){
 						var v1 = [];
 						var v2 = [];
 						i = 0;
-						dataCsv.forEach (function(x) {
+						dataCsv[0].Q11.forEach (function(x) {
 							v1[i] = Number(x.Q1);
-							v2[i] = Number(x.Q2);
+							// v2[i] = Number(x.Q2);
 							i++;
 						});
 
-						// console.log('oi'+ v1);	
-						function weightedMean(d){
-							// console.log(d[0]);
-							var dados;
-							if(d[0] == "MangaHere")
-								dados = v1;
-							else 
-								dados = v2;
-							// console.log(dados);
-							var wmean = 0;
-							for (i = 0; i < dados.length; i++){
-								wmean += (i+1)*dados[i];
-							}
-							if (wmean == 0)
-								return 0;
-							// console.log("weightedMean: " + wmean/d3.sum(d) );
-							return wmean/d3.sum(dados);
-						}
+						dataCsv[0].Q22.forEach (function(x) {
+							// v1[i] = Number(x.Q1);
+							v2[i] = Number(x.Q2);
+							i++;
+						})
+
 						
 						var tip = d3.tip()
 							.attr('class', 'd3-tip')
 							.offset([-10, 0])
 							.html(function(d) {
-								console.log(d);
+								// console.log(d);
 								return "<strong>"+d[0] + "</strong>"+'<br><br>'+"<strong>Avg: </strong><span style='color:red'>"+ d[3].toFixed(2) + "</span><br>"+"<strong>Bayer Avg: </strong><span style='color:red'>"+ (Number(d[2])).toFixed(2) + "</span><br>" + "<strong>Median: </strong><span style='color:red'>" +  d3.quantile(d[1], .5)+"</span>" ;
 							});
 
@@ -616,6 +470,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 
 						console.log("minmax: " + min + " " + max);
 						// the y-axis
+						
 						var y = d3.scale.linear()
 							.domain([min, max])
 							.range([height + margin.top, 0 + margin.top]);
@@ -630,17 +485,11 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					      .data(data)
 						  .enter()
 						  .append("g")
-							.attr("transform", function(d) { return "translate(" +  x(d[0])  + "," + margin.top + ")"; } )
-					      	// .transition().delay(1000).duration(20000)
-					       // .on("mouseover", function(){return tooltip.style("visibility", "visible");})
-			       		   // .on("mousemove", function(d, i){tooltip.html(generate_html(popups[i])); return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px"); })
-					       // .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
+					 	   .attr("transform", function(d) { return "translate(" +  x(d[0])  + "," + margin.top + ")"; } )
 					       .on('mouseover', tip.show)
 	      		    	   .on('mouseout', tip.hide)
 					       .call(chart.width(x.rangeBand()));
-			 
-						
-						      
+			      
 						// add a title
 						svg.append("text")
 					        .attr("x", (width / 2))             
@@ -675,7 +524,6 @@ if (array_key_exists("mangaName", $_REQUEST)){
 							.style("font-size", "16px") 
 					        .text("Quarter"); 
 						
-
 						// Returns a function to compute the interquartile range.
 						function iqr(k) {
 						  return function(d, i) {
@@ -694,195 +542,16 @@ if (array_key_exists("mangaName", $_REQUEST)){
 		    	
 		    	else{
 
-					
 		    		d3.select("svg").remove();
-					var n = 10, // number of layers
-					m = 2, // number of samples per layer
-					stack = d3.layout.stack(),
-					layers = bumpLayer(),
-					yGroupMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y; }); }),
-					yStackMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y+10; }); });
-					// console.log(layers);
-
-					// var tip = d3.tip()
-					// .attr('class', 'd3-tip')
-					// .offset([-10, 0])
-					// .html(function(d) {
-					// 	console.log(d);
-					// 	return "<strong>Frequency:</strong> <span style='color:red'>" + d.y + "</span>";
-					// });
-
-
-					var margin = {top: 40, right: 10, bottom: 20, left: 50},
-						width = 960 - margin.left - margin.right,
-						height = 500 - margin.top - margin.bottom;
-
-					// console.log(yStackMax);
-					var x = d3.scale.ordinal()
-						.domain(d3.range(m))
-						.rangeRoundBands([0, width], .08);
-
-					var y = d3.scale.linear()
-						.domain([0, yGroupMax])
-						.range([height, 0]);
-
-					var maxColor =  d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y; }); });
-					var minColor =  d3.min(layers, function(layer) { return d3.min(layer, function(d) { return d.y; }); });
-					// console.log("maxColor: " + maxColor + " minColor: "+minColor);
-					
-					var color = d3.scale.linear()
-						.domain([0,10, 15, 20, 25,35,40, 45,50, 55,60,65, 70,75,80,85, 90,95, 100])
-						.range(['rgb(49,54,149)', 'rgb(69,117,180)', 'rgb(116,173,209)', 'rgb(171,217,233)', 'rgb(224,243,248)', 'rgb(255,255,191)', 'rgb(254,224,144)', 'rgb(253,174,97)', 'rgb(244,109,67)', 'rgb(215,48,39)', 'rgb(165,0,38)']);
-
-					var xAxis = d3.svg.axis()
-						.scale(x)
-						.tickSize(0)
-						.tickPadding(6)
-						.tickFormat(function(d) { 
-							if (d == 0)
-								return "MangaHere";
-							else
-								return "MangaFox";
-						})
-						.orient("bottom");
-
-					var yAxis = d3.svg.axis()
-						.scale(y)
-    					.orient("left")
-    					.ticks(10);
-
-					var svg = d3.select(".bar").append("svg")
-						.attr("width", width + margin.left + margin.right)
-						.attr("height", height + margin.top + margin.bottom)
-						.append("g")
-						.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-					var layer = svg.selectAll(".layer")
-						.data(layers)
-						.enter().append("g")
-						.attr("class", "layer");
-						// .style("fill", function(d, i) { console.log(d[0].y + " " + i ); return color(d[0].y); });
-
-					var rect = layer.selectAll("rect")
-						.data(function(d) { return d; })
-						.enter().append("rect")
-						.attr("x", function(d) { return x(d.x); })
-						.attr("y", height)
-						.attr("width", x.rangeBand())
-						.attr("height", 0)
-						.style("fill", function(d, i) { 
-							// console.log(d.y + " " + i );
-							// if(i == 0){
-								// console.log(d.y/91971 *100);
-								return color(d.y);
-							// }
-							// else {
-							// 	// console.log(d.y/86420 *100);
-							// 	return color(d.y); 
-							// }
-						})
-						.style("stroke", "black")
-
-						.on("mouseover", function() { tooltip.style("display", null); })
-						.on("mouseout", function() { tooltip.style("display", "none"); })
-						.on("mousemove", function(d) {
-							var xPosition = d3.mouse(this)[0] - 10;
-							var yPosition = d3.mouse(this)[1] - 25;
-							tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-							tooltip.select("text").text((d.votes));
-						});
-
-					var tooltip = svg.append("g")
-						.attr("class", "tooltip")
-						.style("display", "none");
-
-					tooltip.append("rect")
-						.attr("width", 50)
-						.attr("height", 20)
-						.attr("fill", "orange")
-						.style("opacity", 0.5);
-						tooltip.append("text")
-						.attr("x", 25)
-						.attr("dy", "1.2em")
-						.style("text-anchor", "middle")
-						.attr("font-size", "12px")
-						.attr("font-weight", "bold");
-
-					rect.transition()
-						.delay(function(d, i) { return i * 10; })
-						.attr("y", function(d) { return y(5-d.y); })
-						.attr("height", function(d) { return y(d.y); });
-
-					svg.append("g")
-						.attr("class", "x axis")
-						.attr("transform", "translate(0," + height + ")")
-						.call(xAxis);
-
-					svg.append("g")
-						.attr("class", "y axis")
-						.call(yAxis)
-						.append("text")
-						.attr("transform", "rotate(-90)")
-						.attr("y", 6)
-						.attr("dy", ".71em")
-						.style("text-anchor", "end")
-						.text("Votes (%)");
-
-					d3.selectAll("input").on("change", change);
-
-					var timeout = setTimeout(function() {
-						// console.log("here");
-						transitionGrouped();
-						// d3.select("input[value=\"grouped\"]").property("checked", true).each(change);
-					}, 200);
-
-					function change() {
-						clearTimeout(timeout);
-						transitionGrouped();
-					}
-
-					function transitionGrouped() {
-						y.domain([0, yGroupMax]);
-
-						rect.transition()
-							.duration(400)
-							.delay(function(d, i) { return i * 10; })
-							.attr("x", function(d, i, j) { return x(d.x) + x.rangeBand() / n * j; })
-							.attr("width", x.rangeBand() / n)
-							.transition()
-							.attr("y", function(d) { return y(d.y); })
-							.attr("height", function(d) { return height - y(d.y); });
-					}
-
-
-					// Inspired by Lee Byron's test data generator.
-					function bumpLayer(n, o) {
-
-
-						// console.log(csv);
-						var arr = [];
-						for (i =0; i < csv.length; i++){
-							var aux = [];
-							aux.push({x: 0, y: Number(csv[i]['Q1']), votes: Number(csv[i]['Q1Votes'])});
-							aux.push({x: 1, y: Number(csv[i]['Q2']), votes: Number(csv[i]['Q2Votes'])});
-							arr.push(aux);
-						}
-
-						// console.log(arr);
-						return arr;
-					}
-		    	}
+		    		GroupedBarChart(csv);
+				
+				}
 		    	
 		    })
 		    .id("group")
 		    // .title("Nested Toggle")
 		    .type("toggle")
 		    .draw()
-
-
-
-		   
-
 	
 		</script>
 

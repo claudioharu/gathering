@@ -149,26 +149,19 @@ if ($wmean != 0)
 	$wmeanQ2 = $wmean/$sum;
 
 for ($i = 0; $i < sizeof($Q1Votes); $i++){
-	$a[] = array('Q1' => strval($Q1Votes[$i]) );
+	$children[] = array('Q1' => strval($Q1Votes[$i]), 'BakaBaye' => strval($BakaBayer), 'BakaAvg' => $wmeanQ1);
+
+	// $a[] = array('Q1' => strval($Q1Votes[$i]) );
 }
-for ($i = 0; $i < sizeof($Q2Votes); $i++){
-	$b[] = array('Q2' => strval($Q2Votes[$i]) );
-}
+// for ($i = 0; $i < sizeof($Q2Votes); $i++){
+	// $children[] = array('Q2' => strval($Q2Votes[$i])), 'BakaBaye' => strval($BakaBayer), 'MyBaye' => strval($MyBayer), 'BakaAvg' => $wmeanQ1, 'MyAvg' => $wmeanQ2 );
+// 	$b[] = array('Q2' => strval($Q2Votes[$i]) );
+// }
 
 if( sizeof($Q1Votes) == 0)
-	$a[] = array('Q1' => 0 );
-
-if( sizeof($Q2Votes) == 0)
-	$b[] = array('Q2' => 0 );
-// $Q1=[7, 1, 1, 2, 4, 6, 13, 20,  17, 29];
-// $Q1Votes=[323, 34, 64, 95, 201, 286, 627, 970, 811, 1396];
-// $Q2=[0.3, 0.3, 0.6, 1.4, 3.7, 7.3, 16.9, 23.3,  23.1, 23.2];
-// $Q2Votes=[403,372,714,1571,4230,8428,19537,26955,26777,26852];
-
-$children[] = array('Q11' => $a,  'Q22' => $b, 'BakaBaye' => strval($BakaBayer), 'MyBaye' => strval($MyBayer), 'BakaAvg' => $wmeanQ1, 'MyAvg' => $wmeanQ2 );
+	$children[] = array('Q1' => 0, 'BakaBaye' => strval($BakaBayer), 'BakaAvg' => $wmeanQ1 );
 
 
-// $children[] = array('BakaBaye' => $BakaBayer);
 
 header('Content-Type: application/json');
 echo json_encode($children);

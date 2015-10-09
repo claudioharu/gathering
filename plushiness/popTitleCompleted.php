@@ -15,6 +15,10 @@ foreach ($results as $row)
 {
 	$name = ucfirst($row['name']);
 	$visual = $row['visual'];
+	if (strlen($name) > 38){
+		$name =  substr($name, 0, 33);
+		$name = $name . " ...";
+	}
 	// $site = 'mangahere';
 	$child[] = array('name' => $name, 'value' =>$visual, 'status' =>'Completed');
 }
@@ -32,6 +36,10 @@ foreach ($result as $row)
 {
 	$nam = ucfirst($row['name']);
 	$visua = $row['visual'];
+	if (strlen($nam) > 38){
+		$nam =  substr($nam, 0, 33);
+		$nam = $nam . " ...";
+	}
 	// $site = 'mangahere';
 	$children[] = array('name' => $nam, 'value' =>$visua, 'status' =>'Completed');
 }

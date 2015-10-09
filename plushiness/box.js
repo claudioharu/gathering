@@ -17,8 +17,8 @@ d3.box = function() {
   // For each small multiple…
   function box(g) {
     g.each(function(data, i) {
-
-      console.log(data);
+      // console.log("aki");
+      // console.log(data);
     // var dNotSorted =   
     // weightedMean(data[1]);;
     var d = data[1].sort(d3.ascending);
