@@ -1,55 +1,4 @@
 
-<style type="text/css">
-.chart {
-	/*background: #b0e0f8;*/
-	margin: 5px;
-}
-.chart rect {
-	stroke: white;
-	fill: steelblue;
-}
-.chart rect:hover {
-  fill: #64707D;
-}
-
-.chart line {
-  stroke: #c1c1c1;
-}
-
-.chart .rule {
-  fill: #000;
-}
-
-.d3-tip {
-  line-height: 1;
-  font-weight: bold;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 2px;
-}
-
-/* Creates a small triangle extender for the tooltip */
-.d3-tip:after {
-  box-sizing: border-box;
-  display: inline;
-  font-size: 10px;
-  width: 100%;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.8);
-  content: "\25BC";
-  position: absolute;
-  text-align: center;
-}
-
-/* Style northward tooltips differently */
-.d3-tip.n:after {
-  margin: -1px 0 0 0;
-  top: 100%;
-  left: 0;
-}
-
-</style>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -67,6 +16,8 @@
 <script src="http://www.d3plus.org/js/d3plus.js"></script>
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <script src="rank10.js"></script>
+<link rel="stylesheet" type="text/css" href="barChart.css">
+
 
 
 <!--[if IE 6]><link href="default_ie6.css" rel="stylesheet" type="text/css" /><![endif]-->
@@ -110,12 +61,17 @@
 			<table  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
 				<!-- <tr><td>	Here you can blábláblá <br> Use the searchbar to ....</td></tr> -->
 				<tr>
+					<td style="padding-bottom: 1.5em;">
+						<h1 align="center" style="font-size:20px">Dez melhores </h1>
+					</td>
+				</tr>
+				<tr>
 					<td align="center">
 						  <div class="Menu1" align="left" style="margin-left:150px">
 					</td>
 				</tr>
 				<tr>					
-					<td  style="width: 100%; height:90%;">
+					<td  style="width: 100%; height:90%; padding-bottom: 4.5em; ">
 						<div align="left" style="margin-left:150px">
 							<div class='mode1'>
 								<form>
@@ -133,10 +89,14 @@
 								</form>
 							</div>
 						</div>
-						<div class="rankTitle">
+						<div class="rankTitle"></div>
+					</td>
+				</tr>
 
-						</div>
-						
+
+				<tr>
+					<td style="padding-bottom: 1.5em;">
+						<h1 align="center" style="font-size:20px;">Dez piores </h1>
 					</td>
 				</tr>
 

@@ -18,6 +18,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 <script  src="jquery.js"></script>
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<script src="rank10.js"></script>
+<link rel="stylesheet" type="text/css" href="barChart.css">
 
 
 <!--[if IE 6]><link href="default_ie6.css" rel="stylesheet" type="text/css" /><![endif]-->
@@ -41,47 +43,6 @@
 		fill: #000;
 	}
 
-	div.tooltip {   
-		position: absolute;           
-		text-align: center;           
-		width: 60px;                  
-		height: 28px;                 
-		padding: 2px;             
-		font: 12px sans-serif;        
-		background: lightsteelblue;   
-		border: 0px;      
-		border-radius: 8px;           
-		pointer-events: none;         
-	}
-
-	.d3-tip {
-  line-height: 1;
-  font-weight: bold;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 2px;
-}
-
-/* Creates a small triangle extender for the tooltip */
-.d3-tip:after {
-  box-sizing: border-box;
-  display: inline;
-  font-size: 10px;
-  width: 100%;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.8);
-  content: "\25BC";
-  position: absolute;
-  text-align: center;
-}
-
-/* Style northward tooltips differently */
-.d3-tip.n:after {
-  margin: -1px 0 0 0;
-  top: 100%;
-  left: 0;
-}
 </style>
 
 </head>
@@ -166,12 +127,13 @@
         <tr>
           <td>
              <div class="Menu3" align="left" style="margin-left:150px">
-             <form>
+              </div>
+             <form align="left" style="margin-left:150px">
               <label>Order by:</label>
               <label><input class="Size" type="radio" name="mode" value="size" checked> Titles</label>
               <label><input class="Count" type="radio" name="mode" value="count"> Authors</label>
             </form>
-            </div>
+            <br>
           </td>
         </tr>
 
@@ -181,8 +143,117 @@
           </td>
         </tr>
 
+        <tr>
+          <td  style="width: 100%; height:90%; padding-top: 4.5em; padding-bottom: 2.5em">
+            <h1 align="left"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;"> 10 Most popular publishers
+        </tr>
+    
+        <tr>
+          <td>
+             <div class="Menu4" align="left" style="margin-left:150px">
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <div align="left" class="publisherBars"></div>
+          </td>
+        </tr>
+
+         <tr>
+          <td  style="width: 100%; height:90%; padding-top: 4.5em; padding-bottom: 2.5em">
+            <h1 align="left"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;"> 10 Less popular publishers
+        </tr>
+    
+        <tr>
+          <td>
+             <div class="Menu5" align="left" style="margin-left:150px">
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <div align="left" class="worstPublishersBars"></div>
+          </td>
+        </tr>
+
 				
 	</table>
+
+
+<script type="text/javascript">
+
+    d3.json("publisherRankTotal.php", function(data){
+        rankPublisher(data, ".publisherBars", "mangafox", "");
+    });
+
+    var sampleDataRankPop = [
+      {"group": "MangaFox"},
+      {"group": "MangaHere"}
+    ];
+
+    var toggleRank = d3plus.form()
+      .container("div.Menu4")
+      .data(sampleDataRankPop)
+      .focus("MangaFox", function(d){
+          if(d == "MangaFox"){
+
+            d3.select('.publisherBars svg').remove();
+            d3.json("publisherRankTotal.php", function(data){
+                rankPublisher(data, ".publisherBars", "mangafox", "");
+            });
+          }
+          else{
+
+            d3.select('.publisherBars svg').remove();
+            d3.json("publisherRankTotal.php", function(data){
+                rankPublisher(data, ".publisherBars", "mangahere", "");
+            });
+          }
+        })
+      .id("group")
+      .type("toggle")
+      .draw();
+
+</script>
+
+<script type="text/javascript">
+
+    d3.json("publisherRankWorstTotal.php", function(data){
+        rankWorstPublisher(data, ".worstPublishersBars", "mangafox", "");
+    });
+
+    var sampleDataRankWorstPop = [
+      {"group": "MangaFox"},
+      {"group": "MangaHere"}
+    ];
+
+    var toggleRankWorst = d3plus.form()
+      .container("div.Menu5")
+      .data(sampleDataRankPop)
+      .focus("MangaFox", function(d){
+          if(d == "MangaFox"){
+
+            d3.select('.worstPublishersBars svg').remove();
+            d3.json("publisherRankWorstTotal.php", function(data){
+                rankWorstPublisher(data, ".worstPublishersBars", "mangafox", "");
+            });
+          }
+          else{
+
+            d3.select('.worstPublishersBars svg').remove();
+            d3.json("publisherRankWorstTotal.php", function(data){
+                rankWorstPublisher(data, ".worstPublishersBars", "mangahere", "");
+            });
+          }
+        })
+      .id("group")
+      .type("toggle")
+      .draw();
+
+</script>
 
 <script>
 
@@ -340,25 +411,7 @@ function graficoTreeMap(data){
 }
 </script>
 
-<script type="text/javascript">
-function abbreviateNumber(value) {
-    var newValue = value;
-    if (value >= 1000) {
-        var suffixes = ["", "k", "m", "b","t"];
-        var suffixNum = Math.floor( (""+value).length/3 );
-        var shortValue = '';
-        for (var precision = 2; precision >= 1; precision--) {
-            shortValue = parseFloat( (suffixNum != 0 ? (value / Math.pow(1000,suffixNum) ) : value).toPrecision(precision));
-            var dotLessShortValue = (shortValue + '').replace(/[^a-zA-Z 0-9]+/g,'');
-            if (dotLessShortValue.length <= 2) { break; }
-        }
-        if (shortValue % 1 != 0)  shortNum = shortValue.toFixed(1);
-        newValue = shortValue+suffixes[suffixNum];
-    }
-    return newValue;
-}
 
-</script>
 
 	<script type="text/javascript">
 

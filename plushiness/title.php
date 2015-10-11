@@ -42,7 +42,6 @@ if (array_key_exists("mangaName", $_REQUEST)){
 <link href="box.css" rel="stylesheet" type="text/css" />
 <script src="http://www.d3plus.org/js/d3.js"></script>
 <script src="http://www.d3plus.org/js/d3plus.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 <script  src="jquery.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 <script src="box.js"></script>

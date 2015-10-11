@@ -1,55 +1,4 @@
 
-<style type="text/css">
-.chart {
-	/*background: #b0e0f8;*/
-	margin: 5px;
-}
-.chart rect {
-	stroke: white;
-	fill: steelblue;
-}
-.chart rect:hover {
-  fill: #64707D;
-}
-
-.chart line {
-  stroke: #c1c1c1;
-}
-
-.chart .rule {
-  fill: #000;
-}
-
-.d3-tip {
-  line-height: 1;
-  font-weight: bold;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 2px;
-}
-
-/* Creates a small triangle extender for the tooltip */
-.d3-tip:after {
-  box-sizing: border-box;
-  display: inline;
-  font-size: 10px;
-  width: 100%;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.8);
-  content: "\25BC";
-  position: absolute;
-  text-align: center;
-}
-
-/* Style northward tooltips differently */
-.d3-tip.n:after {
-  margin: -1px 0 0 0;
-  top: 100%;
-  left: 0;
-}
-
-</style>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -67,6 +16,8 @@
 <script  src="jquery.js"></script>
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <script src="rank10.js"></script>
+<link rel="stylesheet" type="text/css" href="barChart.css">
+
 
 
 
