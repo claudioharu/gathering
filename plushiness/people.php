@@ -16,7 +16,9 @@
 <script  src="jquery.js"></script>
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <script src="rank10.js"></script>
+<script src="donut.js"></script>
 <link rel="stylesheet" type="text/css" href="barChart.css">
+
 
 
 
@@ -61,16 +63,65 @@
 
 		<div id="container" class="div1">
 
-			<table  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
-				<!-- <tr style="margin-bottom:100px;"> 
-					<td >
-						<h1 align="center" style="font-size:20px">10 Most famous authors</h1>
+			<table  style="width: 80%; height:70%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
+				
+				<tr> 
+					<td style="padding-bottom:2.4em">
+						<h1 align="center" style="font-size:20px">Pie Chart Visual</h1>
 					</td>
-				</tr> -->
+					<td style="padding-bottom:2.4em">
+						<h1 align="center" style="font-size:20px">Pie Chart Votes</h1>
+					</td>
+				</tr>
 				
 				<tr>
 					<td>
-						<div class="Menu1" align="left" style="margin-left:150px"></div>
+						<div style="margin-left:100px" >
+
+							<legend for="toggles">Database:</legend>
+							
+							<input type="radio" name="toggles" value="mf" checked>
+							<label for="mf">MangaFox</label>
+							
+							<input type="radio" name="toggles" value="mh">
+							<label for="mh">MangaHere</label>
+						</div>
+					</td>
+
+					<td>
+						<div style="margin-left:100px " >
+
+							<legend for="toggles2">Database:</legend>
+							
+							<input type="radio" name="toggles2" value="mf2" checked>
+							<label for="mf2">MangaFox</label>
+							
+							<input type="radio" name="toggles2" value="mh2">
+							<label for="mh2">MangaHere</label>
+						</div>
+					</td>
+				</tr>
+
+				<tr>					
+					<td  style="width: 100%; height:90%;">
+						<div align="center" id="donut" style="margin-top:20px "></div>
+					</td>
+					<td  style="width: 100%; height:90%;">
+						<div align="center" id="donut2" style="margin-top:20px "></div>
+					</td>
+				</tr>
+
+			</table >
+			<table  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
+				<tr style="margin-bottom:100px;"> 
+					<td style="padding-top:5.4em; padding-bottom:2.4em">
+						<h1 align="center" style="font-size:20px">10 Most famous authors</h1>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<div class="Menu2" align="left" style="margin-left:150px"></div>
 					</td>
 				</tr>
 
@@ -83,13 +134,100 @@
 						
 					</td>
 				</tr>
+
+				
 			</table>
 				
 		</div>
 
 		<script>
+			var datas2 = [];
+			// data["Female"] =  89;
+	  //       data["Male"] =10;
 
-			
+	        d3.json('donutValuesVotes.php', function(data){
+	        	console.log(data.Fox[0]);
+	        	datas2["Female"] =  Math.round( (Number(data.Fox[0].Female)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100 );
+	        	datas2["Male"] = Math.round((Number(data.Fox[1].Male)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100);
+				// console.log(datas2);	       
+
+				var chart = donut()
+			        .$el(d3.select('#donut2'))
+			        .data(datas2)
+			        .render();
+
+				var toggles2 = d3plus.form()
+					.data("[name=toggles2]")
+					.focus("mf2",function(d){
+						console.log(d);
+						if(d == 'mf2'){
+							
+							datas2["Female"] =  Math.round( (Number(data.Fox[0].Female)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100 );
+	        				datas2["Male"] = Math.round((Number(data.Fox[1].Male)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100);
+							chart.data(datas2).render();
+						}
+						else
+						{
+							
+							datas2["Female"] =  Math.round( (Number(data.Here[0].Female)/(Number(data.Here[0].Female) + Number(data.Here[1].Male)))*100 );
+	        				datas2["Male"] = Math.round((Number(data.Here[1].Male)/(Number(data.Here[0].Female) + Number(data.Here[1].Male)))*100);
+							chart.data(datas2).render();
+						}
+							
+
+					})
+					.draw();
+
+			});
+
+		</script>
+
+		<script>
+			var datas = [];
+			// data["Female"] =  89;
+	  //       data["Male"] =10;
+
+	        d3.json('donutValuesVisual.php', function(data){
+	        	console.log(data.Fox[0]);
+	        	datas["Female"] =  Math.round( (Number(data.Fox[0].Female)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100 );
+	        	datas["Male"] = Math.round((Number(data.Fox[1].Male)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100);
+				console.log(datas);	       
+
+				var chart = donut()
+			        .$el(d3.select('#donut'))
+			        .data(datas)
+			        .render();
+					// donutChart('','#donut', 'all', 'mangafox');
+
+				var toggles = d3plus.form()
+					.data("[name=toggles]")
+					.focus("mf",function(d){
+						console.log(d);
+						if(d == 'mf'){
+							
+							datas["Female"] =  Math.round( (Number(data.Fox[0].Female)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100 );
+	        				datas["Male"] = Math.round((Number(data.Fox[1].Male)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100);
+							chart.data(datas).render();
+						}
+						else
+						{
+							
+							datas["Female"] =  Math.round( (Number(data.Here[0].Female)/(Number(data.Here[0].Female) + Number(data.Here[1].Male)))*100 );
+	        				datas["Male"] = Math.round((Number(data.Here[1].Male)/(Number(data.Here[0].Female) + Number(data.Here[1].Male)))*100);
+							chart.data(datas).render();
+						}
+							
+
+					})
+					.draw();
+
+			});
+
+		</script>
+
+
+		<script>
+
 			d3.json('rank10AutoresVotos.php', function(data){
 				rank10Autores(data,'.rank');
 			});
