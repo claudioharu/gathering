@@ -20,7 +20,7 @@
 
 // }
 
-function donut(){  
+function donut(type){  
   // Default settings
   var $el = d3.select("body")
   var data = {};
@@ -30,18 +30,18 @@ function donut(){
       radius = Math.min(width, height) / 2;
 
   var currentVal;
-  var color = d3.scale.category20();
+  // var color = d3.scale.category20();
+  var color = ['#FF72AB', '#365EFF']
   var pie = d3.layout.pie()
     .sort(null)
     .value(function(d) { return d.value; });
 
   var svg, g, arc; 
 
-
   var object = {};
 
   // Method for render/refresh graph
-  object.render = function(){
+  object.render = function(dat){
     if(!svg){
       arc = d3.svg.arc()
       .outerRadius(radius)
@@ -53,21 +53,40 @@ function donut(){
       .append("g")
         .attr("transform", "translate(" + width/2 + "," + height / 2 + ")");
 
+        var tip = d3.tip()
+        .attr('class', 'd3-tip')
+        .offset([-10, 0])
+        .html(function(d,i) {
+          // console.log(dat);
+          // console.log(dat[ d.data.key]);
+          return "<strong>Number of "+type+": </strong><span style='color:red'>"+ dat[ d.data.key]+ "</span>";
+        });
+      svg.call(tip);
+
       g = svg.selectAll(".arc")
         .data(pie(d3.entries(data)))
-      .enter().append("g")
-      .attr("class", "arc");
+        .enter().append("g")
+        .attr("class", "arc");
 
       g.append("path")
         // Attach current value to g so that we can use it for animation
         .each(function(d) { this._current = d; })
-        .attr("d", arc)
-        .style("fill", function(d) { return color(d.data.key); });
+        .attr("d", arc)   
+        .style("stroke", "grey")
+        .style("stroke-width", "1px")
+        .style("fill", function(d) {if (d.data.key == 'Male') key = 1; else key = 0; return color[key]; });
+
+      d3.select("div.donutChart")
+        .selectAll('path')
+        .on('mouseover', tip.show)
+        .on('mouseout', tip.hide);
+
       g.append("text")
           .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
           .attr("dy", ".35em")
           .style("text-anchor", "middle");
       g.select("text").text(function(d) { return d.data.key ; });
+
 
       svg.append("text")
           .datum(data)
@@ -77,11 +96,20 @@ function donut(){
           .style("text-anchor", "middle")
           .attr("font-weight", "bold")
           .style("font-size", radius/2.5+"px");
-	  var progress = 0;
+	    var progress = 0;
+      
       g.on("mouseover", function(obj){
-        console.log(obj)
         svg.select("text.text-tooltip")
-        .attr("fill", function(d) { return color(obj.data.key); })
+        .attr("fill", function(d) {
+          key = 0; 
+          // console.log(obj.data.key);
+          if (obj.data.key == 'Male') 
+            key = 1; 
+          else 
+            key = 0; 
+          // console.log('key: ' + key);
+          return color[key];
+        })
         .transition()
         .duration(488)
         .tween("text", function(d) {
@@ -93,10 +121,6 @@ function donut(){
                 this.textContent = Math.round(i(t) * round) / round + "%";
             };
          });
-       // .text(function(d){
-         //   d3.interpolate(progress, );
-           // return  +"%";
-        //});
       });
 
       g.on("mouseout", function(obj){
@@ -104,6 +128,7 @@ function donut(){
         .duration(0)
         .text("");
       });
+
 
     }else{
       g.data(pie(d3.entries(data))).exit().remove();

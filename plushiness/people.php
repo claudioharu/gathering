@@ -62,7 +62,7 @@
 	<div id="featured-wrapper">
 
 		<div id="container" class="div1">
-
+			<div class="donutChart">
 			<table  style="width: 80%; height:70%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
 				
 				<tr> 
@@ -112,6 +112,7 @@
 				</tr>
 
 			</table >
+		</div>
 			<table  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
 				<tr style="margin-bottom:100px;"> 
 					<td style="padding-top:5.4em; padding-bottom:2.4em">
@@ -142,6 +143,7 @@
 
 		<script>
 			var datas2 = [];
+			var dat2 = [];
 			// data["Female"] =  89;
 	  //       data["Male"] =10;
 
@@ -149,12 +151,14 @@
 	        	console.log(data.Fox[0]);
 	        	datas2["Female"] =  Math.round( (Number(data.Fox[0].Female)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100 );
 	        	datas2["Male"] = Math.round((Number(data.Fox[1].Male)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100);
+				dat2["Female"] = Number(data.Fox[0].Female);
+				dat2["Male"] = Number(data.Fox[1].Male);
 				// console.log(datas2);	       
 
-				var chart = donut()
+				var chart = donut("Votes")
 			        .$el(d3.select('#donut2'))
 			        .data(datas2)
-			        .render();
+			        .render(dat2);
 
 				var toggles2 = d3plus.form()
 					.data("[name=toggles2]")
@@ -164,14 +168,18 @@
 							
 							datas2["Female"] =  Math.round( (Number(data.Fox[0].Female)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100 );
 	        				datas2["Male"] = Math.round((Number(data.Fox[1].Male)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100);
-							chart.data(datas2).render();
+							dat2["Female"] = Number(data.Fox[0].Female);
+							dat2["Male"] = Number(data.Fox[1].Male);
+							chart.data(datas2).render(dat2);
 						}
 						else
 						{
 							
 							datas2["Female"] =  Math.round( (Number(data.Here[0].Female)/(Number(data.Here[0].Female) + Number(data.Here[1].Male)))*100 );
 	        				datas2["Male"] = Math.round((Number(data.Here[1].Male)/(Number(data.Here[0].Female) + Number(data.Here[1].Male)))*100);
-							chart.data(datas2).render();
+							dat2["Female"] = Number(data.Fox[0].Female);
+							dat2["Male"] = Number(data.Fox[1].Male);
+							chart.data(datas2).render(dat2);
 						}
 							
 
@@ -184,19 +192,20 @@
 
 		<script>
 			var datas = [];
-			// data["Female"] =  89;
-	  //       data["Male"] =10;
+			var dat = [];
 
 	        d3.json('donutValuesVisual.php', function(data){
-	        	console.log(data.Fox[0]);
-	        	datas["Female"] =  Math.round( (Number(data.Fox[0].Female)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100 );
-	        	datas["Male"] = Math.round((Number(data.Fox[1].Male)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100);
-				console.log(datas);	       
+	        	// console.log(data.Fox[0]);
+	        	datas["Female"] =  Math.round((Number(data.Fox[1].Male)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100);
+	        	datas["Male"] = Math.round( (Number(data.Fox[0].Female)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100 );
+				// console.log(datas);	 
+				dat["Female"] = Number(data.Fox[1].Male);
+				dat["Male"] =  Number(data.Fox[0].Female);
 
-				var chart = donut()
+				var chart = donut("Visualizations")
 			        .$el(d3.select('#donut'))
 			        .data(datas)
-			        .render();
+			        .render(dat);
 					// donutChart('','#donut', 'all', 'mangafox');
 
 				var toggles = d3plus.form()
@@ -205,16 +214,20 @@
 						console.log(d);
 						if(d == 'mf'){
 							
-							datas["Female"] =  Math.round( (Number(data.Fox[0].Female)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100 );
-	        				datas["Male"] = Math.round((Number(data.Fox[1].Male)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100);
-							chart.data(datas).render();
+							datas["Female"] =  Math.round((Number(data.Fox[1].Male)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100);
+	        				datas["Male"] = Math.round( (Number(data.Fox[0].Female)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100 );
+							dat["Female"] = Number(data.Fox[1].Male);
+							dat["Male"] = Number(data.Fox[0].Female);
+							chart.data(datas).render(dat);
 						}
 						else
 						{
 							
-							datas["Female"] =  Math.round( (Number(data.Here[0].Female)/(Number(data.Here[0].Female) + Number(data.Here[1].Male)))*100 );
-	        				datas["Male"] = Math.round((Number(data.Here[1].Male)/(Number(data.Here[0].Female) + Number(data.Here[1].Male)))*100);
-							chart.data(datas).render();
+							datas["Female"] = Math.round((Number(data.Here[1].Male)/(Number(data.Here[0].Female) + Number(data.Here[1].Male)))*100);
+	        				datas["Male"] =  Math.round( (Number(data.Here[0].Female)/(Number(data.Here[0].Female) + Number(data.Here[1].Male)))*100 );
+							dat["Female"] = Number(data.Fox[1].Male);
+							dat["Male"] = Number(data.Fox[0].Female);
+							chart.data(datas).render(dat);
 						}
 							
 

@@ -91,7 +91,7 @@ chart.selectAll("rect")
  .duration(800)
  .attr("width", function(d) { return x(d); });
 
-var rect = d3.select('svg')
+var rect = d3.select('svg.chart')
             .selectAll('.bar')
             .on('mouseover', tip.show)
             .on('mouseout', tip.hide);
