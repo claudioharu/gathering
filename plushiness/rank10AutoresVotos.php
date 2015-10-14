@@ -7,13 +7,11 @@ session_start();
 
 
 
-$sql = 'select X.name, baka.author, visual  from 
-	(select name, author, visual, status from MangaFox_Mangas UNION all 
-	select name, author, visual, status from MangaHere_Mangas) as X,
-	bakaUpdates_Stats as baka
-	where baka.name = X.name
-	group by X.author
-	order by visual Desc limit 10';
+$sql = 'select x.name, x.author, avg(votes) as visual
+from MangaFox_Mangas as x, bakaUpdates_Stats as y
+where x.name = y.name
+group by x.author
+order by avg(votes) Desc limit 10';
 
 $result = $conn->query($sql);
 

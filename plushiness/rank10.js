@@ -18,7 +18,6 @@ function abbreviateNumber(value) {
 /*
 People.php
 */
-
 function rank10Autores(datas, id){
 
 var dat = [];
@@ -26,28 +25,32 @@ var cat = [];
 var ticks = []
 for (i=0; i < datas.length; i++)
 {
-   console.log(datas[i].value);
+   console.log(Math.round(datas[i].value));
    // console.log(datas[i].label);
    cat.push(datas[i].label);
-   dat.push(datas[i].value);
-   ticks.push(281323*i);
+   dat.push(Math.round(datas[i].value));
+   // ticks.push(1000*i);
 }
+
+// var x = d3.scale.linear().range([height, 0]);
+// var x = d3.scale.linear().range([0, 900]).domain([0, dat[dat.length-1]]);
+
 // console.log(d3.sum(dat));
 var test = dat.map(abbreviateNumber);
-console.log(test);
+// console.log(test);
 
-var data = [];
-for (i=0; i < dat.length; i++)
-{
-   data.push(dat[i]/d3.sum(dat)*100);
-}
+// var data = [];
+// for (i=0; i < dat.length; i++)
+// {
+//    data.push(dat[i]/d3.sum(dat)*100);
+// }
 
 var tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d,i) {
     console.log(x(d));
-    return "<strong>Number of Votes: </strong><span style='color:red'>"+ dat[i]+ "</span>";
+    return "<strong>Votes AVG : </strong><span style='color:red'>"+ dat[i]+ "</span>";
   });
 
 var left_width = 200;
@@ -60,10 +63,13 @@ var bar_w = 650,
     bar_padding = 5;
   
 var height = (bar_h + bar_padding * 2) * cat.length;
+
 var x = d3.scale.linear()
-      .domain([0, d3.max(data)])
+      .domain([0, d3.max(dat)])
       .rangeRound([0, bar_w]);
-  
+
+ticks = x.ticks(10);
+
 var y = d3.scale.linear()
        .domain([0, 1])
        .range([0, bar_h + bar_padding]); // rangeRound to avoid antialiasing artifacts.
@@ -71,7 +77,7 @@ var y = d3.scale.linear()
 var chart = d3.select(id).append("svg")
      .attr("class", "chart")
      .attr("width", width)
-     .attr("height", (bar_h + bar_padding) * data.length+30)
+     .attr("height", (bar_h + bar_padding) * dat.length+30)
           // .attr("height", 1050)
      .append("g")
      .attr("transform", "translate(10, 20)");
@@ -79,7 +85,7 @@ var chart = d3.select(id).append("svg")
 chart.call(tip);
 
 chart.selectAll("rect")
- .data(data)
+ .data(dat)
  .enter()
  .append("rect")
  .attr("class", "bar")
@@ -94,12 +100,15 @@ chart.selectAll("rect")
 var rect = d3.select('svg.chart')
             .selectAll('.bar')
             .on('mouseover', tip.show)
-            .on('mouseout', tip.hide);
+            .on('mouseout', tip.hide)
+            .on('click', function(d,i){
+              console.log(cat[i]);
+            });
 
 console.log(rect);
 
 chart.selectAll("line")
-  .data(x.ticks(6))
+  .data(x.ticks(10))
   .enter().append("line")
   .attr("x1", function(d) { return x(d) + left_width; })
   .attr("x2", function(d) { return x(d) + left_width; })
@@ -107,7 +116,7 @@ chart.selectAll("line")
   .attr("y2",  (bar_h + bar_padding * 2) * cat.length-40);
 
 chart.selectAll(".rule")
-  .data(x.ticks(6))
+  .data(x.ticks(10))
   .enter().append("text")
   .attr("class", "rule")
   .attr("x", function(d,i) { return x(d) + left_width; })
@@ -118,7 +127,7 @@ chart.selectAll(".rule")
   .text(function(d,i) { return abbreviateNumber(ticks[i]); });
 
 chart.selectAll("text.values")
- .data(data)
+ .data(dat)
  .enter().append("text")
  .attr("width", bar_w)
  .attr("x", function(d) { return x(d) + left_width; })
@@ -128,8 +137,8 @@ chart.selectAll("text.values")
  .attr("dy", ".36em")
  .attr("text-anchor", "end")
  .transition().delay(function (d,i){ return i * 600;})
- .duration(800)
- .text(function(d,i) { return abbreviateNumber(dat[i]); });
+ .duration(800);
+ // .text(function(d,i) { return abbreviateNumber(dat[i]); });
  
 
 chart.selectAll("text.name")
@@ -161,32 +170,32 @@ function rankPop(datas, id, site, filter){
        console.log(site);
        // console.log(datas[i].label);
        cat.push(datas[0].mangafox[i].name);
-       dat.push(datas[0].mangafox[i].value);
+       dat.push(Number(datas[0].mangafox[i].value));
      }
      else
      {
         console.log(site);
         cat.push(datas[0].mangahere[i].name);
-        dat.push(datas[0].mangahere[i].value);
+        dat.push(Number(datas[0].mangahere[i].value));
      }
-     ticks.push(281323*i);
+     // ticks.push(281323*i);
   }
   // console.log(d3.sum(dat));
   var test = dat.map(abbreviateNumber);
   console.log(test);
 
-  var data = [];
-  for (i=0; i < dat.length; i++)
-  {
-     data.push(dat[i]/d3.sum(dat)*100);
-  }
+  // var data = [];
+  // for (i=0; i < dat.length; i++)
+  // {
+  //    data.push(dat[i]/d3.sum(dat))*100);
+  // }
 
   var tips = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
     .html(function(d,i) {
       console.log(x(d));
-      return "<strong>Number of Votes: </strong><span style='color:red'>"+ dat[i]+ "</span>";
+      return "<strong>Number of Visualizations: </strong><span style='color:red'>"+ dat[i]+ "</span>";
     });
 
   var left_width = 200;
@@ -200,9 +209,11 @@ function rankPop(datas, id, site, filter){
     
   var height = (bar_h + bar_padding * 2) * cat.length;
   var x = d3.scale.linear()
-        .domain([0, d3.max(data)])
+        .domain([0, d3.max(dat)])
         .rangeRound([0, bar_w]);
-    
+  
+  ticks = x.ticks(10);
+
   var y = d3.scale.linear()
          .domain([0, 1])
          .range([0, bar_h + bar_padding]); // rangeRound to avoid antialiasing artifacts.
@@ -210,7 +221,7 @@ function rankPop(datas, id, site, filter){
   var chart = d3.select(id).append("svg")
        .attr("class", "chart")
        .attr("width", width)
-       .attr("height", (bar_h + bar_padding) * data.length+30)
+       .attr("height", (bar_h + bar_padding) * dat.length+30)
             // .attr("height", 1050)
        .append("g")
        .attr("transform", "translate(80, 20)");
@@ -218,7 +229,7 @@ function rankPop(datas, id, site, filter){
   chart.call(tips);
 
   chart.selectAll("rect")
-   .data(data)
+   .data(dat)
    .enter()
    .append("rect")
    .attr("class", "bar")
@@ -238,7 +249,7 @@ function rankPop(datas, id, site, filter){
   // console.log(rect);
 
   chart.selectAll("line")
-    .data(x.ticks(6))
+    .data(x.ticks(10))
     .enter().append("line")
     .attr("x1", function(d) { return x(d) + left_width; })
     .attr("x2", function(d) { return x(d) + left_width; })
@@ -246,7 +257,7 @@ function rankPop(datas, id, site, filter){
     .attr("y2",  (bar_h + bar_padding * 2) * cat.length-40);
 
   chart.selectAll(".rule")
-    .data(x.ticks(6))
+    .data(x.ticks(10))
     .enter().append("text")
     .attr("class", "rule")
     .attr("x", function(d,i) { return x(d) + left_width; })
@@ -257,7 +268,7 @@ function rankPop(datas, id, site, filter){
     .text(function(d,i) { return abbreviateNumber(ticks[i]); });
 
   chart.selectAll("text.values")
-   .data(data)
+   .data(dat)
    .enter().append("text")
    .attr("width", bar_w)
    .attr("x", function(d) { return x(d) + left_width; })
@@ -300,33 +311,32 @@ function rankWorst(datas, id, site, filter){
        console.log(site);
        // console.log(datas[i].label);
        cat.push(datas[0].mangafox[i].name);
-       dat.push(datas[0].mangafox[i].value);
+       dat.push(Number(datas[0].mangafox[i].value));
      }
      else
      {
         console.log(site);
         cat.push(datas[0].mangahere[i].name);
-        dat.push(datas[0].mangahere[i].value);
+        dat.push(Number(datas[0].mangahere[i].value));
      }
-     ticks.push(281323*i);
+     // ticks.push(281323*i);
   }
   // console.log(d3.sum(dat));
   var test = dat.map(abbreviateNumber);
   console.log(test);
-
-  var data = [];
-  for (i=0; i < dat.length; i++)
-  {
-     data.push(dat[i]/d3.sum(dat)*100);
-  }
-  console.log('bbbb');
+  console.log("AAAA"+d3.max(dat));
+  console.log(dat);
+  // var data = [];
+  // for (i=0; i < dat.length; i++)
+  // {
+  //    data.push((dat[i]/d3.sum(dat))*100);
+  // }
   var tipw = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
     .html(function(d,i) {
-      console.log('aaaaaa');
       console.log(x(d));
-      return "<strong>Number of Votes: </strong><span style='color:red'>"+ dat[i]+ "</span>";
+      return "<strong>Number of Visual: </strong><span style='color:red'>"+ dat[i]+ "</span>";
     });
 
   var left_width = 200;
@@ -340,9 +350,11 @@ function rankWorst(datas, id, site, filter){
     
   var height = (bar_h + bar_padding * 2) * cat.length;
   var x = d3.scale.linear()
-        .domain([0, d3.max(data)])
+        .domain([0,  d3.max(dat, function(d) { console.log(d); return d })])
         .rangeRound([0, bar_w]);
-    
+  
+  ticks = x.ticks();
+
   var y = d3.scale.linear()
          .domain([0, 1])
          .range([0, bar_h + bar_padding]); // rangeRound to avoid antialiasing artifacts.
@@ -350,7 +362,7 @@ function rankWorst(datas, id, site, filter){
   var chart = d3.select(id).append("svg")
        .attr("class", "chart")
        .attr("width", width)
-       .attr("height", (bar_h + bar_padding) * data.length+30)
+       .attr("height", (bar_h + bar_padding) * dat.length+30)
             // .attr("height", 1050)
        .append("g")
        .attr("transform", "translate(80, 20)");
@@ -358,7 +370,7 @@ function rankWorst(datas, id, site, filter){
   chart.call(tipw);
 
   chart.selectAll("rect")
-   .data(data)
+   .data(dat)
    .enter()
    .append("rect")
    .attr("class", "bar")
@@ -379,7 +391,7 @@ function rankWorst(datas, id, site, filter){
   console.log(rect);
 
   chart.selectAll("line")
-    .data(x.ticks(6))
+    .data(x.ticks(10))
     .enter().append("line")
     .attr("x1", function(d) { return x(d) + left_width; })
     .attr("x2", function(d) { return x(d) + left_width; })
@@ -387,7 +399,7 @@ function rankWorst(datas, id, site, filter){
     .attr("y2",  (bar_h + bar_padding * 2) * cat.length-40);
 
   chart.selectAll(".rule")
-    .data(x.ticks(6))
+    .data(x.ticks(10))
     .enter().append("text")
     .attr("class", "rule")
     .attr("x", function(d,i) { return x(d) + left_width; })
@@ -398,7 +410,7 @@ function rankWorst(datas, id, site, filter){
     .text(function(d,i) { return abbreviateNumber(ticks[i]); });
 
   chart.selectAll("text.values")
-   .data(data)
+   .data(dat)
    .enter().append("text")
    .attr("width", bar_w)
    .attr("x", function(d) { return x(d) + left_width; })
@@ -445,7 +457,7 @@ function rankWorstPublisher(datas, id, site, filter){
         cat.push(datas[0].mangahere[i].name);
         dat.push(datas[0].mangahere[i].value);
      }
-     ticks.push(281323*i);
+     // ticks.push(281323*i);
   }
   // console.log(d3.sum(dat));
   var test = dat.map(abbreviateNumber);
@@ -454,7 +466,7 @@ function rankWorstPublisher(datas, id, site, filter){
   var data = [];
   for (i=0; i < dat.length; i++)
   {
-     data.push(dat[i]/d3.sum(dat)*100);
+     data.push((dat[i]/d3.sum(dat))*100);
   }
   // console.log('bbbb');
   var tipw = d3.tip()
@@ -477,9 +489,12 @@ function rankWorstPublisher(datas, id, site, filter){
     
   var height = (bar_h + bar_padding * 2) * cat.length;
   var x = d3.scale.linear()
-        .domain([0, d3.max(data)])
+        .domain([0, d3.max(dat)])
         .rangeRound([0, bar_w]);
-    
+
+  
+  ticks = x.ticks(10);
+
   var y = d3.scale.linear()
          .domain([0, 1])
          .range([0, bar_h + bar_padding]); // rangeRound to avoid antialiasing artifacts.
@@ -487,7 +502,7 @@ function rankWorstPublisher(datas, id, site, filter){
   var chart = d3.select(id).append("svg")
        .attr("class", "chart")
        .attr("width", width)
-       .attr("height", (bar_h + bar_padding) * data.length+30)
+       .attr("height", (bar_h + bar_padding) * dat.length+30)
             // .attr("height", 1050)
        .append("g")
        .attr("transform", "translate(80, 20)");
@@ -495,7 +510,7 @@ function rankWorstPublisher(datas, id, site, filter){
   chart.call(tipw);
 
   chart.selectAll("rect")
-   .data(data)
+   .data(dat)
    .enter()
    .append("rect")
    .attr("class", "bar")
@@ -516,7 +531,7 @@ function rankWorstPublisher(datas, id, site, filter){
   // console.log(rect);
 
   chart.selectAll("line")
-    .data(x.ticks(6))
+    .data(x.ticks(10))
     .enter().append("line")
     .attr("x1", function(d) { return x(d) + left_width; })
     .attr("x2", function(d) { return x(d) + left_width; })
@@ -524,7 +539,7 @@ function rankWorstPublisher(datas, id, site, filter){
     .attr("y2",  (bar_h + bar_padding * 2) * cat.length-40);
 
   chart.selectAll(".rule")
-    .data(x.ticks(6))
+    .data(x.ticks(10))
     .enter().append("text")
     .attr("class", "rule")
     .attr("x", function(d,i) { return x(d) + left_width; })
@@ -535,7 +550,7 @@ function rankWorstPublisher(datas, id, site, filter){
     .text(function(d,i) { return abbreviateNumber(ticks[i]); });
 
   chart.selectAll("text.values")
-   .data(data)
+   .data(dat)
    .enter().append("text")
    .attr("width", bar_w)
    .attr("x", function(d) { return x(d) + left_width; })
@@ -581,7 +596,7 @@ function rankPublisher(datas, id, site, filter){
         cat.push(datas[0].mangahere[i].name);
         dat.push(datas[0].mangahere[i].value);
      }
-     ticks.push(281323*i);
+     // ticks.push(281323*i);
   }
   // console.log(d3.sum(dat));
   var test = dat.map(abbreviateNumber);
@@ -590,7 +605,10 @@ function rankPublisher(datas, id, site, filter){
   var data = [];
   for (i=0; i < dat.length; i++)
   {
-     data.push(dat[i]/d3.sum(dat)*100);
+    if(i == 0)
+      data.push(500000);
+    else
+      data.push(dat[i]);
   }
   var tipw = d3.tip()
     .attr('class', 'd3-tip')
@@ -613,7 +631,11 @@ function rankPublisher(datas, id, site, filter){
   var x = d3.scale.linear()
         .domain([0, d3.max(data)])
         .rangeRound([0, bar_w]);
-    
+  
+  ticks =d3.scale.linear()
+        .domain([0, d3.max(dat)])
+        .rangeRound([0, bar_w]).ticks(10);
+
   var y = d3.scale.linear()
          .domain([0, 1])
          .range([0, bar_h + bar_padding]); // rangeRound to avoid antialiasing artifacts.
@@ -650,7 +672,7 @@ function rankPublisher(datas, id, site, filter){
   console.log(rect);
 
   chart.selectAll("line")
-    .data(x.ticks(6))
+    .data(x.ticks(10))
     .enter().append("line")
     .attr("x1", function(d) { return x(d) + left_width; })
     .attr("x2", function(d) { return x(d) + left_width; })
@@ -658,7 +680,7 @@ function rankPublisher(datas, id, site, filter){
     .attr("y2",  (bar_h + bar_padding * 2) * cat.length-40);
 
   chart.selectAll(".rule")
-    .data(x.ticks(6))
+    .data(x.ticks(10))
     .enter().append("text")
     .attr("class", "rule")
     .attr("x", function(d,i) { return x(d) + left_width; })
