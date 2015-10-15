@@ -46,3 +46,20 @@
   top: 100%;
   left: 0;
 }
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #c1c1c1;
+  shape-rendering: crispEdges;
+}
+
+
+.x.axis path {
+  display: none;
+}
+
+.bar {
+  stroke: white;
+  fill: steelblue;
+}

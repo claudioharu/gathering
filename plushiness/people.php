@@ -241,9 +241,40 @@
 
 		<script>
 
-			d3.json('rank10AutoresVotos.php', function(data){
-				rank10Autores(data,'.rank');
+
+			d3.json('rank10AutoresVotosFox.php', function(data){
+				// console.log(data[0].chart1);
+				rank10Autores(data[0].chart1,'.rank');
 			});
+
+			var sampleDataRankPop = [
+			  {"group": "MangaFox"},
+			  {"group": "MangaHere"}
+			];
+
+			var togglesMap = d3plus.form()
+			  .container("div.Menu2")
+			  .data(sampleDataRankPop)
+			  .focus("MangaFox", function(d){
+			      if(d == "MangaFox"){
+			      	console.log("ya");
+			      	d3.select('.rank svg').remove();
+			      	d3.json('rank10AutoresVotosFox.php', function(data){
+						rank10Autores(data[0].chart1,'.rank');
+					});
+			      	
+			      }
+			      else{
+			      	
+			      	d3.select('.rank svg').remove();
+			      	d3.json('rank10AutoresVotosHere.php', function(data){
+						rank10Autores(data,'.rank');
+					});
+			      }
+			    })
+			  .id("group")
+			  .type("toggle")
+			  .draw();
 
 		</script>
 	</div>
