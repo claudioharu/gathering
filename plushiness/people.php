@@ -1,3 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<style>
+@font-face {
+      font-family: 'fontello';
+      src: url('./font/fontello.eot?93932919');
+      src: url('./font/fontello.eot?93932919#iefix') format('embedded-opentype'),
+           url('./font/fontello.woff?93932919') format('woff'),
+           url('./font/fontello.ttf?93932919') format('truetype'),
+           url('./font/fontello.svg?93932919#fontello') format('svg');
+      font-weight: normal;
+      font-style: normal;
+    }
+     
+     
+    .demo-icon
+    {
+      font-family: "fontello";
+      font-style: normal;
+      font-weight: normal;
+      speak: none;
+     
+      display: inline-block;
+      text-decoration: inherit;
+      width: 1em;
+      margin-right: .2em;
+      text-align: center;
+      /* opacity: .8; */
+     
+      /* For safety - reset parent styles, that can break glyph codes*/
+      font-variant: normal;
+      text-transform: none;
+     
+      /* fix buttons height, for twitter bootstrap */
+      line-height: 1em;
+     
+      /* Animation center compensation - margins should be symmetric */
+      /* remove if not needed */
+      margin-left: .2em;
+     
+      /* You can be more comfortable with increased icons size */
+      /* font-size: 120%; */
+     
+      /* Font smoothing. That was taken from TWBS */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+     
+      /* Uncomment for 3D effect */
+      /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+    }
+     </style>
 
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -18,7 +69,7 @@
 <script src="rank10.js"></script>
 <script src="donut.js"></script>
 <link rel="stylesheet" type="text/css" href="barChart.css">
-
+<link rel="stylesheet" href="css/animation.css"><!--[if IE 7]><link rel="stylesheet" href="css/fontello-ie7.css"><![endif]-->
 
 
 
@@ -30,7 +81,7 @@
 <div id="header-wrapper">
 	<div id="header" class="container">
 		<div id="logo">
-			<span class="icon icon-globe"></span>
+			<i class="demo-icon icon-cartoons1" style="font-size:100px; color:black">&#xe800;</i> 
 			<h1><a href="./visualizer.php">MangaVis</a></h1>
 			<!-- <span>Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a></span> -->
 		</div>
@@ -104,10 +155,14 @@
 
 				<tr>					
 					<td  style="width: 100%; height:90%;">
+						<div class="donutA1">
 						<div align="center" id="donut" style="margin-top:20px "></div>
+						</div>
 					</td>
 					<td  style="width: 100%; height:90%;">
+						<div class="donutA2">
 						<div align="center" id="donut2" style="margin-top:20px "></div>
+						</div>
 					</td>
 				</tr>
 
@@ -130,7 +185,6 @@
 					<td  style="width: 100%; height:90%;">
 					
 						<div class="rank">
-
 						</div>
 						
 					</td>
@@ -155,7 +209,7 @@
 				dat2["Male"] = Number(data.Fox[1].Male);
 				// console.log(datas2);	       
 
-				var chart = donut("Votes")
+				var chart = donut("Votes", "#donut2")
 			        .$el(d3.select('#donut2'))
 			        .data(datas2)
 			        .render(dat2);
@@ -191,10 +245,11 @@
 		</script>
 
 		<script>
-			var datas = [];
-			var dat = [];
+			
 
 	        d3.json('donutValuesVisual.php', function(data){
+	        	var datas = [];
+				var dat = [];
 	        	// console.log(data.Fox[0]);
 	        	datas["Female"] =  Math.round((Number(data.Fox[1].Male)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100);
 	        	datas["Male"] = Math.round( (Number(data.Fox[0].Female)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100 );
@@ -202,39 +257,62 @@
 				dat["Female"] = Number(data.Fox[1].Male);
 				dat["Male"] =  Number(data.Fox[0].Female);
 
-				var chart = donut("Visualizations")
+				donut("Visualizations")
 			        .$el(d3.select('#donut'))
 			        .data(datas)
 			        .render(dat);
 					// donutChart('','#donut', 'all', 'mangafox');
+			});
 
-				var toggles = d3plus.form()
-					.data("[name=toggles]")
-					.focus("mf",function(d){
-						console.log(d);
-						if(d == 'mf'){
-							
+			var toggles = d3plus.form()
+				.data("[name=toggles]")
+				.focus("mf",function(d){
+					console.log(d);
+					if(d == 'mf'){
+						d3.json('donutValuesVisual.php', function(data){
+							var datas = [];
+							var dat = [];
 							datas["Female"] =  Math.round((Number(data.Fox[1].Male)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100);
 	        				datas["Male"] = Math.round( (Number(data.Fox[0].Female)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100 );
 							dat["Female"] = Number(data.Fox[1].Male);
 							dat["Male"] = Number(data.Fox[0].Female);
-							chart.data(datas).render(dat);
-						}
-						else
-						{
+							$('#donut').remove();
+							$('div.donutA1').append('<div align="center" id="donut" style="margin-top:20px "></div>');
 							
+							// chart.data(datas).render(dat);
+							donut("Visualizations")
+						        .$el(d3.select('#donut'))
+						        .data(datas)
+						        .render(dat);
+							});
+
+					}
+					else
+					{
+						d3.json('donutValuesVisual.php', function(data){
+							var datas = [];
+							var dat = [];
 							datas["Female"] = Math.round((Number(data.Here[1].Male)/(Number(data.Here[0].Female) + Number(data.Here[1].Male)))*100);
 	        				datas["Male"] =  Math.round( (Number(data.Here[0].Female)/(Number(data.Here[0].Female) + Number(data.Here[1].Male)))*100 );
 							dat["Female"] = Number(data.Fox[1].Male);
 							dat["Male"] = Number(data.Fox[0].Female);
-							chart.data(datas).render(dat);
-						}
-							
+							$('#donut').remove();
+							$('div.donutA1').append('<div align="center" id="donut" style="margin-top:20px "></div>');
+							console.log(datas);
+							// chart.data(datas).render(dat);
+							donut("Visualizations")
+						        .$el(d3.select('#donut'))
+						        .data(datas)
+						        .render(dat);
+							// chart.data(datas).render(dat);
+						});
+					}
+						
 
-					})
-					.draw();
+				})
+				.draw();
 
-			});
+			
 
 		</script>
 
@@ -244,7 +322,7 @@
 
 			d3.json('rank10AutoresVotosFox.php', function(data){
 				// console.log(data[0].chart1);
-				rank10Autores(data[0].chart1,'.rank');
+				rank10Autores(data,'.rank', 'fox');
 			});
 
 			var sampleDataRankPop = [
@@ -257,10 +335,10 @@
 			  .data(sampleDataRankPop)
 			  .focus("MangaFox", function(d){
 			      if(d == "MangaFox"){
-			      	console.log("ya");
+			      	// console.log("ya");
 			      	d3.select('.rank svg').remove();
 			      	d3.json('rank10AutoresVotosFox.php', function(data){
-						rank10Autores(data[0].chart1,'.rank');
+						rank10Autores(data,'.rank', 'fox');
 					});
 			      	
 			      }
@@ -268,7 +346,7 @@
 			      	
 			      	d3.select('.rank svg').remove();
 			      	d3.json('rank10AutoresVotosHere.php', function(data){
-						rank10Autores(data,'.rank');
+						rank10Autores(data,'.rank', 'here');
 					});
 			      }
 			    })

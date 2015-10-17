@@ -27,7 +27,55 @@ if (array_key_exists("personName", $_REQUEST)){
 }
 
 ?>
-
+<style>
+@font-face {
+      font-family: 'fontello';
+      src: url('./font/fontello.eot?93932919');
+      src: url('./font/fontello.eot?93932919#iefix') format('embedded-opentype'),
+           url('./font/fontello.woff?93932919') format('woff'),
+           url('./font/fontello.ttf?93932919') format('truetype'),
+           url('./font/fontello.svg?93932919#fontello') format('svg');
+      font-weight: normal;
+      font-style: normal;
+    }
+     
+     
+    .demo-icon
+    {
+      font-family: "fontello";
+      font-style: normal;
+      font-weight: normal;
+      speak: none;
+     
+      display: inline-block;
+      text-decoration: inherit;
+      width: 1em;
+      margin-right: .2em;
+      text-align: center;
+      /* opacity: .8; */
+     
+      /* For safety - reset parent styles, that can break glyph codes*/
+      font-variant: normal;
+      text-transform: none;
+     
+      /* fix buttons height, for twitter bootstrap */
+      line-height: 1em;
+     
+      /* Animation center compensation - margins should be symmetric */
+      /* remove if not needed */
+      margin-left: .2em;
+     
+      /* You can be more comfortable with increased icons size */
+      /* font-size: 120%; */
+     
+      /* Font smoothing. That was taken from TWBS */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+     
+      /* Uncomment for 3D effect */
+      /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+    }
+     </style>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -45,6 +93,7 @@ if (array_key_exists("personName", $_REQUEST)){
 <script  src="jquery.js"></script>
 <link href="https://nvd3-community.github.io/nvd3/build/nv.d3.min.css" rel="stylesheet">
 <script src="https://nvd3-community.github.io/nvd3/build/nv.d3.js"></script>
+<link rel="stylesheet" href="css/animation.css"><!--[if IE 7]><link rel="stylesheet" href="css/fontello-ie7.css"><![endif]-->
 
 
 
@@ -55,7 +104,7 @@ if (array_key_exists("personName", $_REQUEST)){
 <div id="header-wrapper">
 	<div id="header" class="container">
 		<div id="logo">
-			<span class="icon icon-globe"></span>
+			<i class="demo-icon icon-cartoons1" style="font-size:100px; color:black">&#xe800;</i> 
 			<h1><a href="./visualizer.php">MangaVis</a></h1>
 			<!-- <span>Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a></span> -->
 		</div>

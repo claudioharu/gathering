@@ -12,6 +12,11 @@ order by avg(votes) Desc limit 10';
 
 $result = $conn->query($sql);
 
+$sqlAuthor = array();
+$aux = "select released, votes, name, author
+from MangaFox_Mangas
+where author = '";
+
 foreach ($result as $row)
 {
 	$name = ucfirst($row['name']);
@@ -23,9 +28,27 @@ foreach ($result as $row)
 		$name = $name . " ...";
 	}
 	$children[] = array('label' => $author, 'value' =>$visual);
+
+	array_push($sqlAuthor, $aux . $author. "'");
+
 }
 
-// $b[] = array('key' => 'Titles AVG', 'values' => $children);
+foreach ($sqlAuthor as $s)
+{
+	$results = $conn->query($s);
+	
+	foreach ($results as $row)
+	{
+		$name = ucfirst($row['name']);
+		$author = ucfirst($row['author']);
+		$visual = $row['votes'];
+		$released = $row['released'];
+		
+		$child[] = array('author' => $author, 'released' => $released, 'votes' => $visual);
+	}
+
+}
+$b[] = array('chart1' => $children, 'chart2' => $child);
 header('Content-Type: application/json');
-echo json_encode($children);
+echo json_encode($b);
 ?>
