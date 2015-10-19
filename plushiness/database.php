@@ -60,7 +60,6 @@
 <link href="default.css" rel="stylesheet" type="text/css" media="all" />
 <link href="fonts.css" rel="stylesheet" type="text/css" media="all" />
 <link rel="stylesheet" type="text/css" href="search2.css">
-<script src="http://d3js.org/d3.v3.js"></script>
 <script src="http://www.d3plus.org/js/d3.js"></script>
 <script src="http://www.d3plus.org/js/d3plus.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
@@ -69,6 +68,7 @@
 <script src="rank10.js"></script>
 <link rel="stylesheet" type="text/css" href="barChart.css">
 <link rel="stylesheet" href="css/animation.css"><!--[if IE 7]><link rel="stylesheet" href="css/fontello-ie7.css"><![endif]-->
+<link rel="stylesheet" type="text/css" href="menu.css">
 
 
 <!--[if IE 6]><link href="default_ie6.css" rel="stylesheet" type="text/css" /><![endif]-->
@@ -127,53 +127,63 @@
 </div>
 
 <div id="wrapper">
+  <div id="graphMenu" align="middle">
+    <br><br>
+    <ul class="flatflipbuttons">
+        <li class='barChart'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b>Bar Chart</b></li>
+        <li class='heatMap'><a><span><img src="./icons/heat-map-32.png" /></span></a> <b>Heat Map</b></li>
+        <li class='treeMap'><a><span><img src="./icons/tree-structure-32.png" /></span></a> <b>Tree Map</b></li>
+      </ul>
+  </div>
+	<div id="featured-wrapper" style="margin-top: -80px;">
+    
 
-	<div id="featured-wrapper">
 		<div style="color:black; font-size: 1.0em; font-weight: 250;  font-family: Arial;">
 			<table style="width:70%; margin-left:100px; margin-top:-50px; border: 1px solid black; border-collapse: collapse; ">
-				<tr>
+				<tr class="1">
 					<td>
+
 						<h1 align="left"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;">Network of relationships between authors and artists </h1>
 					</td>
 				</tr>
 		
-				<tr>
+				<tr class="1">
 					<td>
 						 <div class="Menu" align="left" style="margin-left:150px"></div>
 					</td>
 				</tr>
 
-				<tr>
+				<tr class="1">
 					<td>
 						<div id="chart"></div>
 					</td>
 				</tr>
 
-        <tr>
+        <tr class='2'>
           <td>
             <h1 align="left"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;">Network of relationships between authors and artists </h1>
           </td>
         </tr>
     
-        <tr>
+        <tr class='2'> 
           <td>
              <div class="Menu2" align="left" style="margin-left:150px"></div>
           </td>
         </tr>
 
-        <tr>
+        <tr class='2'>
           <td>
             <div id="chart2"></div>
           </td>
         </tr>
 
-        <tr>
+        <tr class='3'>
           <td>
             <h1 align="left"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;">Network of relationships between authors and artists </h1>
           </td>
         </tr>
     
-        <tr>
+        <tr class='3'>
           <td>
              <div class="Menu3" align="left" style="margin-left:150px">
               </div>
@@ -186,43 +196,43 @@
           </td>
         </tr>
 
-        <tr>
+        <tr class='3'>
           <td>
             <div id="chart3"></div>
           </td>
         </tr>
 
-        <tr>
+        <tr class='4'>
           <td  style="width: 100%; height:90%; padding-top: 4.5em; padding-bottom: 2.5em">
             <h1 align="left"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;"> 10 Most popular publishers
         </tr>
     
-        <tr>
+        <tr class='4'>
           <td>
              <div class="Menu4" align="left" style="margin-left:150px">
             </div>
           </td>
         </tr>
 
-        <tr>
+        <tr class='4'>
           <td>
             <div align="left" class="publisherBars"></div>
           </td>
         </tr>
 
-         <tr>
+        <tr class='4'>
           <td  style="width: 100%; height:90%; padding-top: 4.5em; padding-bottom: 2.5em">
             <h1 align="left"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;"> 10 Less popular publishers
         </tr>
     
-        <tr>
+        <tr class='4'>
           <td>
              <div class="Menu5" align="left" style="margin-left:150px">
             </div>
           </td>
         </tr>
 
-        <tr>
+        <tr class='4'>
           <td>
             <div align="left" class="worstPublishersBars"></div>
           </td>
@@ -231,6 +241,69 @@
 				
 	</table>
 
+<script type="text/javascript">
+$('.4').hide();
+$('.3').hide();
+$('.1').hide();
+$('.2').hide();
+
+var set1 = false;
+var set2 = false;
+var set3 = false;
+
+  $('li.barChart')
+    .on('click', function(d){
+
+      if (!set1){
+        console.log("barChart");
+        $('.4').show();
+        set1 = true;
+      }
+      else
+      {
+        $('.4').hide();
+        set1 = false;
+      }
+
+    });
+
+  $('li.treeMap')
+    .on('click', function(d){
+      console.log("heatmap");
+      if (!set2){
+        console.log("barChart");
+        $('.3').show();
+        set2 = true;
+      }
+      else
+      {
+        $('.3').hide();
+        set2 = false;
+      }
+      // $('.3').hide();
+    });
+
+  $('li.heatMap')
+  .on('click', function(d){
+    console.log("treemap");
+
+    if (!set3){
+      console.log("barChart");
+      $('.1').show();
+      $('.2').show();
+      set3 = true;
+    }
+    else
+    {
+      $('.1').hide();
+      $('.2').hide();
+       set3 = false;
+    }
+    // $('.1').hide();
+    // $('.2').hide();
+  });
+
+</script>
 
 <script type="text/javascript">
 
@@ -462,7 +535,7 @@ function graficoTreeMap(data){
 
 
 
-	<script type="text/javascript">
+<script type="text/javascript">
 
 
 
