@@ -16,7 +16,7 @@ $sqlAuthor = array();
 $aux = "select released, avg(votes) as votes, author
 from MangaFox_Mangas
 where author = '";
-$aux2 = " group by released";
+$aux2 = "' group by released";
 
 foreach ($result as $row)
 {
@@ -30,7 +30,7 @@ foreach ($result as $row)
 	}
 	$children[] = array('label' => $author, 'value' =>$visual);
 
-	array_push($sqlAuthor, $aux . $author. "'" . $aux2);
+	array_push($sqlAuthor, $aux . $author. $aux2);
 
 }
 

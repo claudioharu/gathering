@@ -16,21 +16,31 @@ $sqlAuthor = array();
 $aux = "select released, sum(votes) as votes, author
 from MangaFox_Mangas
 where author = '";
-$aux2 = " group by released";
+$aux2 = "' group by released";
 
 foreach ($result as $row)
 {
 	$name = ucfirst($row['name']);
 	$author = ucfirst($row['author']);
 	$visual = $row['visual'];
-
+if (strpos($a,'are') !== false) {
+    echo 'true';
+}
+	if( strpos($author, 'Tamura ') !== false){
+		$author = 'Tamura Ryuuhei';
+	}
+	else if(strpos($author, 'Takahiro ') !==false)
+	{
+		$author = 'Takahiro';
+	}
 	if (strlen($name) > 53){
 		$name =  substr($name, 0, 48);
 		$name = $name . " ...";
 	}
 	$children[] = array('label' => $author, 'value' =>$visual);
-
-	array_push($sqlAuthor, $aux . $author. "'". $aux2);
+	// echo($aux . $author. $aux2);
+	// echo "<br>";
+	array_push($sqlAuthor, $aux . $author. $aux2);
 
 }
 
