@@ -198,8 +198,6 @@
 		<script>
 			var datas2 = [];
 			var dat2 = [];
-			// data["Female"] =  89;
-	  //       data["Male"] =10;
 
 	        d3.json('donutValuesVotes.php', function(data){
 	        	console.log(data.Fox[0]);
@@ -207,9 +205,8 @@
 	        	datas2["Male"] = Math.round((Number(data.Fox[1].Male)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100);
 				dat2["Female"] = Number(data.Fox[0].Female);
 				dat2["Male"] = Number(data.Fox[1].Male);
-				// console.log(datas2);	       
 
-				var chart = donut("Votes", "#donut2")
+				var chart2 = donut("Votes", "#donut2")
 			        .$el(d3.select('#donut2'))
 			        .data(datas2)
 			        .render(dat2);
@@ -217,14 +214,13 @@
 				var toggles2 = d3plus.form()
 					.data("[name=toggles2]")
 					.focus("mf2",function(d){
-						console.log(d);
+
 						if(d == 'mf2'){
-							
 							datas2["Female"] =  Math.round( (Number(data.Fox[0].Female)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100 );
 	        				datas2["Male"] = Math.round((Number(data.Fox[1].Male)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100);
 							dat2["Female"] = Number(data.Fox[0].Female);
 							dat2["Male"] = Number(data.Fox[1].Male);
-							chart.data(datas2).render(dat2);
+							chart2.data(datas2).render(dat2);
 						}
 						else
 						{
@@ -233,13 +229,10 @@
 	        				datas2["Male"] = Math.round((Number(data.Here[1].Male)/(Number(data.Here[0].Female) + Number(data.Here[1].Male)))*100);
 							dat2["Female"] = Number(data.Fox[0].Female);
 							dat2["Male"] = Number(data.Fox[1].Male);
-							chart.data(datas2).render(dat2);
+							chart2.data(datas2).render(dat2);
 						}
-							
-
 					})
 					.draw();
-
 			});
 
 		</script>
@@ -257,61 +250,61 @@
 				dat["Female"] = Number(data.Fox[1].Male);
 				dat["Male"] =  Number(data.Fox[0].Female);
 
-				donut("Visualizations")
+				chart = donut("Visualizations")
 			        .$el(d3.select('#donut'))
 			        .data(datas)
 			        .render(dat);
 					// donutChart('','#donut', 'all', 'mangafox');
-			});
+			
 
 			var toggles = d3plus.form()
 				.data("[name=toggles]")
 				.focus("mf",function(d){
 					console.log(d);
 					if(d == 'mf'){
-						d3.json('donutValuesVisual.php', function(data){
-							var datas = [];
-							var dat = [];
-							datas["Female"] =  Math.round((Number(data.Fox[1].Male)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100);
-	        				datas["Male"] = Math.round( (Number(data.Fox[0].Female)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100 );
-							dat["Female"] = Number(data.Fox[1].Male);
-							dat["Male"] = Number(data.Fox[0].Female);
-							$('#donut').remove();
-							$('div.donutA1').append('<div align="center" id="donut" style="margin-top:20px "></div>');
-							
-							// chart.data(datas).render(dat);
-							donut("Visualizations")
-						        .$el(d3.select('#donut'))
-						        .data(datas)
-						        .render(dat);
-							});
+						//d3.json('donutValuesVisual.php', function(data){
+						// var datas = [];
+						// var dat = [];
+						datas["Female"] =  Math.round((Number(data.Fox[1].Male)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100);
+        				datas["Male"] = Math.round( (Number(data.Fox[0].Female)/(Number(data.Fox[0].Female) + Number(data.Fox[1].Male)))*100 );
+						dat["Female"] = Number(data.Fox[1].Male);
+						dat["Male"] = Number(data.Fox[0].Female);
+						// $('#donut').remove();
+						// $('div.donutA1').append('<div align="center" id="donut" style="margin-top:20px "></div>');
+						chart.data(datas).render(dat);
+						// chart.data(datas).render(dat);
+						// donut("Visualizations")
+					 //        .$el(d3.select('#donut'))
+					 //        .data(datas)
+					 //        .render(dat);
+						// });
 
 					}
 					else
 					{
-						d3.json('donutValuesVisual.php', function(data){
-							var datas = [];
-							var dat = [];
+						// d3.json('donutValuesVisual.php', function(data){
+							// var datas = [];
+							// var dat = [];
 							datas["Female"] = Math.round((Number(data.Here[1].Male)/(Number(data.Here[0].Female) + Number(data.Here[1].Male)))*100);
 	        				datas["Male"] =  Math.round( (Number(data.Here[0].Female)/(Number(data.Here[0].Female) + Number(data.Here[1].Male)))*100 );
 							dat["Female"] = Number(data.Fox[1].Male);
 							dat["Male"] = Number(data.Fox[0].Female);
-							$('#donut').remove();
-							$('div.donutA1').append('<div align="center" id="donut" style="margin-top:20px "></div>');
-							console.log(datas);
-							// chart.data(datas).render(dat);
-							donut("Visualizations")
-						        .$el(d3.select('#donut'))
-						        .data(datas)
-						        .render(dat);
-							// chart.data(datas).render(dat);
-						});
-					}
-						
+							chart.data(datas).render(dat);
 
+							// $('#donut').remove();
+							// $('div.donutA1').append('<div align="center" id="donut" style="margin-top:20px "></div>');
+							// console.log(datas);
+							// chart.data(datas).render(dat);
+							// donut("Visualizations")
+						        // .$el(d3.select('#donut'))
+						        // .data(datas)
+						        // .render(dat);
+							// chart.data(datas).render(dat);
+						// });
+					}
 				})
 				.draw();
-
+		});
 			
 
 		</script>
