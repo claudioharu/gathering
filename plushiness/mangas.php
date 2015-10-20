@@ -66,6 +66,7 @@
 <script src="rank10.js"></script>
 <link rel="stylesheet" type="text/css" href="barChart.css">
 <link rel="stylesheet" href="css/animation.css"><!--[if IE 7]><link rel="stylesheet" href="css/fontello-ie7.css"><![endif]-->
+<link rel="stylesheet" type="text/css" href="menu.css">
 
 
 
@@ -104,22 +105,28 @@
 </div>
 
 <div id="wrapper">
-
-	<div id="featured-wrapper">
+  <div id="graphMenu" align="middle">
+    <br><br>
+    <ul class="flatflipbuttons">
+       <li class='barChart1'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b>10 Most Popular Titles</b></li>
+        <li class='barChart2'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b>10 Less Popular Titles</b></li>
+      </ul>
+  </div>
+	<div id="featured-wrapper" style="margin-top: -80px;">
 			<div id="container" class="div1">
 			<table  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
 				<!-- <tr><td>	Here you can blábláblá <br> Use the searchbar to ....</td></tr> -->
-				<tr>
+				<tr class="bar1">
 					<td style="padding-bottom: 1.5em;">
 						<h1 align="center" style="font-size:20px">Dez melhores </h1>
 					</td>
 				</tr>
-				<tr>
+				<tr class="bar1">
 					<td align="center">
 						  <div class="Menu1" align="left" style="margin-left:150px">
 					</td>
 				</tr>
-				<tr>					
+				<tr class="bar1">					
 					<td  style="width: 100%; height:90%; padding-bottom: 4.5em; ">
 						<div align="left" style="margin-left:150px">
 							<div class='mode1'>
@@ -143,18 +150,18 @@
 				</tr>
 
 
-				<tr>
+				<tr class="bar2">
 					<td style="padding-bottom: 1.5em;">
 						<h1 align="center" style="font-size:20px;">Dez piores </h1>
 					</td>
 				</tr>
 
-				<tr>
+				<tr class="bar2">
 					<td align="center">
 						  <div class="Menu2" align="left" style="margin-left:150px">
 					</td>
 				</tr>
-				<tr>					
+				<tr class="bar2">					
 					<td  style="width: 100%; height:90%;">
 						<div align="left" style="margin-left:150px">
 							<div class='mode1w'>
@@ -180,7 +187,7 @@
 					</td>
 				</tr>
 
-				<tr>					
+			<!-- 	<tr>					
 					<td  style="width: 100%; height:90%;">
 					
 						<div class="rankPublisher">
@@ -188,9 +195,46 @@
 						</div>
 						
 					</td>
-				</tr>
+				</tr> -->
 			</table>
 			</div>
+
+		<script type="text/javascript">
+
+			var bar1 = false;
+			var bar2 = false;
+			$('.bar1').hide();
+			$('.bar2').hide();
+
+
+			$('li.barChart1')
+				.on('click', function(d){
+
+				if (!bar1){
+					$('.bar1').show();
+					bar1 = true;
+				}
+				else
+				{
+					$('.bar1').hide();
+					bar1 = false;
+				}
+			});
+
+			$('li.barChart2')
+				.on('click', function(d){
+
+				if (!bar2){
+					$('.bar2').show();
+					bar2 = true;
+				}
+				else
+				{
+					$('.bar2').hide();
+					bar2 = false;
+				}
+			});
+		</script>
 		
 		<script type="text/javascript">
 

@@ -96,6 +96,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 <script src="groupedBars.js"></script>
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <link rel="stylesheet" href="css/animation.css"><!--[if IE 7]><link rel="stylesheet" href="css/fontello-ie7.css"><![endif]-->
+<link rel="stylesheet" type="text/css" href="menu.css">
 
 
 <!--[if IE 6]><link href="default_ie6.css" rel="stylesheet" type="text/css" /><![endif]-->
@@ -337,10 +338,15 @@ if (array_key_exists("mangaName", $_REQUEST)){
 		</table>
 		
 		</div>
+		<div style="margin-top:80px" align="middle">
+			<ul class="flatflipbuttons">
+	  	    <li class='chart'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b>Charts</b></li>
+	  		</ul>
+	  	</div>
 
 		<div id="container" class="viz1">
 
-			<table  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
+			<table style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
 				<tr>
 					<td>
 						<h1 align="center" style="font-size:20px">Network of relationships between authors and artists </h1>
@@ -364,6 +370,24 @@ if (array_key_exists("mangaName", $_REQUEST)){
 				</tr>
 			</table>
 		</div>
+
+		<script type="text/javascript">
+			var chart = false;
+			$('.viz1').hide();
+			$('li.chart')
+				.on('click', function(d){
+
+				if (!chart){
+					$('.viz1').show();
+					chart = true;
+				}
+				else
+				{
+					$('.viz1').hide();
+					chart = false;
+				}
+			});
+		</script>
 
 		<script type="text/javascript">
 

@@ -130,9 +130,12 @@
   <div id="graphMenu" align="middle">
     <br><br>
     <ul class="flatflipbuttons">
-        <li class='barChart'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b>Bar Chart</b></li>
-        <li class='heatMap'><a><span><img src="./icons/heat-map-32.png" /></span></a> <b>Heat Map</b></li>
+        <li class='heatMap1'><a><span><img src="./icons/heat-map-32.png" /></span></a> <b>Heat Map</b></li>
+        <li class='heatMap2'><a><span><img src="./icons/heat-map-32.png" /></span></a> <b>Heat Map</b></li>
         <li class='treeMap'><a><span><img src="./icons/tree-structure-32.png" /></span></a> <b>Tree Map</b></li>
+        <li class='barChart1'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b>10 Most popular</b></li>
+        <li class='barChart2'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b>10 Less popular</b></li>
+
       </ul>
   </div>
 	<div id="featured-wrapper" style="margin-top: -80px;">
@@ -220,19 +223,19 @@
           </td>
         </tr>
 
-        <tr class='4'>
+        <tr class='5'>
           <td  style="width: 100%; height:90%; padding-top: 4.5em; padding-bottom: 2.5em">
             <h1 align="left"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;"> 10 Less popular publishers
         </tr>
     
-        <tr class='4'>
+        <tr class='5'>
           <td>
              <div class="Menu5" align="left" style="margin-left:150px">
             </div>
           </td>
         </tr>
 
-        <tr class='4'>
+        <tr class='5'>
           <td>
             <div align="left" class="worstPublishersBars"></div>
           </td>
@@ -243,6 +246,7 @@
 
 <script type="text/javascript">
 $('.4').hide();
+$('.5').hide();
 $('.3').hide();
 $('.1').hide();
 $('.2').hide();
@@ -250,8 +254,10 @@ $('.2').hide();
 var set1 = false;
 var set2 = false;
 var set3 = false;
+var set4 = false;
+var set5 = false;
 
-  $('li.barChart')
+  $('li.barChart1')
     .on('click', function(d){
 
       if (!set1){
@@ -263,6 +269,22 @@ var set3 = false;
       {
         $('.4').hide();
         set1 = false;
+      }
+
+    });
+
+  $('li.barChart2')
+    .on('click', function(d){
+
+      if (!set4){
+        console.log("barChart");
+        $('.5').show();
+        set4 = true;
+      }
+      else
+      {
+        $('.5').hide();
+        set4 = false;
       }
 
     });
@@ -283,21 +305,36 @@ var set3 = false;
       // $('.3').hide();
     });
 
-  $('li.heatMap')
+  $('li.heatMap1')
   .on('click', function(d){
-    console.log("treemap");
-
     if (!set3){
-      console.log("barChart");
       $('.1').show();
-      $('.2').show();
+      // $('.2').show();
       set3 = true;
     }
     else
     {
       $('.1').hide();
-      $('.2').hide();
+      // $('.2').hide();
        set3 = false;
+    }
+    // $('.1').hide();
+    // $('.2').hide();
+  });
+
+    $('li.heatMap2')
+  .on('click', function(d){
+
+    if (!set5){
+      // $('.1').show();
+      $('.2').show();
+      set5 = true;
+    }
+    else
+    {
+      // $('.1').hide();
+      $('.2').hide();
+       set5 = false;
     }
     // $('.1').hide();
     // $('.2').hide();

@@ -94,6 +94,7 @@ if (array_key_exists("personName", $_REQUEST)){
 <link href="https://nvd3-community.github.io/nvd3/build/nv.d3.min.css" rel="stylesheet">
 <script src="https://nvd3-community.github.io/nvd3/build/nv.d3.js"></script>
 <link rel="stylesheet" href="css/animation.css"><!--[if IE 7]><link rel="stylesheet" href="css/fontello-ie7.css"><![endif]-->
+<link rel="stylesheet" type="text/css" href="menu.css">
 
 
 
@@ -267,10 +268,18 @@ if (array_key_exists("personName", $_REQUEST)){
 		</table>
 		</div>
 
+		<div id="graphMenu" align="middle" style="margin-top:80px">
+			<br><br>
+			<ul class="flatflipbuttons">
+				<li class='graphChart1'><a><span><img src="./icons/mind-map-32.png" /></span></a> <b>Social Network</b></li>
+				<li class='barChart'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b>Rank of titles</b></li>
+			</ul>
+		</div>
+
 		<div id="container" class="div2">
 
 			<table style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
-				<tr>
+				<tr >
 					<td>
 						<h1 align="center" style="font-size:20px">Network of relationships between authors and artists </h1>
 					</td>
@@ -292,7 +301,7 @@ if (array_key_exists("personName", $_REQUEST)){
 			</table>
 		</div>
 
-		<div id="container" class="div5">
+		<div id="container" class="div5" >
 
 			<table  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
 				<tr style="margin-bottom:100px;"> 
@@ -311,21 +320,61 @@ if (array_key_exists("personName", $_REQUEST)){
 			</table>
 				
 		</div>
-<button id="hide">Hide</button>
-<button id="show">Show</button>
+
+		<script type="text/javascript">
+			var graph1 = false;
+			var graph2 = false;
+			// $('.div2').hide();
+			var c = 0;
+			var intervalId = setInterval(function() {
+				if (++c === 3) {
+
+					$('.div2').hide();
+					$('.div5').hide();
+				    window.clearInterval(intervalId);
+				}
+				if($("path.d3plus_data").length){
+		    		d3.selectAll('.nv-bar')
+						.style("fill", $("path.d3plus_data", $('.div3')).attr("fill"));
+				}
+				else{
+					d3.selectAll('.nv-bar')
+						.style("fill", $("rect.d3plus_data", $('.div3')).eq(0).attr("fill"));
+
+				}
+			}, 100);
+
+			$('li.graphChart1')
+				.on('click', function(d){
+
+				if (!graph1){
+					$('.div2').show();
+					graph1 = true;
+				}
+				else
+				{
+					$('.div2').hide();
+					graph1 = false;
+				}
+			});
+
+			$('li.barChart')
+				.on('click', function(d){
+
+				if (!graph2){
+					$('.div5').show();
+					graph2 = true;
+				}
+				else
+				{
+					$('.div5').hide();
+					graph2 = false;
+				}
+			});
+		</script>
+
 		<script>
-		// $(document).ready(function(){
-    $("#hide").click(function(){
-        $(".div2").hide();
-    });
-    $("#show").click(function(){
-        $(".div2").show();
-    });
-// });
-		// $('.pintao').hide();
-		// id="zoom" g id="data"
-		// var color = $('#d3plus_viz').find('#data').find('d3plus_rect').eq(0).find('path.d3plus_data').attr('fill');
-		// console.log(color);
+
 		var counts = 0;
 		var intervalId = setInterval(function() {
 
@@ -335,16 +384,12 @@ if (array_key_exists("personName", $_REQUEST)){
 		    if($("path.d3plus_data").length){
 		    	d3.selectAll('.nv-bar')
 					.style("fill", $("path.d3plus_data", $('.div3')).attr("fill"));
-				d3.selectAll('circle.nv-legend-symbol')
-					.style("fill", $("path.d3plus_data", $('.div3')).attr("fill"));
+
 			}
 			else{
 				d3.selectAll('.nv-bar')
 					.style("fill", $("rect.d3plus_data", $('.div3')).eq(0).attr("fill"));
-				d3.selectAll('circle.nv-legend-symbol')
-					.style("fill", $("rect.d3plus_data", $('.div3')).eq(0).attr("fill"));
-				d3.selectAll('circle.nv-legend-symbol')
-					.style("stroke", $("rect.d3plus_data", $('.div3')).eq(0).attr("fill"));
+
 			}
 	    }, 100);
 
@@ -430,10 +475,11 @@ if (array_key_exists("personName", $_REQUEST)){
 						    }
 							d3.selectAll('.nv-bar')
 								.style("fill", $("rect.d3plus_data", $('.div3')).eq(0).attr("fill"));
-							d3.selectAll('circle.nv-legend-symbol')
-								.style("fill", $("rect.d3plus_data", $('.div3')).eq(0).attr("fill"));
-							d3.selectAll('circle.nv-legend-symbol')
-								.style("stroke", $("rect.d3plus_data", $('.div3')).eq(0).attr("fill"));
+							// d3.select('.nv-bar').selectAll('g.nv-series').remove();
+							// d3.selectAll('circle.nv-legend-symbol')
+							// 	.style("fill", $("rect.d3plus_data", $('.div3')).eq(0).attr("fill"));
+							// d3.selectAll('circle.nv-legend-symbol')
+							// 	.style("stroke", $("rect.d3plus_data", $('.div3')).eq(0).attr("fill"));
 						    }, 100);
 						
 						$.ajax({
@@ -476,6 +522,7 @@ if (array_key_exists("personName", $_REQUEST)){
 										// .tooltips(true)             //Show tooltips on hover.
 										// .transitionDuration(350)
 										.forceY([0,10])
+										.showLegend(false)
 										.showControls(false);        //Allow user to switch between "Grouped" and "Stacked" mode.
 										
 
@@ -533,6 +580,7 @@ if (array_key_exists("personName", $_REQUEST)){
 						// .tooltips(true)             //Show tooltips on hover.
 						// .transitionDuration(350)
 						.forceY([0,10])
+						.showLegend(false)
 						// .color(d3.scale.category20().range([0,10]))
 						.showControls(false);        //Allow user to switch between "Grouped" and "Stacked" mode.
 						

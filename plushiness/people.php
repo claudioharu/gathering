@@ -109,24 +109,32 @@
 </div>
 
 <div id="wrapper">
+  <div id="graphMenu" align="middle">
+    <br><br>
+	<ul class="flatflipbuttons">
+		<li class='donutChart1'><a><span><img src="./icons/donat-chart-32.png" /></span></a> <b>Donut Chart Visual</b></li>
+		<li class='donutChart2'><a><span><img src="./icons/donat-chart-32.png" /></span></a> <b>Donut Chart Votes</b></li>
+        <li class='barChart'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b>Ten Most famous</b></li>
 
-	<div id="featured-wrapper">
+	</ul>
+  </div>
+	<div id="featured-wrapper" style="margin-top: -80px;">
 
 		<div id="container" class="div1">
 			<div class="donutChart">
 			<table  style="width: 80%; height:70%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
 				
 				<tr> 
-					<td style="padding-bottom:2.4em">
-						<h1 align="center" style="font-size:20px">Pie Chart Visual</h1>
+					<td class="pie1" style="padding-bottom:2.4em">
+						<h1 align="center" style="font-size:20px">Donut Chart Visual</h1>
 					</td>
-					<td style="padding-bottom:2.4em">
-						<h1 align="center" style="font-size:20px">Pie Chart Votes</h1>
+					<td class="pie2"style="padding-bottom:2.4em">
+						<h1 align="center" style="font-size:20px">Donut Chart Votes</h1>
 					</td>
 				</tr>
 				
 				<tr>
-					<td>
+					<td class="pie1">
 						<div style="margin-left:100px" >
 
 							<legend for="toggles">Database:</legend>
@@ -139,7 +147,7 @@
 						</div>
 					</td>
 
-					<td>
+					<td class="pie2">
 						<div style="margin-left:100px " >
 
 							<legend for="toggles2">Database:</legend>
@@ -154,12 +162,12 @@
 				</tr>
 
 				<tr>					
-					<td  style="width: 100%; height:90%;">
+					<td class="pie1" style="width: 100%; height:90%;">
 						<div class="donutA1">
 						<div align="center" id="donut" style="margin-top:20px "></div>
 						</div>
 					</td>
-					<td  style="width: 100%; height:90%;">
+					<td class="pie2" style="width: 100%; height:90%;">
 						<div class="donutA2">
 						<div align="center" id="donut2" style="margin-top:20px "></div>
 						</div>
@@ -168,7 +176,7 @@
 
 			</table >
 		</div>
-			<table  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
+			<table class="chart1"  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
 				<tr style="margin-bottom:100px;"> 
 					<td style="padding-top:5.4em; padding-bottom:2.4em">
 						<h1 align="center" style="font-size:20px">10 Most famous authors</h1>
@@ -194,6 +202,57 @@
 			</table>
 				
 		</div>
+
+		<script type="text/javascript">
+			var pie1 = false;
+			var pie2 = false;
+			var bar = false;
+			$('.pie1').hide();
+			$('.pie2').hide();
+			$('.chart1').hide();
+
+			$('li.donutChart1')
+				.on('click', function(d){
+
+				if (!pie1){
+					$('.pie1').show();
+					pie1 = true;
+				}
+				else
+				{
+					$('.pie1').hide();
+					pie1 = false;
+				}
+			});
+
+			$('li.donutChart2')
+				.on('click', function(d){
+
+				if (!pie2){
+					$('.pie2').show();
+					pie2 = true;
+				}
+				else
+				{
+					$('.pie2').hide();
+					pie2 = false;
+				}
+			});
+
+			$('li.barChart')
+				.on('click', function(d){
+
+				if (!bar){
+					$('.chart1').show();
+					bar = true;
+				}
+				else
+				{
+					$('.chart1').hide();
+					bar = false;
+				}
+			});
+		</script>
 
 		<script>
 			var datas2 = [];
