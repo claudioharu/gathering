@@ -127,14 +127,29 @@
 </div>
 
 <div id="wrapper">
+
+  <div name="dataBaseInfos">
+    <table>
+      <tr>
+        <td>
+          <a href="http://mangafox.me/directory/"> <img src="http://www.userlogos.org/files/logos/43932_aleksandr009/mangafox_1.png?1417801905" width=255 height=200 ></img></a>
+        </td>
+        <td>
+        </td>
+      </tr>
+      
+    </table>
+    <img></img>
+  </div>
+
   <div id="graphMenu" align="middle">
     <br><br>
     <ul class="flatflipbuttons">
-        <li class='heatMap1'><a><span><img src="./icons/heat-map-32.png" /></span></a> <b>Heat Map</b></li>
-        <li class='heatMap2'><a><span><img src="./icons/heat-map-32.png" /></span></a> <b>Heat Map</b></li>
+        <li class='heatMap1'><a><span><img src="./icons/heat-map-32.png" /></span></a> <b>Hottest Genres (Visual)</b></li>
+        <li class='heatMap2'><a><span><img src="./icons/heat-map-32.png" /></span></a> <b>Hottest Genres (Votes)</b></li>
         <li class='treeMap'><a><span><img src="./icons/tree-structure-32.png" /></span></a> <b>Tree Map</b></li>
-        <li class='barChart1'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b>10 Most popular</b></li>
-        <li class='barChart2'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b>10 Less popular</b></li>
+        <li class='barChart1'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b align=left style="width:60%;">10 Most popular</b></li>
+        <li class='barChart2'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b align=left style="width:60%;">10 Less popular</b></li>
 
       </ul>
   </div>
@@ -146,7 +161,7 @@
 				<tr class="1">
 					<td>
 
-						<h1 align="left"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;">Network of relationships between authors and artists </h1>
+						<h1 align="left"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;">Hottest Genres by Number of Visualizations</h1>
 					</td>
 				</tr>
 		
@@ -164,7 +179,7 @@
 
         <tr class='2'>
           <td>
-            <h1 align="left"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;">Network of relationships between authors and artists </h1>
+            <h1 align="left"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;">Hottest Genres by Number of Votes </h1>
           </td>
         </tr>
     
@@ -207,7 +222,7 @@
 
         <tr class='4'>
           <td  style="width: 100%; height:90%; padding-top: 4.5em; padding-bottom: 2.5em">
-            <h1 align="left"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;"> 10 Most popular publishers
+            <h1 align="middle"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;"> 10 Most popular publishers
         </tr>
     
         <tr class='4'>
@@ -225,7 +240,7 @@
 
         <tr class='5'>
           <td  style="width: 100%; height:90%; padding-top: 4.5em; padding-bottom: 2.5em">
-            <h1 align="left"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;"> 10 Less popular publishers
+            <h1 align="middle"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;"> 10 Less popular publishers
         </tr>
     
         <tr class='5'>
@@ -472,7 +487,7 @@ function graficoTreeMap(data){
           .offset([-10, 0])
           .html(function(d) {
             // console.log(d);
-          return "<strong><a style='color:red'>"+ d.parent.name+ "</a></strong><br><strong>Size: </strong><span style='color:red'>"+ d.size + "</span>"+"<br><strong>Count: </strong><span style='color:red'>"+ d.count + "</span>";
+          return "<strong><a style='color:red'>"+ d.parent.name+ "</a></strong><br><strong>Number of titles: </strong><span style='color:red'>"+ d.size + "</span>"+"<br><strong>Number of authors: </strong><span style='color:red'>"+ d.count + "</span>";
       });
 
   var treemap = d3.layout.treemap()
