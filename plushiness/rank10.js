@@ -314,7 +314,7 @@ function rankPop(datas, id, site, filter){
     .offset([-10, 0])
     .html(function(d,i) {
       console.log(x(d));
-      return "<strong>Number of Visualizations: </strong><span style='color:red'>"+ dat[i]+ "</span>";
+      return "<strong>Number of Views: </strong><span style='color:red'>"+ dat[i]+ "</span>";
     });
 
   var left_width = 200;
@@ -442,9 +442,9 @@ function rankWorst(datas, id, site, filter){
   }
   // console.log(d3.sum(dat));
   var test = dat.map(abbreviateNumber);
-  console.log(test);
-  console.log("AAAA"+d3.max(dat));
-  console.log(dat);
+  // console.log(test);
+  // console.log("AAAA"+d3.max(dat));
+  // console.log(dat);
   // var data = [];
   // for (i=0; i < dat.length; i++)
   // {
@@ -455,7 +455,7 @@ function rankWorst(datas, id, site, filter){
     .offset([-10, 0])
     .html(function(d,i) {
       console.log(x(d));
-      return "<strong>Number of Visual: </strong><span style='color:red'>"+ dat[i]+ "</span>";
+      return "<strong>Number of Views: </strong><span style='color:red'>"+ dat[i]+ "</span>";
     });
 
   var left_width = 200;

@@ -1,4 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <style>
 @font-face {
@@ -109,6 +108,15 @@
 </div>
 
 <div id="wrapper">
+	<br><br><br><br><br><br>
+	<div >
+		<table style="width:70%; margin-left:250px; margin-top:-50px; ">
+			<!-- <tr><td align="left"><p><b>Final course assignment</b></p></td></tr> -->
+			<tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; " ><p>In this section we present information about authors and artists featurd in our databases.</p></td></tr>
+			<tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; "><p>Below, you will find gerneral information about these people.</a></p></td></tr>
+			<tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; "><p>If you, wish, you can view information about a specific person by typing its name into the search bar.</p></td></tr>
+		</table>
+	</div>
   <div id="graphMenu" align="middle">
     <br><br>
 	<ul class="flatflipbuttons">
@@ -126,10 +134,10 @@
 				
 				<tr> 
 					<td class="pie1" style="padding-bottom:2.4em">
-						<h1 align="center" style="font-size:20px">Donut Chart Visual</h1>
+						<h1 align="center" style="font-size:20px">Genre with More Views</h1>
 					</td>
 					<td class="pie2"style="padding-bottom:2.4em">
-						<h1 align="center" style="font-size:20px">Donut Chart Votes</h1>
+						<h1 align="center" style="font-size:20px">Genre with More Votes</h1>
 					</td>
 				</tr>
 				
@@ -179,7 +187,7 @@
 			<table class="chart1"  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
 				<tr style="margin-bottom:100px;"> 
 					<td style="padding-top:5.4em; padding-bottom:2.4em">
-						<h1 align="center" style="font-size:20px">10 Most famous authors</h1>
+						<h1 align="center" style="font-size:20px">Popularity of previous works</h1>
 					</td>
 				</tr>
 				
@@ -265,7 +273,7 @@
 				dat2["Female"] = Number(data.Fox[0].Female);
 				dat2["Male"] = Number(data.Fox[1].Male);
 
-				var chart2 = donut("Votes", "#donut2")
+				var chart2 = donut("Votes")
 			        .$el(d3.select('#donut2'))
 			        .data(datas2)
 			        .render(dat2);
@@ -293,6 +301,7 @@
 					})
 					.draw();
 			});
+
 
 		</script>
 

@@ -1,26 +1,6 @@
-// function donutChart(data, id, site)
-// {
-// 	var getData = function(){
-// 	  var size = 3;
-// 	  var data = {};
-// 	  var text = "";
-
-// 	  data["apple"] = 80;
-// 	  data["maça"] = 20;
-// 	  d3.select("#data").html(text);
-// 	  console.log(data);
-// 	  return data;
-// 	};
-
-// 	var chart = donut()
-// 		      .$el(d3.select(id))
-// 		      .data(getData())
-// 		      .render();
-
-
-// }
 
 function donut(type){  
+  console.log(type);
   // Default settings
   var $el = d3.select("body")
   var data = {};
@@ -53,15 +33,6 @@ function donut(type){
       .append("g")
         .attr("transform", "translate(" + width/2 + "," + height / 2 + ")");
 
-        var tip = d3.tip()
-        .attr('class', 'd3-tip')
-        .offset([-10, 0])
-        .html(function(d,i) {
-          // console.log(dat);
-          // console.log(dat[ d.data.key]);
-          return "<strong>Number of "+type+": </strong><span style='color:red'>"+ dat[ d.data.key]+ "</span>";
-        });
-      svg.call(tip);
 
       g = svg.selectAll(".arc")
         .data(pie(d3.entries(data)))
@@ -76,10 +47,10 @@ function donut(type){
         .style("stroke-width", "1px")
         .style("fill", function(d) {if (d.data.key == 'Male') key = 1; else key = 0; return color[key]; });
 
-      d3.select("div.donutChart")
-        .selectAll('path')
-        .on('mouseover', tip.show)
-        .on('mouseout', tip.hide);
+      // d3.select("div.donutChart")
+      //   .selectAll('path')
+      //   .on('mouseover', tip.show)
+      //   .on('mouseout', tip.hide);
 
       g.append("text")
           .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })

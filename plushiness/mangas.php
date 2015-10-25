@@ -1,3 +1,4 @@
+
 <style>
 @font-face {
       font-family: 'fontello';
@@ -105,6 +106,15 @@
 </div>
 
 <div id="wrapper">
+	<br><br><br><br><br><br>
+	<div >
+		<table style="width:70%; margin-left:250px; margin-top:-50px; ">
+			<!-- <tr><td align="left"><p><b>Final course assignment</b></p></td></tr> -->
+			<tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; "><p>In this section you can find information regarding the titles present in used databases.</p></td></tr>
+			<tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; "><p>Please use the search field above to find information of a specific title.</a></p></td></tr>
+			<tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; "><p>Use the buttons bellow to view information about popularity.</p></td></tr>
+		</table>
+	</div>
   <div id="graphMenu" align="middle">
     <br><br>
     <ul class="flatflipbuttons">
@@ -118,7 +128,7 @@
 				<!-- <tr><td>	Here you can blábláblá <br> Use the searchbar to ....</td></tr> -->
 				<tr class="bar1">
 					<td style="padding-bottom: 1.5em;">
-						<h1 align="center" style="font-size:20px">Dez melhores </h1>
+						<h1 align="center" style="font-size:20px">10 Most Popular Titles</h1>
 					</td>
 				</tr>
 				<tr class="bar1">
@@ -152,7 +162,7 @@
 
 				<tr class="bar2">
 					<td style="padding-bottom: 1.5em;">
-						<h1 align="center" style="font-size:20px;">Dez piores </h1>
+						<h1 align="center" style="font-size:20px;">10 Less Popular Titles</h1>
 					</td>
 				</tr>
 

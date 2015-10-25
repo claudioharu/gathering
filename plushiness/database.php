@@ -1,5 +1,4 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <style>
 @font-face {
       font-family: 'fontello';
@@ -127,7 +126,15 @@
 </div>
 
 <div id="wrapper">
-
+    <br><br><br><br><br><br>
+    <div >
+      <table style="width:70%; margin-left:250px; margin-top:-50px; ">
+        <!-- <tr><td align="left"><p><b>Final course assignment</b></p></td></tr> -->
+        <tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; " ><p>In this section we present information about authors and artists featurd in our databases.</p></td></tr>
+        <tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; "><p>Below, you will find gerneral information about these people.</a></p></td></tr>
+        <tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; "><p>If you, wish, you can view information about a specific person by typing its name into the search bar.</p></td></tr>
+      </table>
+    </div>
   <div name="dataBaseInfos">
     <table>
       <tr>
@@ -161,7 +168,7 @@
 				<tr class="1">
 					<td>
 
-						<h1 align="left"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;">Hottest Genres by Number of Visualizations</h1>
+						<h1 align="left"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;">Hottest Genres by Number of Views</h1>
 					</td>
 				</tr>
 		
@@ -670,7 +677,7 @@ function graficoTreeMap(data){
   			.attr('class', 'd3-tip')
   			.offset([-10, 0])
   			.html(function(d) {
-  			return "<strong>Axis X: </strong><span style='color:red'>"+ d.hour+"</span><br><strong>Axis Y: </strong><span style='color:red'>"+ d.day+"</span><br><strong>Visualizations:</strong> <span style='color:red'>" + abbreviateNumber(d.value) + "</span>";
+  			return "<strong>Axis X: </strong><span style='color:red'>"+ d.hour+"</span><br><strong>Axis Y: </strong><span style='color:red'>"+ d.day+"</span><br><strong>Views:</strong> <span style='color:red'>" + abbreviateNumber(d.value) + "</span>";
   		});
 
   		svg.call(tip);

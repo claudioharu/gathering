@@ -349,7 +349,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 			<table style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
 				<tr>
 					<td>
-						<h1 align="center" style="font-size:20px">Network of relationships between authors and artists </h1>
+						<h1 align="center" style="font-size:20px">Votes distribution</h1>
 					</td>
 				</tr>
 
