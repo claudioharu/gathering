@@ -130,24 +130,13 @@
     <div >
       <table style="width:70%; margin-left:250px; margin-top:-50px; ">
         <!-- <tr><td align="left"><p><b>Final course assignment</b></p></td></tr> -->
-        <tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; " ><p>In this section we present information about authors and artists featurd in our databases.</p></td></tr>
-        <tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; "><p>Below, you will find gerneral information about these people.</a></p></td></tr>
-        <tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; "><p>If you, wish, you can view information about a specific person by typing its name into the search bar.</p></td></tr>
+        <tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; " ><p>In this section you will find general information about the databases.</p></td></tr>
+        <tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; " ><p>Click on the buttons bellow to open or close a new visualization.</p></td></tr>
+        <tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; " ><p> You can use the buttons on each graphic to switch between Mangafox and Mangahere databases.</p></td></tr>
+
       </table>
     </div>
-  <div name="dataBaseInfos">
-    <table>
-      <tr>
-        <td>
-          <a href="http://mangafox.me/directory/"> <img src="http://www.userlogos.org/files/logos/43932_aleksandr009/mangafox_1.png?1417801905" width=255 height=200 ></img></a>
-        </td>
-        <td>
-        </td>
-      </tr>
-      
-    </table>
-    <img></img>
-  </div>
+  
 
   <div id="graphMenu" align="middle">
     <br><br>
@@ -887,12 +876,8 @@ function graficoTreeMap(data){
 
 	</div>
 </div>
-<div id="stamp" class="container">
-	<div class="hexagon"><span class="icon icon-wrench"></span></div>
+<div id="copyright" class="container">
+<p>MangaVis icon was made by <a href="http://wwww.freepik.com">Freepik</a>, <a href="http://creativecommons.org/licenses/by/3.0/">licensed by CC BY 3.0 </a> | Visualizations were created using <a href="http://d3js.org/">d3.js</a> | Design by <a href="http://templated.co/">TEMPLATED.</a></p>
 </div>
-<!-- <div id="copyright" class="container">
-	<p>&copy; Untitled. All rights reserved. | Photos by <a href="http://fotogrph.com/">Fotogrph</a> | Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.</p>
-</div>
- -->
 </body>
 </html>

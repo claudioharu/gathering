@@ -182,12 +182,8 @@ if (array_key_exists("infos", $_REQUEST)){
 
 	</div>
 </div>
-<div id="stamp" class="container">
-	<div class="hexagon"><span class="icon icon-wrench"></span></div>
+<div id="copyright" class="container">
+<p>MangaVis icon was made by <a href="http://wwww.freepik.com">Freepik</a>, <a href="http://creativecommons.org/licenses/by/3.0/">licensed by CC BY 3.0 </a> | Visualizations were created using <a href="http://d3js.org/">d3.js</a> | Design by <a href="http://templated.co/">TEMPLATED.</a></p>
 </div>
-<!-- <div id="copyright" class="container">
-	<p>&copy; Untitled. All rights reserved. | Photos by <a href="http://fotogrph.com/">Fotogrph</a> | Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.</p>
-</div>
- -->
 </body>
 </html>
