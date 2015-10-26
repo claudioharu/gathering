@@ -202,10 +202,14 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					print  strtoupper($nameB); 
 					print "</h1>";
 
+					// $aux = substr($imgB, 8);
+					 $imgB[7] = "c";
+					// echo $aux;
+					// $imgB = "c"
 					print '<tr>';
 						print '<td rowspan="5">';
 							print '<div id="left">';
-							print '<img src="' . $imgB . ' width="200" style=" padding:1px; border:2px solid #021a40;" >';
+							print '<img src="' . $imgB . '" width="200" style=" padding:1px; border:2px solid #021a40;" >';
 							print '</div>';
 						print '</td>';
 					print '</tr>';

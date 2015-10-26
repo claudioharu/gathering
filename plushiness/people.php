@@ -120,16 +120,16 @@
   <div id="graphMenu" align="middle">
     <br><br>
 	<ul class="flatflipbuttons">
-		<li class='donutChart1'><a><span><img src="./icons/donat-chart-32.png" /></span></a> <b>Donut Chart Visual</b></li>
-		<li class='donutChart2'><a><span><img src="./icons/donat-chart-32.png" /></span></a> <b>Donut Chart Votes</b></li>
-        <li class='barChart'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b>Ten Most famous</b></li>
+		<li class='donutChart1'><a><span><img src="./icons/donat-chart-32.png" /></span></a> <b>Genre Popularity</b></li>
+		<!-- <li class='donutChart2'><a><span><img src="./icons/donat-chart-32.png" /></span></a> <b>Donut Chart Votes</b></li> -->
+        <li class='barChart'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b>10 Most famous</b></li>
 
 	</ul>
   </div>
 	<div id="featured-wrapper" style="margin-top: -80px;">
 
 		<div id="container" class="div1">
-			<div class="donutChart">
+			<div class="pies">
 			<table  style="width: 80%; height:70%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
 				
 				<tr> 
@@ -184,7 +184,8 @@
 
 			</table >
 		</div>
-			<table class="chart1"  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
+		<div class="chart1">
+			<table   style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
 				<tr style="margin-bottom:100px;"> 
 					<td style="padding-top:5.4em; padding-bottom:2.4em">
 						<h1 align="center" style="font-size:20px">Popularity of previous works</h1>
@@ -208,44 +209,45 @@
 
 				
 			</table>
+		</div>
 				
 		</div>
 
 		<script type="text/javascript">
 			var pie1 = false;
-			var pie2 = false;
+			// var pie2 = false;
 			var bar = false;
-			$('.pie1').hide();
-			$('.pie2').hide();
+			$('.pies').hide();
+			// $('.pie2').hide();
 			$('.chart1').hide();
 
 			$('li.donutChart1')
 				.on('click', function(d){
 
 				if (!pie1){
-					$('.pie1').show();
+					$('.pies').show();
 					pie1 = true;
 				}
 				else
 				{
-					$('.pie1').hide();
+					$('.pies').hide();
 					pie1 = false;
 				}
 			});
 
-			$('li.donutChart2')
-				.on('click', function(d){
+			// $('li.donutChart2')
+			// 	.on('click', function(d){
 
-				if (!pie2){
-					$('.pie2').show();
-					pie2 = true;
-				}
-				else
-				{
-					$('.pie2').hide();
-					pie2 = false;
-				}
-			});
+			// 	if (!pie2){
+			// 		$('.pie2').show();
+			// 		pie2 = true;
+			// 	}
+			// 	else
+			// 	{
+			// 		$('.pie2').hide();
+			// 		pie2 = false;
+			// 	}
+			// });
 
 			$('li.barChart')
 				.on('click', function(d){

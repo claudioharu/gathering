@@ -153,8 +153,10 @@ if (array_key_exists("infos", $_REQUEST)){
 							$name = $row ["name"];
 
 							$name = strtr ($name, array ('"' => '¬'));	
-							
-							print '<img id="'. $name . '" src="' . $row["img"] . '" width="100" onclick="handleClick(this);" >';
+							$img = $row["img"];
+							$img[7] = "c";
+
+							print '<img id="'. $name . '" src="' . $img . '" width="100" onclick="handleClick(this);" >';
 							print '</div>';
 							print '</a>';
 
