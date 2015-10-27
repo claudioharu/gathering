@@ -141,9 +141,9 @@
   <div id="graphMenu" align="middle">
     <br><br>
     <ul class="flatflipbuttons">
-        <li class='heatMap1'><a><span><img src="./icons/heat-map-32.png" /></span></a> <b>Hottest Genres (Visual)</b></li>
-        <li class='heatMap2'><a><span><img src="./icons/heat-map-32.png" /></span></a> <b>Hottest Genres (Votes)</b></li>
-        <li class='treeMap'><a><span><img src="./icons/tree-structure-32.png" /></span></a> <b>Tree Map</b></li>
+        <li class='heatMap1'><a><span><img src="./icons/heat-map-32.png" /></span></a> <b>Hottest Types (Visual)</b></li>
+        <li class='heatMap2'><a><span><img src="./icons/heat-map-32.png" /></span></a> <b>Hottest Types (Votes)</b></li>
+        <li class='treeMap'><a><span><img src="./icons/tree-structure-32.png" /></span></a> <b>Treemap by Categorie</b></li>
         <li class='barChart1'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b align=left style="width:60%;">10 Most popular</b></li>
         <li class='barChart2'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b align=left style="width:60%;">10 Less popular</b></li>
 
@@ -157,7 +157,7 @@
 				<tr class="1">
 					<td>
 
-						<h1 align="left"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;">Hottest Genres by Number of Views</h1>
+						<h1 align="left"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;">Hottest Categories by Number of Views</h1>
 					</td>
 				</tr>
 		
@@ -175,7 +175,7 @@
 
         <tr class='2'>
           <td>
-            <h1 align="left"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;">Hottest Genres by Number of Votes </h1>
+            <h1 align="left"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;">Hottest Categories by Number of Votes </h1>
           </td>
         </tr>
     
@@ -193,7 +193,7 @@
 
         <tr class='3'>
           <td>
-            <h1 align="left"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;">Network of relationships between authors and artists </h1>
+            <h1 align="left"  style="font-size:20px;  margin-left:150px;  margin-bottom:10px;">Amount of titles and authors by category</h1>
           </td>
         </tr>
     

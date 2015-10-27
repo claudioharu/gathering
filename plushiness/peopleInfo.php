@@ -208,7 +208,7 @@ if (array_key_exists("personName", $_REQUEST)){
 						print '</td>';
 						print '<td>';
 							print '<div id="right" >';
-							print '<p charset = "ISO-8859-1" style="text-align:left;font-size:15px;line-height:26px;">';
+							print '<p charset = "ISO-8859-1" style="text-align:justify;font-size:15px;line-height:26px;">';
 							if($infoB != "N/A")
 								print $infoB;
 							else{

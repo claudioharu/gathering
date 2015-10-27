@@ -1,5 +1,4 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <style>
 @font-face {
       font-family: 'fontello';
@@ -100,16 +99,11 @@
 <div id="wrapper">
 
 	<div id="featured-wrapper">
-		<div style="color:black; font-size: 1.5em; font-weight: 250; ">
+		<div >
 		<table style="width:70%; margin-left:250px; margin-top:-50px; ">
-			<tr><td align="left"><p><b>Wellcome to Mangavis</b></p></td></tr>
-
-			
-
-		
-			<tr><td align="left"><p>Mangavis is a tool developed in order to allow authors and publishers to understand how is the comic consumption in scanlators. With it, users are able to access informations of certain titles, authors and illustrators, as well as get an overview of the databases used.</p></td></tr>
-		
-			<tr><td align="left"><p>In the last decades, the field of data visualization has been used in various focus area. Dashboards and others applications allow companies, researchers and even common users to explore their data in new ways. This is also the goal of Mangavis. We want to present users the data contained in two of the major foreign online readers: the MangaFox and the MangaHere. </p></td></tr>
+			<tr><td align="left" style="color:black; font-size: 1.5em; font-weight: 250; "><p><b>Wellcome to Mangavis</b></p></td></tr>
+	
+			<tr><td align="justify" style="color:black; font-size: 1em; font-weight: 250; padding-top:0.5cm;"><p>Mangavis is a tool developed in order to allow authors and publishers to understand how is the comic consumption in scanlators. With it, users are able to access informations of certain titles, authors and illustrators, as well as get an overview of the databases used. In the last decades, the field of data visualization has been used in various focus area. Dashboards and others applications allow companies, researchers and even common users to explore their data in new ways. This is also the goal of Mangavis. We want to present users the data contained in two of the major foreign online readers: the MangaFox and the MangaHere. </p></td></tr>
 		
 		</table>
 		</div>

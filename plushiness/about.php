@@ -102,8 +102,8 @@
 		<div >
 		<table style="width:70%; margin-left:250px; margin-top:-50px; ">
 			
-			<tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; "><p><b>Final course assignment</b></p></td></tr>
-			<tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; padding-top:0.5cm;"><p>MangaVis was developed as a final project for the Computer Science course at the <a href="https://www.ufmg.br/"> Federal University of Minas Gerais</a>. It was developed by Claudio Menezes under the guidance of Professor Raquel Minardi. We hope this tool enables authors and publishers to understand the consumption of manga at scanlators and thus improve the process of acquiring and publishing new titles. If there is any doubt about the information provide here, please contact Claudio Menezes at claudio@dcc.ufmg.br. </p></td></tr>
+			<tr><td align="left" style="color:black; font-size: 1.5em; font-weight: 250; "><p><b>Final course assignment</b></p></td></tr>
+			<tr><td align="justify" style="color:black; font-size: 1em; font-weight: 250; padding-top:0.5cm;"><p>MangaVis was developed as a final project for the Computer Science course at the <a href="https://www.ufmg.br/"> Federal University of Minas Gerais</a>. It was developed by Claudio Menezes under the guidance of Professor Raquel Minardi. We hope this tool enables authors and publishers to understand the consumption of manga at scanlators and thus improve the process of acquiring and publishing new titles. If there is any doubt about the information provide here, please contact Claudio Menezes at claudio@dcc.ufmg.br. </p></td></tr>
 			
 			<!-- <tr><td align="left" style="color:black; font-size: 1em; font-weight: 150; padding-top:0.5cm;"><p>Visualizations were created using <a href="http://d3js.org/">d3.js</a> | Design by <a href="http://templated.co/">TEMPLATED.</a></p></td></tr> -->
 

@@ -1,0 +1,12 @@
+.boxScore {
+	height: 100px;
+	width: 100px;
+	margin: auto;
+	float: left;
+	/*margin-top: 20px;*/
+	background-color: #e09f1d;
+	border-radius: 5px 0px 5px 0px;
+	-moz-border-radius: 5px 0px 5px 0px;
+	-webkit-border-radius: 5px 0px 5px 0px;
+	border: 0px solid #000000;
+}

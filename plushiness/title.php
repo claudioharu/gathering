@@ -97,6 +97,8 @@ if (array_key_exists("mangaName", $_REQUEST)){
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <link rel="stylesheet" href="css/animation.css"><!--[if IE 7]><link rel="stylesheet" href="css/fontello-ie7.css"><![endif]-->
 <link rel="stylesheet" type="text/css" href="menu.css">
+<link rel="stylesheet" type="text/css" href="boxScore.css">
+
 
 
 <!--[if IE 6]><link href="default_ie6.css" rel="stylesheet" type="text/css" /><![endif]-->
@@ -137,10 +139,14 @@ if (array_key_exists("mangaName", $_REQUEST)){
 
 	<div id="featured-wrapper">
 		<div id="container">
+
 		<table style="width:80%; margin-left:40px; margin-top:50px; ">
 		<script language="php">
 					require "func.php";
+					require "ordinalSuffix.php";
 					include "con.php";
+
+
 					// echo $search;
 					
 					$positions = array();
@@ -160,6 +166,32 @@ if (array_key_exists("mangaName", $_REQUEST)){
 						}
 					}
 
+					$sqlPos = 'select name, avgs, position
+					from
+					(
+					select name, avgs,  @rownum := @rownum + 1 AS position
+					from
+					(
+						select name, avg(visual) as avgs
+						from 
+						(	select name, visual
+							from MangaFox_Mangas
+							UNION
+							select name, visual
+							from MangaHere_Mangas 
+						) b  
+						group by name
+						order by avgs Desc
+					) titles
+					JOIN (SELECT @rownum := 0) r
+					) as a where a.name="' . $search . '"';
+
+					$resultPos = $conn->query($sqlPos);
+					foreach ($resultPos as $row);
+					{
+						$posTitle = $row["position"];
+					}
+					
 					// $sqlA = 'SELECT name, info FROM MangaMyanimelist_Mangas WHERE name  = "'. $search . '"';
 					$sqlA = 'SELECT name, info, author, artist FROM  bakaUpdates_Stats WHERE name  = "'. $search . '"';
 
@@ -198,9 +230,14 @@ if (array_key_exists("mangaName", $_REQUEST)){
 					}
 
 
-					print '<h1 style="font-size:28px" >';
-					print  strtoupper($nameB); 
+					print '<h1 align=center style="margin-left: 100px; width:80%; float:left; font-size:28px;" >';
+						print  '<span> ' . strtoupper($nameB) . '</span> '; 
 					print "</h1>";
+
+					print "<div class=boxScore>";
+						print'<h3 style="text-align: center"> Position </h3>';
+						print '<h1 style="text-align: center; color: white">'.addOrdinalNumberSuffix($posTitle).'</h1>';
+					print "</div>";
 
 					// $aux = substr($imgB, 8);
 					 $imgB[7] = "c";
@@ -227,7 +264,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 						print '</td>';
 						print '<td>';
 							print '<div id="right" >';
-							print '<p style="text-align:left;font-size:15px;line-height:26px;">';
+							print '<p style="text-align:justify;font-size:15px;line-height:26px;">';
 							if($infoA != "N/A" && !empty($infoA)){
 								print $infoA;
 							}
@@ -344,7 +381,7 @@ if (array_key_exists("mangaName", $_REQUEST)){
 		</div>
 		<div style="margin-top:80px" align="middle">
 			<ul class="flatflipbuttons">
-	  	    <li class='chart'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b>Charts</b></li>
+	  	    <li class='chart'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b>Votes distribution</b></li>
 	  		</ul>
 	  	</div>
 
