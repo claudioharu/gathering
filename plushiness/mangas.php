@@ -124,7 +124,8 @@
   </div>
 	<div id="featured-wrapper" style="margin-top: -80px;">
 			<div id="container" class="div1">
-			<table  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
+				<!-- border: 1px solid black; -->
+			<table  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border-collapse: collapse;">
 				<!-- <tr><td>	Here you can blábláblá <br> Use the searchbar to ....</td></tr> -->
 				<tr class="bar1">
 					<td style="padding-bottom: 1.5em;">

@@ -153,7 +153,8 @@
     
 
 		<div style="color:black; font-size: 1.0em; font-weight: 250;  font-family: Arial;">
-			<table style="width:70%; margin-left:100px; margin-top:-50px; border: 1px solid black; border-collapse: collapse; ">
+      <!-- border: 1px solid black; -->
+			<table style="width:70%; margin-left:100px; margin-top:-50px;  border-collapse: collapse; ">
 				<tr class="1">
 					<td>
 

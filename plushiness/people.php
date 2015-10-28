@@ -130,7 +130,8 @@
 
 		<div id="container" class="div1">
 			<div class="pies">
-			<table  style="width: 80%; height:70%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
+				<!-- border: 1px solid black; -->
+			<table  style="width: 80%; height:70%; margin-left:40px; margin-top:50px; border-collapse: collapse;">
 				
 				<tr> 
 					<td class="pie1" style="padding-bottom:2.4em">
@@ -185,7 +186,8 @@
 			</table >
 		</div>
 		<div class="chart1">
-			<table   style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
+			<!-- border: 1px solid black; -->
+			<table   style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border-collapse: collapse;">
 				<tr style="margin-bottom:100px;"> 
 					<td style="padding-top:5.4em; padding-bottom:2.4em">
 						<h1 align="center" style="font-size:20px">Popularity of previous works</h1>

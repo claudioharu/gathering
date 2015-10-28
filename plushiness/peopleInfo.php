@@ -278,7 +278,7 @@ if (array_key_exists("personName", $_REQUEST)){
 
 		<div id="container" class="div2">
 
-			<table style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
+			<table style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid grey; border-collapse: collapse;">
 				<tr >
 					<td>
 						<h1 align="center" style="font-size:20px">Network of relationships between authors and artists </h1>
@@ -303,7 +303,7 @@ if (array_key_exists("personName", $_REQUEST)){
 
 		<div id="container" class="div5" >
 
-			<table  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid black; border-collapse: collapse;">
+			<table  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid grey; border-collapse: collapse;">
 				<tr style="margin-bottom:100px;"> 
 					<td >
 						<h1 align="center" style="font-size:20px">Rank of artist's titles </h1>
