@@ -1,3 +1,7 @@
+function sortNumber(a,b) {
+    return a - b;
+}
+
 function GroupedBarChart(csv){
 	console.log("funcao ^^");
 	var n = 10, // number of layers
@@ -34,9 +38,29 @@ function GroupedBarChart(csv){
 	var minColor =  d3.min(layers, function(layer) { return d3.min(layer, function(d) { return d.y; }); });
 	// console.log("maxColor: " + maxColor + " minColor: "+minColor);
 
-	var color = d3.scale.linear()
-		.domain([0,10, 15, 20, 25,35,40, 45,50, 55,60,65, 70,75,80,85, 90,95, 100])
-		.range(['rgb(49,54,149)', 'rgb(69,117,180)', 'rgb(116,173,209)', 'rgb(171,217,233)', 'rgb(224,243,248)', 'rgb(255,255,191)', 'rgb(254,224,144)', 'rgb(253,174,97)', 'rgb(244,109,67)', 'rgb(215,48,39)', 'rgb(165,0,38)']);
+	var group1 = [];
+	group2 = [];
+	layers.forEach(
+		function(d) {
+      		group1.push(+d[0].y);
+      		group2.push(+d[1].y);
+
+  		});
+
+
+
+	group1.sort(sortNumber);
+	var color1 = d3.scale.ordinal()
+		.domain(group1)
+		.range(['rgb(255,247,251)','rgb(236,231,242)','rgb(208,209,230)','rgb(166,189,219)','rgb(116,169,207)','rgb(54,144,192)','rgb(5,112,176)','rgb(4,90,141)','rgb(2,56,88)']);
+
+	group2.sort(sortNumber);
+	var color2 = d3.scale.ordinal()
+		.domain(group2)
+		.range(['rgb(255,247,251)','rgb(236,231,242)','rgb(208,209,230)','rgb(166,189,219)','rgb(116,169,207)','rgb(54,144,192)','rgb(5,112,176)','rgb(4,90,141)','rgb(2,56,88)']);
+	
+	console.log([d3.min(group2), d3.max(group2)]);
+	// console.log([d3.min(layers.map(function(d){ return d[1].y;})), d3.max(layers.map(function(d){ return d.value;}))]);
 
 	var xAxis = d3.svg.axis()
 		.scale(x)
@@ -79,35 +103,14 @@ function GroupedBarChart(csv){
 		.on('mouseover', tips.show)
 	    .on('mouseout', tips.hide)
 		.style("fill", function(d, i) { 
+			if(i == 0)
 			// console.log(d.y + " " + i );
-			return color(d.y);
+				return color1(d.y);
+			else
+				return color2(d.y);
 		})
 		.style("stroke", "black");
 
-		// .on("mouseover", function() { tooltip.style("display", null); })
-		// .on("mouseout", function() { tooltip.style("display", "none"); })
-		// .on("mousemove", function(d) {
-		// 	var xPosition = d3.mouse(this)[0] - 10;
-		// 	var yPosition = d3.mouse(this)[1] - 25;
-		// 	tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-		// 	tooltip.select("text").text((d.votes));
-		// });
-
-	// var tooltip = svg.append("g")
-	// 	.attr("class", "tooltip")
-	// 	.style("display", "none");
-
-	// tooltip.append("rect")
-	// 	.attr("width", 50)
-	// 	.attr("height", 20)
-	// 	.attr("fill", "orange")
-	// 	.style("opacity", 0.5);
-	// 	tooltip.append("text")
-	// 	.attr("x", 25)
-	// 	.attr("dy", "1.2em")
-	// 	.style("text-anchor", "middle")
-	// 	.attr("font-size", "12px")
-	// 	.attr("font-weight", "bold");
 
 	rect.transition()
 		.delay(function(d, i) { return i * 10; })

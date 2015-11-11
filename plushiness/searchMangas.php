@@ -110,9 +110,10 @@ if (array_key_exists("infos", $_REQUEST)){
 				<li class="current_page_item"><a href="./visualizer.php" accesskey="1" title="">Home</a></li>
 				<li><a href="./database.php" accesskey="2" title="">Databases</a></li>
 				<li><a href="./people.php" accesskey="3" title="">People</a></li>
-				<li><a href="./mangas.php" accesskey="4" title="">Titles</a></li>
-				<li><a href="./about.php" accesskey="5" title="">About</a></li>
-				<li accesskey="6" title="">
+				<li><a href="./mangas.php" accesskey="4" title="" style="color: #ff9000;">Titles</a></li>
+				<li><a href="./sitemap.php" accesskey="5" title="">Sitemap</a></li>
+				<li><a href="./about.php" accesskey="6" title="">About</a></li>
+				<li accesskey="7" title="">
 					<div class="container-2">
 						<form name="form1" action="searchMangas.php"  >
 							<input name="infos" type="search" id="search" placeholder="Search Title"/>
@@ -161,7 +162,7 @@ if (array_key_exists("infos", $_REQUEST)){
 							print '</a>';
 
 							print '<div class="manga_text" id="'. $name .'" onclick="handleClick(this);">';
-							print '<a class="title" >';
+							print '<a class="title" style="cursor: pointer;">';
 							print $row ["name"]; 
 							print "</a>";
 							print "</div>";

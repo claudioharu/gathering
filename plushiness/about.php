@@ -83,7 +83,8 @@
 				<li><a href="./database.php" accesskey="2" title="">Databases</a></li>
 				<li><a href="./people.php" accesskey="3" title="">People</a></li>
 				<li><a href="./mangas.php" accesskey="4" title="">Titles</a></li>
-				<li><a href="./about.php" accesskey="5" title="">About</a></li>
+				<li><a href="./sitemap.php" accesskey="5" title="">Sitemap</a></li>
+				<li><a href="./about.php" accesskey="6" title="" style="color: #ff9000;">About</a></li>
 				<!-- <li accesskey="6" title="">
 					<div class="container-2">
 						<form name="form1" action="search.php"  >

@@ -1,0 +1,23 @@
+svg {
+  font: 10px sans-serif;
+}
+
+.area {
+  fill: steelblue;
+  clip-path: url(#clip);
+}
+
+.brush .extent {
+  stroke: blue;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+
+.resize {
+  display: inline !important; /* show when empty */
+  fill: steelblue;
+  fill-opacity: .9;
+  stroke: #000;
+  stroke-width: 1.5px;
+
+}

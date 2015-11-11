@@ -4,7 +4,7 @@
 #mangalist .list li .manga_img img{width:100px}
 #mangalist .list li .manga_img div{width:100px;height:124px;float:left;overflow:hidden}
 
-#mangalist .list li .manga_text{float:left;width:176px;overflow:hidden}
+#mangalist .list li .manga_text{float:left;width:176px;overflow:hidden;}
 #mangalist .list li .manga_text p{line-height:21px;clear:left}
 #mangalist .list li .manga_text p label{color:#666;margin-right:6px}
 #mangalist .list li .manga_text p span{float:left}

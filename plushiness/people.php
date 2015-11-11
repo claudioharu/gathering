@@ -92,9 +92,10 @@
 			<ul>
 				<li class="current_page_item"><a href="./visualizer.php" accesskey="1" title="">Home</a></li>
 				<li><a href="./database.php" accesskey="2" title="">Databases</a></li>
-				<li><a href="./people.php" accesskey="3" title="">People</a></li>
+				<li><a href="./people.php" accesskey="3" title="" style="color: #ff9000;">People</a></li>
 				<li><a href="./mangas.php" accesskey="4" title="">Title</a></li>
-				<li><a href="./about.php" accesskey="5" title="">About</a></li>
+				<li><a href="./sitemap.php" accesskey="5" title="">Sitemap</a></li>
+				<li><a href="./about.php" accesskey="6" title="">About</a></li>
 				<li accesskey="6" title="">
 					<div class="container-2">
 						<form name="form1" action="searchPeople.php"  >
@@ -112,7 +113,7 @@
 	<div >
 		<table style="width:70%; margin-left:250px; margin-top:-50px; ">
 			<!-- <tr><td align="left"><p><b>Final course assignment</b></p></td></tr> -->
-			<tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; " ><p>In this section we present information about authors and artists featurd in our databases.</p></td></tr>
+			<tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; " ><p>In this section we present information about authors and artists featured in our databases.</p></td></tr>
 			<tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; "><p>Below, you will find gerneral information about these people.</a></p></td></tr>
 			<tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; "><p>If you, wish, you can view information about a specific person by typing its name into the search bar.</p></td></tr>
 		</table>
@@ -265,6 +266,18 @@
 				}
 			});
 		</script>
+		
+<?php 
+if($_GET["set1"]==1){ 
+	echo '<script type="text/javascript">';
+	echo "$('.pies').show();"; 
+	echo '</script>';
+} else if($_GET["set2"]==1){ 
+	echo '<script type="text/javascript">';
+	echo "$('.chart1').show();"; 
+	echo '</script>';
+}
+?>
 
 		<script>
 			var datas2 = [];

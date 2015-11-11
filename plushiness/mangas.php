@@ -68,6 +68,7 @@
 <link rel="stylesheet" type="text/css" href="barChart.css">
 <link rel="stylesheet" href="css/animation.css"><!--[if IE 7]><link rel="stylesheet" href="css/fontello-ie7.css"><![endif]-->
 <link rel="stylesheet" type="text/css" href="menu.css">
+<link rel="stylesheet" type="text/css" href="context.css">
 
 
 
@@ -91,8 +92,9 @@
 				<li class="current_page_item"><a href="./visualizer.php" accesskey="1" title="">Home</a></li>
 				<li><a href="./database.php" accesskey="2" title="">Databases</a></li>
 				<li><a href="./people.php" accesskey="3" title="">People</a></li>
-				<li><a href="./mangas.php" accesskey="4" title="">Titles</a></li>
-				<li><a href="./about.php" accesskey="5" title="">About</a></li>
+				<li><a href="./mangas.php" accesskey="4" title="" style="color: #ff9000;">Titles</a></li>
+				<li><a href="./sitemap.php" accesskey="5" title="">Sitemap</a></li>
+				<li><a href="./about.php" accesskey="6" title="">About</a></li>
 				<li accesskey="6" title="">
 					<div class="container-2">
 						<form name="form1" action="searchMangas.php"  >
@@ -110,7 +112,7 @@
 	<div >
 		<table style="width:70%; margin-left:250px; margin-top:-50px; ">
 			<!-- <tr><td align="left"><p><b>Final course assignment</b></p></td></tr> -->
-			<tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; "><p>In this section you can find information regarding the titles present in used databases.</p></td></tr>
+			<tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; "><p>In this section you can find information regarding the titles presented in our databases.</p></td></tr>
 			<tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; "><p>Please use the search field above to find information of a specific title.</a></p></td></tr>
 			<tr><td align="left" style="color:black; font-size: 1em; font-weight: 250; "><p>Use the buttons bellow to view information about popularity.</p></td></tr>
 		</table>
@@ -118,8 +120,9 @@
   <div id="graphMenu" align="middle">
     <br><br>
     <ul class="flatflipbuttons">
-       <li class='barChart1'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b>10 Most Popular Titles</b></li>
+        <li class='barChart1'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b>10 Most Popular Titles</b></li>
         <li class='barChart2'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b>10 Less Popular Titles</b></li>
+        <li class='barChart3'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b>Rank of All Titles</b></li>
       </ul>
   </div>
 	<div id="featured-wrapper" style="margin-top: -80px;">
@@ -129,7 +132,7 @@
 				<!-- <tr><td>	Here you can blábláblá <br> Use the searchbar to ....</td></tr> -->
 				<tr class="bar1">
 					<td style="padding-bottom: 1.5em;">
-						<h1 align="center" style="font-size:20px">10 Most Popular Titles</h1>
+						<h1 align="center" style="font-size:20px; height:10px;">10 Most Popular Titles</h1>
 					</td>
 				</tr>
 				<tr class="bar1">
@@ -163,7 +166,7 @@
 
 				<tr class="bar2">
 					<td style="padding-bottom: 1.5em;">
-						<h1 align="center" style="font-size:20px;">10 Less Popular Titles</h1>
+						<h1 align="center" style="font-size:20px; height:10px;">10 Less Popular Titles</h1>
 					</td>
 				</tr>
 
@@ -197,16 +200,18 @@
 						
 					</td>
 				</tr>
-
-			<!-- 	<tr>					
-					<td  style="width: 100%; height:90%;">
-					
-						<div class="rankPublisher">
-
-						</div>
-						
-					</td>
-				</tr> -->
+				<tr class="bar3" style=" margin: 30px auto; padding: 0; height:10px; " >
+			      <td>
+			        <h1 align="center" style="font-size:20px; ">Rank of All Titles</h1>
+			      </td>
+			    </tr>
+			    <tr  style=" margin: 30px auto; padding: 0;" class="bar3">    
+			      <td style="width: 100%; height:90%;">
+			        <div class="context" style="position: relative; "></div>
+			        <div class="rankAllTitles" style="overflow: scroll; height:50%; width:auto;  position: relative; overflow-x: hidden;"></div>           
+			      </td>
+			    </tr>
+			
 			</table>
 			</div>
 
@@ -214,8 +219,10 @@
 
 			var bar1 = false;
 			var bar2 = false;
+			var bar3 = false;
 			$('.bar1').hide();
 			$('.bar2').hide();
+			$('.bar3').hide();
 
 
 			$('li.barChart1')
@@ -245,7 +252,244 @@
 					bar2 = false;
 				}
 			});
+
+			$('li.barChart3')
+				.on('click', function(d){
+
+				if (!bar3){
+					$('.bar3').show();
+					bar3 = true;
+				}
+				else
+				{
+					$('.bar3').hide();
+					bar3 = false;
+				}
+			});
 		</script>
+
+<!-- All titles -->
+		<script type="text/javascript">
+d3.json("rankAllTitles.php", function(error, data2) {
+    d3.select("svg.chartAllTitle").remove();
+    var subset = [];
+    j = 0;
+    for (i = 0; i <=  100; i++)
+    {
+      subset[j] = data2[i];
+      j++;
+    }
+    rankAllTitles(subset, ".rankAllTitles");
+});
+
+d3.json("rankAllTitles.php", function(error, data) {
+
+var margin = {top: 10, right: 10, bottom: 100, left: 40},
+    margin2 = {top: 430, right: 10, bottom: 20, left: 200}, // tirando o final do grafico
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom,
+    height2 = 500 - margin2.top - margin2.bottom;
+
+var x = d3.scale.linear().range([0, width]),
+    x2 = d3.scale.linear().range([0, width]),
+    y = d3.scale.linear().range([height, 0]),
+    y2 = d3.scale.linear().range([height2, 0]);
+
+var xAxis = d3.svg.axis().scale(x).orient("bottom"),
+    xAxis2 = d3.svg.axis().scale(x2).orient("bottom"),
+    yAxis = d3.svg.axis().scale(y).orient("left");
+
+var centering = false,
+    center,
+    alpha = .2;
+
+var area = d3.svg.area()
+    .interpolate("basis")
+    .x(function(d) { return x(d.pos); })
+    .y0(height)
+    .y1(function(d) { return y(d.value); });
+
+var area2 = d3.svg.area()
+    .interpolate("basis")
+    .x(function(d) { return x2(d.pos); })
+    .y0(height2)
+    .y1(function(d) { return y2(d.value); });
+
+var svg = d3.select(".context").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", 200);
+
+
+//Grafico de baixo
+var context = svg.append("g")
+    .attr("class", "context")
+    .attr("transform", "translate(" + margin2.left + "," + 20 + ")");
+
+
+var arc = d3.svg.arc()
+    .outerRadius(height2 / 2)
+    .startAngle(0)
+    .endAngle(function(d, i) { return i ? -Math.PI : Math.PI; });
+  
+  data.forEach(function(d) {
+      d.pos = +d.pos;
+      d.value = +d.value;
+  });
+
+  console.log(data);
+  
+  x.domain([0, 17022]);
+  y.domain([d3.min(data.map(function(d){return d.value;})), d3.max(data.map(function(d) { return d.value; }))]);
+  x2.domain(x.domain());
+  y2.domain(y.domain());
+
+  var brush = d3.svg.brush()
+    .x(x2)
+    .extent([0,100])
+    .on("brush", brushmove);
+
+  var gBrush = svg.append("g")
+    .attr("class", "brush")
+    .call(brush);
+
+  gBrush.selectAll(".resize").append("path")
+    .attr("transform", "translate(0," +  height2 / 2 + ")")
+    .attr("d", arc)
+    .attr("transform", "translate(" + margin2.left + "," + (20+25) + ")");
+
+
+  gBrush.selectAll("rect")
+    .attr("height", height2)
+    .attr("transform", "translate(" + margin2.left + "," + 20 + ")");
+  
+  gBrush.select(".background")
+    .on("mousedown.brush", brushcenter)
+    .on("touchstart.brush", brushcenter);
+
+  gBrush.call(brush.event);
+
+  context.append("path")
+      .datum(data)
+      .attr("class", "area")
+      .attr("d", area2);
+
+  context.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height2 + ")");
+
+function brushmove() {
+  
+    var extent = [];
+
+    extent[0] = Math.round(brush.extent()[0]);
+    extent[1] = Math.round(brush.extent()[1]);
+    if (extent[1]- extent[0] > 100) {
+      d3.event.target.extent([extent[0],extent[0]+ 101]);
+      d3.event.target(d3.select(this));
+      // d3.json("/plushiness/rankAllTitles.php", function(error, datas) {
+          d3.select("svg.chartAllTitle").remove();
+          var subset = [];
+          j = 0;
+          for (i = extent[0]; i <=  extent[1]; i++)
+          {
+            subset[j] = data[i];
+            j++;
+          }
+          rankAllTitles(subset, ".rankAllTitles");
+      // });   
+    }
+    else{
+      // console.log(extent);
+      // d3.json("/plushiness/rankAllTitles.php", function(error, data2) {
+          d3.select("svg.chartAllTitle").remove();
+          var subset = [];
+
+          j = 0;
+          for (i = extent[0]; i <=  extent[1]; i++)
+          {
+            subset[j] = data[i];
+            j++;
+          }
+          rankAllTitles(subset, ".rankAllTitles");
+      // });
+
+      console.log(extent);
+    }
+
+   
+}
+
+function brushcenter() {
+  var self = d3.select(window),
+      target = d3.event.target,
+      extent = brush.extent(),
+      size = extent[1] - extent[0],
+      domain = x2.domain(),
+      x0 = domain[0] + size / 2,
+      x1 = domain[1] - size / 2;
+
+  recenter(true);
+  brushmove();
+
+  if (d3.event.changedTouches) {
+    self.on("touchmove.brush", brushmove).on("touchend.brush", brushend);
+  } else {
+    self.on("mousemove.brush", brushmove).on("mouseup.brush", brushend);
+  }
+
+  function brushmove() {
+    d3.event.stopPropagation();
+    center = Math.max(x0, Math.min(x1, x.invert(d3.mouse(target)[0])));
+    recenter(false);
+  }
+
+  function brushend() {
+    brushmove();
+    self.on(".brush", null);
+  }
+}
+
+function recenter(smooth) {
+  if (centering) return; // timer is active and already tweening
+  if (!smooth) return void tween(1); // instantaneous jump
+  centering = true;
+
+  function tween(alpha) {
+    var extent = brush.extent(),
+        size = extent[1] - extent[0],
+        center1 = center * alpha + (extent[0] + extent[1]) / 2 * (1 - alpha);
+
+    gBrush
+        .call(brush.extent([center1 - size / 2, center1 + size / 2]))
+        .call(brush.event);
+
+    return !(centering = Math.abs(center1 - center) > 1e-3);
+  }
+
+  d3.timer(function() {
+    return tween(alpha);
+  });
+}
+
+});
+
+		</script>
+		
+<?php 
+if($_GET["set1"]==1){ 
+	echo '<script type="text/javascript">';
+	echo "$('.bar1').show();"; 
+	echo '</script>';
+} else if($_GET["set2"]==1){ 
+	echo '<script type="text/javascript">';
+	echo "$('.bar2').show();"; 
+	echo '</script>';
+} else if($_GET["set3"]==1){ 
+	echo '<script type="text/javascript">';
+	echo "$('.bar3').show();"; 
+	echo '</script>';
+}
+?>
 		
 		<script type="text/javascript">
 

@@ -109,10 +109,11 @@
 		<div id="menu">
 			<ul>
 				<li class="current_page_item"><a href="./visualizer.php" accesskey="1" title="">Home</a></li>
-				<li><a href="./database.php" accesskey="2" title="">Databases</a></li>
+				<li><a href="./database.php" accesskey="2" title="" style="color: #ff9000;">Databases</a></li>
 				<li><a href="./people.php" accesskey="3" title="">People</a></li>
 				<li><a href="./mangas.php" accesskey="4" title="">Titles</a></li>
-				<li><a href="./about.php" accesskey="5" title="">About</a></li>
+				<li><a href="./sitemap.php" accesskey="5" title="">Sitemap</a></li>
+				<li><a href="./about.php" accesskey="6" title="">About</a></li>
 				<!-- <li accesskey="6" title="">
 					<div class="container-2">
 						<form name="form1" action="search.php"  >
@@ -149,7 +150,7 @@
 
       </ul>
   </div>
-	<div id="featured-wrapper" style="margin-top: -80px;">
+	<div id="featured-wrapper">
     
 
 		<div style="color:black; font-size: 1.0em; font-weight: 250;  font-family: Arial;">
@@ -353,6 +354,31 @@ var set5 = false;
   });
 
 </script>
+
+<?php 
+if($_GET["set1"]==1){ 
+	echo '<script type="text/javascript">';
+	echo "$('.1').show();"; 
+	echo '</script>';
+} else if($_GET["set2"]==1){ 
+	echo '<script type="text/javascript">';
+	echo "$('.2').show();"; 
+	echo '</script>';
+} else if($_GET["set3"]==1){ 
+	echo '<script type="text/javascript">';
+	echo "$('.3').show();"; 
+	echo '</script>';
+} else if($_GET["set4"]==1){ 
+	echo '<script type="text/javascript">';
+	echo "$('.4').show();"; 
+	echo '</script>';
+} else if($_GET["set5"]==1){ 
+	echo '<script type="text/javascript">';
+	echo "$('.5').show();"; 
+	echo '</script>';
+}
+?>
+
 
 <script type="text/javascript">
 
