@@ -161,7 +161,7 @@
 	
 	function titlesTipList()
     {
-        document.getElementById("tip").innerHTML='List of titles in the databases. By clicking on a title, you can see more information about it.';
+        document.getElementById("tip").innerHTML='List of titles in the databases. By clicking on a title, you can see more charts and information about it.';
     }
 	
 	function peopleTip()
@@ -181,7 +181,7 @@
 	
 	function peopleTipList()
     {
-        document.getElementById("tip").innerHTML='List of authors and artists in the databases. By clicking on a name, you can see more information about it.';
+        document.getElementById("tip").innerHTML='List of authors and artists in the databases. By clicking on a name, you can see more charts and information about it.';
     }
 	
 	function dataTip()

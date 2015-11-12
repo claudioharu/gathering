@@ -95,6 +95,10 @@ if (array_key_exists("personName", $_REQUEST)){
 <script src="https://nvd3-community.github.io/nvd3/build/nv.d3.js"></script>
 <link rel="stylesheet" href="css/animation.css"><!--[if IE 7]><link rel="stylesheet" href="css/fontello-ie7.css"><![endif]-->
 <link rel="stylesheet" type="text/css" href="menu.css">
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<link href="box.css" rel="stylesheet" type="text/css" />
+<script src="box2.js"></script>
+<script src="generateBox.js"></script>
 
 
 
@@ -274,6 +278,8 @@ if (array_key_exists("personName", $_REQUEST)){
 			<ul class="flatflipbuttons">
 				<li class='graphChart1'><a><span><img src="./icons/mind-map-32.png" /></span></a> <b>Social Network</b></li>
 				<li class='barChart'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b>Rank of titles</b></li>
+				<li class='boxPlot'><a><span><img src="./icons/candle-stick-5-32.png" /></span></a><b>Grades average</b></li>
+
 			</ul>
 		</div>
 
@@ -322,16 +328,39 @@ if (array_key_exists("personName", $_REQUEST)){
 				
 		</div>
 
+		<div id="container" class="div6" >
+
+			<table  style="width: 80%; height:100%; margin-left:40px; margin-top:50px;  border: 1px solid grey; border-collapse: collapse;">
+				<tr style="margin-bottom:100px; height:2px"> 
+					<td >
+						<h1 align="center" style="font-size:20px;">Grades average</h1>
+					</td>
+				</tr>
+				<tr>
+					<td  style="width: 50%; height:90%;">
+						
+						<div align="center" class="boxPlotRank" >	
+						</div>
+					</td>
+				</tr>
+			</table>
+				
+		</div>
+
 		<script type="text/javascript">
 			var graph1 = false;
 			var graph2 = false;
+			var graph3 = false;
+
 			// $('.div2').hide();
+			$('.div6').hide();
 			var c = 0;
 			var intervalId = setInterval(function() {
 				if (++c === 3) {
 
 					$('.div2').hide();
 					$('.div5').hide();
+
 				    window.clearInterval(intervalId);
 				}
 				if($("path.d3plus_data").length){
@@ -370,6 +399,20 @@ if (array_key_exists("personName", $_REQUEST)){
 				{
 					$('.div5').hide();
 					graph2 = false;
+				}
+			});
+
+			$('li.boxPlot')
+				.on('click', function(d){
+
+				if (!graph3){
+					$('.div6').show();
+					graph3 = true;
+				}
+				else
+				{
+					$('.div6').hide();
+					graph3 = false;
 				}
 			});
 		</script>
@@ -556,6 +599,24 @@ if (array_key_exists("personName", $_REQUEST)){
 				            }
 				        });
 
+						$.ajax({
+					            type: "POST",
+					            url: 'lastBoxPlotPeople.php',
+					            data: {'valueAuthorBar' : value},
+
+					            success: function(dataCsv){
+					            	console.log(dataCsv);
+									graph = d3.select("div.boxPlotRank");
+									graph.select("svg").remove();
+
+									string = String(value);
+									value = string.charAt(0).toUpperCase() + string.slice(1);
+
+
+									generateBox(".boxPlotRank", value, dataCsv);
+								}
+						});
+
 
 
 				       
@@ -604,17 +665,13 @@ if (array_key_exists("personName", $_REQUEST)){
 						.duration(350)
 						.call(chart);
 
-					
-
-					
-
-
-
 					nv.utils.windowResize(chart.update);
 
 					return chart;
 				});
 			});
+
+			
 
 			
 		}
@@ -624,6 +681,25 @@ if (array_key_exists("personName", $_REQUEST)){
 
 		}
 		</script>
+
+		<script>
+			var value =  $('h1.personName').text().toLowerCase();
+
+			d3.json("firstBoxPlotPeople.php", function(dataCsv){
+
+					graph = d3.select("div.boxPlotRank");
+					graph.select("svg").remove();
+					string = value;
+					value = string.charAt(0).toUpperCase() + string.slice(1);
+					generateBox(".boxPlotRank", value, dataCsv);
+			});
+		</script>
+
+
+
+
+
+
 	</div>
 </div>
 <div id="copyright" class="container">

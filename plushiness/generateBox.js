@@ -1,33 +1,17 @@
-<!DOCTYPE html>
-<meta charset="utf-8">
-<style>
+function generateBox(id, personName, dataCsv)
+{
+	var labels = true; // show the text labels beside individual boxplots?
 
-body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-</style>
-<body>
-  <link href="box.css" rel="stylesheet" type="text/css" />
+		var margin = {top: 30, right: 50, bottom: 70, left: 50};
+		var  width = 800 - margin.left - margin.right;
+		var height = 400 - margin.top - margin.bottom;
+		  
+		var min = Infinity,
+		    max = -Infinity;
 
-<script  src="jquery.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-
-<script src="box2.js"></script>
-
-<script>
-var labels = true; // show the text labels beside individual boxplots?
-
-var margin = {top: 30, right: 50, bottom: 70, left: 50};
-var  width = 800 - margin.left - margin.right;
-var height = 400 - margin.top - margin.bottom;
-  
-var min = Infinity,
-    max = -Infinity;
-
-d3.json("test.php", function(dataCsv){
+		// d3.json("test.php", function(dataCsv){
             console.log(dataCsv);
-            d3.select("svg").remove();
+            // d3.select("svg").remove();
             // d3.select(".boxPlot").remove();
             var labels = true; // show the text labels beside individual boxplots?
 
@@ -43,7 +27,7 @@ d3.json("test.php", function(dataCsv){
             // add more rows if your csv file has more columns
 
             // add here the header of the csv file
-            data[0][0] = "MangaHere";
+            data[0][0] = personName;
 
             // console.log(csv[0]['BakaBaye']);
             // data[0][2] =  dataCsv[0]['BakaBaye'];
@@ -85,7 +69,7 @@ d3.json("test.php", function(dataCsv){
               .domain([min, max])
               .showLabels(labels);
 
-            var svg = d3.select("body").append("svg")
+            var svg = d3.select(id).append("svg")
               .attr("width", width + margin.left + margin.right)
               .attr("height", height + margin.top + margin.bottom)
               .attr("class", "box")    
@@ -150,14 +134,14 @@ d3.json("test.php", function(dataCsv){
                      .on('mouseout', tip.hide)
                  .call(chart.width(x.rangeBand()));
             
-            // add a title
-            svg.append("text")
-                  .attr("x", (width / 2))             
-                  .attr("y", 0 + (margin.top / 2))
-                  .attr("text-anchor", "middle")  
-                  .style("font-size", "18px") 
-                  //.style("text-decoration", "underline")  
-                  .text("Average of votes");
+            // // add a title
+            // svg.append("text")
+            //       .attr("x", (width / 2))             
+            //       .attr("y", 0 + ((margin.top / 2)-10))
+            //       .attr("text-anchor", "middle")  
+            //       .style("font-size", "18px") 
+            //       //.style("text-decoration", "underline")  
+            //       .text("Average of votes");
            
              // draw y axis
             svg.append("g")
@@ -197,27 +181,27 @@ d3.json("test.php", function(dataCsv){
                 return [i, j];
               };
             }
-          });
+          // });
 
-function boxQuartiles(d) {
-  return [
-    d3.quantile(d, .25),
-    d3.quantile(d, .5),
-    d3.quantile(d, .75),
-    Mean(d)
-  ];
+		function boxQuartiles(d) {
+		  return [
+		    d3.quantile(d, .25),
+		    d3.quantile(d, .5),
+		    d3.quantile(d, .75),
+		    Mean(d)
+		  ];
+		}
+
+		function Mean(d){
+		  // console.log("weightedMean" + d);
+
+		  var wmean = 0;
+		  for (i = 0; i < d.length; i++){
+		    wmean += d[i];
+		  }
+		  if (wmean == 0)
+		    return 0;
+		  // console.log("weightedMean: " + wmean/d3.sum(d) );
+		  return wmean/d.length;
+		}
 }
-
-function Mean(d){
-  // console.log("weightedMean" + d);
-
-  var wmean = 0;
-  for (i = 0; i < d.length; i++){
-    wmean += d[i];
-  }
-  if (wmean == 0)
-    return 0;
-  // console.log("weightedMean: " + wmean/d3.sum(d) );
-  return wmean/d.length;
-}
-</script>
