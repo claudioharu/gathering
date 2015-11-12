@@ -867,7 +867,7 @@ function rankAllTitles(datas, id){
     .attr('class', 'd3-tip')
     .offset([-10, 0])
     .html(function(d,i) {
-      return "<strong>Number of Views: </strong><span style='color:red'>"+ dat[i]+ "</span>" + "<strong>Position: </strong><span style='color:red'>" + (pos[i]+1) + "º</span>" ;
+      return "<strong> Position: </strong><span style='color:red'>" + (pos[i]+1) + "º</span><br>" + "<strong>Number of Views: </strong><span style='color:red'>"+ dat[i]+ "</span>";
     });
 
   var left_width = 200;
