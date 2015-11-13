@@ -102,6 +102,7 @@
 				<p><a href="./database.php?set3=1#graphMenu" class="tooltip" onmouseover="dataTipChart3()" onmouseout="tip()"> Treemap by categorie </a> </p>
 				<p><a href="./database.php?set4=1#graphMenu" class="tooltip" onmouseover="dataTipChart4()" onmouseout="tip()"> 10 most popular </a> </p>
 				<p><a href="./database.php?set5=1#graphMenu" class="tooltip" onmouseover="dataTipChart5()" onmouseout="tip()"> 10 less popular </a> </p>
+        <p><a href="./database.php?set6=1#graphMenu" class="tooltip" onmouseover="dataTipChart6()" onmouseout="tip()"> Rank of all publishers </a> </p>
 			</div>
 			<div><a href="./people.php"> <h2 class="tooltip" onmouseover="peopleTip()" onmouseout="tip()"> People </h2> </a>
 				<p><a href="./people.php?set1=1#graphMenu" class="tooltip" onmouseover="peopleTipChart1()" onmouseout="tip()"> Genre popularity </a> </p>
@@ -212,6 +213,11 @@
 	function dataTipChart5()
     {
         document.getElementById("tip").innerHTML="Bar chart showing the top 10 less popular publishers.";
+    }
+
+  function dataTipChart6()
+    {
+        document.getElementById("tip").innerHTML="Bar chart showing the rank of all popular publishers.";
     }
 	
 	function homeTip()

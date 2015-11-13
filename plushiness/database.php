@@ -68,6 +68,7 @@
 <link rel="stylesheet" type="text/css" href="barChart.css">
 <link rel="stylesheet" href="css/animation.css"><!--[if IE 7]><link rel="stylesheet" href="css/fontello-ie7.css"><![endif]-->
 <link rel="stylesheet" type="text/css" href="menu.css">
+<link rel="stylesheet" type="text/css" href="context.css">
 
 
 <!--[if IE 6]><link href="default_ie6.css" rel="stylesheet" type="text/css" /><![endif]-->
@@ -147,6 +148,7 @@
         <li class='treeMap'><a><span><img src="./icons/tree-structure-32.png" /></span></a> <b>Treemap by Categorie</b></li>
         <li class='barChart1'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b align=left style="width:60%;">10 Most popular</b></li>
         <li class='barChart2'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b align=left style="width:60%;">10 Less popular</b></li>
+        <li class='barChart3'><a><span><img src="./icons/bar-chart-5-32.png" /></span></a><b align=left style="width:60%;">Rank All Publishers</b></li>
 
       </ul>
   </div>
@@ -254,8 +256,226 @@
           </td>
         </tr>
 
+        <tr class="bar3" style=" margin: 30px auto; padding: 0; height:10px; " >
+          <td>
+            <h1 align="center" style="font-size:20px; ">Rank of All Publishers</h1>
+          </td>
+        </tr>
+        <tr style=" margin: 30px auto; padding: 0; height:400px" class="bar3">    
+          <td>
+            <div align="center" class="context" style="position: relative; "></div>
+            <div align="center" class="rankAllTitles" style="overflow: scroll;  width:auto; height:400px; position: relative; overflow-x: hidden;"></div>           
+          </td>
+        </tr>
 				
 	</table>
+
+  <script type="text/javascript">
+d3.csv("allPublishers.csv", function(error, data2) {
+
+    d3.select("svg.chartAllTitle").remove();
+    var subset = [];
+    j = 0;
+    for (i = 0; i <=  50; i++)
+    {
+      subset[j] = data2[i];
+      j++;
+    }
+    rankAllPublishers(subset, ".rankAllTitles");
+});
+
+d3.csv("allPublishers.csv", function(error, data) {
+
+var margin = {top: 10, right: 10, bottom: 100, left: 40},
+    margin2 = {top: 430, right: 10, bottom: 20, left: 200}, // tirando o final do grafico
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom,
+    height2 = 500 - margin2.top - margin2.bottom;
+
+var x = d3.scale.linear().range([0, width]),
+    x2 = d3.scale.linear().range([0, width]),
+    y = d3.scale.linear().range([height, 0]),
+    y2 = d3.scale.linear().range([height2, 0]);
+
+var xAxis = d3.svg.axis().scale(x).orient("bottom"),
+    xAxis2 = d3.svg.axis().scale(x2).orient("bottom"),
+    yAxis = d3.svg.axis().scale(y).orient("left");
+
+var centering = false,
+    center,
+    alpha = .2;
+
+var area = d3.svg.area()
+    .interpolate("basis")
+    .x(function(d) { return x(d.rank); })
+    .y0(height)
+    .y1(function(d) { return y(d.visual); });
+
+var area2 = d3.svg.area()
+    .interpolate("basis")
+    .x(function(d) { return x2(d.rank); })
+    .y0(height2)
+    .y1(function(d) { return y2(d.visual); });
+
+var svg = d3.select(".context").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", 200);
+
+
+//Grafico de baixo
+var context = svg.append("g")
+    .attr("class", "context")
+    .attr("transform", "translate(" + margin2.left + "," + 20 + ")");
+
+
+var arc = d3.svg.arc()
+    .outerRadius(height2 / 2)
+    .startAngle(0)
+    .endAngle(function(d, i) { return i ? -Math.PI : Math.PI; });
+  
+  data.forEach(function(d) {
+      d.rank = +d.rank;
+      d.visual = +d.visual;
+  });
+
+  console.log(data);
+  
+  x.domain([0, 325]);
+  y.domain([d3.min(data.map(function(d){return d.visual;})), d3.max(data.map(function(d) { return d.visual; }))]);
+  x2.domain(x.domain());
+  y2.domain(y.domain());
+
+  var brush = d3.svg.brush()
+    .x(x2)
+    .extent([0,100])
+    .on("brush", brushmove);
+
+  var gBrush = svg.append("g")
+    .attr("class", "brush")
+    .call(brush);
+
+  gBrush.selectAll(".resize").append("path")
+    .attr("transform", "translate(0," +  height2 / 2 + ")")
+    .attr("d", arc)
+    .attr("transform", "translate(" + margin2.left + "," + (20+25) + ")");
+
+
+  gBrush.selectAll("rect")
+    .attr("height", height2)
+    .attr("transform", "translate(" + margin2.left + "," + 20 + ")");
+  
+  gBrush.select(".background")
+    .on("mousedown.brush", brushcenter)
+    .on("touchstart.brush", brushcenter);
+
+  gBrush.call(brush.event);
+
+  context.append("path")
+      .datum(data)
+      .attr("class", "area")
+      .attr("d", area2);
+
+  context.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height2 + ")");
+
+function brushmove() {
+  
+    var extent = [];
+
+    extent[0] = Math.round(brush.extent()[0]);
+    extent[1] = Math.round(brush.extent()[1]);
+    if (extent[1]- extent[0] > 10) {
+      d3.event.target.extent([extent[0],extent[0]+ 11]);
+      d3.event.target(d3.select(this));
+      // d3.json("/plushiness/rankAllTitles.php", function(error, datas) {
+          d3.select("svg.chartAllTitle").remove();
+          var subset = [];
+          j = 0;
+          for (i = extent[0]; i <=  extent[0]+ 11; i++)
+          {
+            subset[j] = data[i];
+            j++;
+          }
+          console.log(subset);
+          rankAllPublishers(subset, ".rankAllTitles");
+      // });   
+    }
+    else{
+      // console.log(extent);
+      // d3.json("/plushiness/rankAllTitles.php", function(error, data2) {
+          d3.select("svg.chartAllTitle").remove();
+          var subset = [];
+
+          j = 0;
+          for (i = extent[0]; i <=  extent[1]; i++)
+          {
+            subset[j] = data[i];
+            j++;
+          }
+          rankAllPublishers(subset, ".rankAllTitles");
+      // });
+
+      console.log(extent);
+    }
+
+   
+}
+
+function brushcenter() {
+  var self = d3.select(window),
+      target = d3.event.target,
+      extent = brush.extent(),
+      size = extent[1] - extent[0],
+      domain = x2.domain(),
+      x0 = domain[0] + size / 2,
+      x1 = domain[1] - size / 2;
+
+  recenter(true);
+  brushmove();
+
+  if (d3.event.changedTouches) {
+    self.on("touchmove.brush", brushmove).on("touchend.brush", brushend);
+  } else {
+    self.on("mousemove.brush", brushmove).on("mouseup.brush", brushend);
+  }
+
+  function brushmove() {
+    d3.event.stopPropagation();
+    center = Math.max(x0, Math.min(x1, x.invert(d3.mouse(target)[0])));
+    recenter(false);
+  }
+
+  function brushend() {
+    brushmove();
+    self.on(".brush", null);
+  }
+}
+
+function recenter(smooth) {
+  if (centering) return; // timer is active and already tweening
+  if (!smooth) return void tween(1); // instantaneous jump
+  centering = true;
+
+  function tween(alpha) {
+    var extent = brush.extent(),
+        size = extent[1] - extent[0],
+        center1 = center * alpha + (extent[0] + extent[1]) / 2 * (1 - alpha);
+
+    gBrush
+        .call(brush.extent([center1 - size / 2, center1 + size / 2]))
+        .call(brush.event);
+
+    return !(centering = Math.abs(center1 - center) > 1e-3);
+  }
+
+  d3.timer(function() {
+    return tween(alpha);
+  });
+}
+
+});
+ </script> 
 
 <script type="text/javascript">
 $('.4').hide();
@@ -263,12 +483,30 @@ $('.5').hide();
 $('.3').hide();
 $('.1').hide();
 $('.2').hide();
+$('.bar3').hide();
 
 var set1 = false;
 var set2 = false;
 var set3 = false;
 var set4 = false;
 var set5 = false;
+var set6 = false;
+
+ $('li.barChart3')
+    .on('click', function(d){
+
+      if (!set6){
+        console.log("barChart");
+        $('.bar3').show();
+        set6 = true;
+      }
+      else
+      {
+        $('.bar3').hide();
+        set6 = false;
+      }
+
+    });
 
   $('li.barChart1')
     .on('click', function(d){
@@ -376,6 +614,10 @@ if($_GET["set1"]==1){
 	echo '<script type="text/javascript">';
 	echo "$('.5').show();"; 
 	echo '</script>';
+} else if($_GET["set6"]==1){ 
+  echo '<script type="text/javascript">';
+  echo "$('.bar3').show();"; 
+  echo '</script>';
 }
 ?>
 

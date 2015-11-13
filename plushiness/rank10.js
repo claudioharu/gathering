@@ -958,3 +958,117 @@ function rankAllTitles(datas, id){
       window.location.replace("http://localhost/plushiness/title.php?mangaName=" + hyper[i]);
     }
 }
+
+/*
+Mangas.php
+Rank de todos os publishers
+*/
+function rankAllPublishers(datas, id){
+  // console.log(datas);
+  var dat = [];
+  var cat = [];
+  // var hyper = [];
+  var ticks = [];
+  var pos = [];
+  console.log(datas);
+  for (i=0; i < datas.length; i++)
+  {
+
+        // console.log(site);
+    pos.push(datas[i].rank);
+    // hyper.push(datas[i].hyperLink);
+    cat.push(datas[i].publisher);
+    dat.push(Number(datas[i].visual));
+  }
+  // console.log(d3.sum(dat));
+  var test = dat.map(abbreviateNumber);
+  // console.log(test);
+
+  var tipRankAll = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function(d,i) {
+      return "<strong> Position: </strong><span style='color:red'>" + pos[i] + "º</span><br>" + "<strong>Number of Views: </strong><span style='color:red'>"+ dat[i]+ "</span>";
+    });
+
+  var left_width = 200;
+
+  var width = 950;;
+
+  var bar_w = 650,
+      bar_h = 45,
+      label_padding = 26,
+      bar_padding = 5;
+    
+  var height = (bar_h + bar_padding * 2) * cat.length;
+  var x = d3.scale.linear()
+        .domain([0, d3.max(dat)])
+        .rangeRound([0, bar_w]);
+  
+  ticks = x.ticks(10);
+
+  var y = d3.scale.linear()
+         .domain([0, 1])
+         .range([0, bar_h + bar_padding]); // rangeRound to avoid antialiasing artifacts.
+
+  var chart = d3.select(id).append("svg")
+       .attr("class", "chartAllTitle")
+       .attr("width", width)
+       .attr("height", (bar_h + bar_padding) * dat.length+30)
+            // .attr("height", 1050)
+       .append("g")
+       .attr("transform", "translate(80, 20)");
+
+  chart.call(tipRankAll);
+
+  chart.selectAll("rect")
+   .data(dat)
+   .enter()
+   .append("rect")
+   .attr("class", "bar")
+   .attr("height", bar_h)
+   .attr("width", 0)
+   .attr("x", function(d, i) { return left_width; })
+   .attr("y", function(d, i) { return y(i) - .5; })
+   .attr("width", function(d) { return x(d); });
+
+  var rect = d3.select('svg.chartAllTitle')
+              .selectAll('.bar')
+              .on('mouseover', tipRankAll.show)
+              .on('mouseout', tipRankAll.hide);
+
+  // console.log(rect);
+
+  chart.selectAll("line")
+    .data(x.ticks(10))
+    .enter().append("line")
+    .attr("x1", function(d) { return x(d) + left_width; })
+    .attr("x2", function(d) { return x(d) + left_width; })
+    .attr("y1", 0)
+    .attr("y2",  (bar_h + bar_padding * 2) * cat.length-40);
+
+  chart.selectAll(".rule")
+    .data(x.ticks(10))
+    .enter().append("text")
+    .attr("class", "rule")
+    .attr("x", function(d,i) { return x(d) + left_width; })
+    .attr("y", 0)
+    .attr("dy", -6)
+    .attr("text-anchor", "middle")
+    .attr("font-size", 10)
+    .text(function(d,i) { return abbreviateNumber(ticks[i]); });
+
+  chart.selectAll("text.name")
+    .data(cat)
+    .enter().append("text")
+    .attr("x", left_width-10)
+    .attr("y", function(d, i){ 
+      return y(i) + bar_h/2; } )
+    // .attr("class", "hyper").on("click", clack)
+   .attr("dx", -5)
+   .attr("dy", ".36em")
+   .attr("text-anchor", "end")
+   .attr('class', 'name')
+   .text(String);
+
+}

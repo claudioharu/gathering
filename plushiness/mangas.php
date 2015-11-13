@@ -390,7 +390,7 @@ function brushmove() {
           d3.select("svg.chartAllTitle").remove();
           var subset = [];
           j = 0;
-          for (i = extent[0]; i <=  extent[1]; i++)
+          for (i = extent[0]; i <=  extent[0]+ 101; i++)
           {
             subset[j] = data[i];
             j++;
