@@ -13,10 +13,10 @@ order by avg(votes) Desc limit 10';
 $result = $conn->query($sql);
 
 $sqlAuthor = array();
-$aux = "select released, avg(votes) as votes, author
+$aux = "select name, avg(votes) as votes, author
 from MangaFox_Mangas
 where author = '";
-$aux2 = "' group by released";
+$aux2 = "' group by name";
 
 foreach ($result as $row)
 {
@@ -43,9 +43,12 @@ foreach ($sqlAuthor as $s)
 		$name = ucfirst($row['name']);
 		$author = ucfirst($row['author']);
 		$visual = $row['votes'];
-		$released = $row['released'];
-		
-		$child[] = array('author' => $author, 'released' => $released, 'votes' => $visual);
+		$released = $row['name'];
+		if (strlen($released) > 10){
+			$released =  substr($released, 0, 8);
+			$released = $released . " ...";
+		}
+		$child[] = array('author' => $author, 'released' => $released, 'votes' => $visual, "name" => $name);
 	}
 
 }

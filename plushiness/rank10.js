@@ -50,7 +50,7 @@ var tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-    return "<strong>Votes Avg :</strong> <span style='color:red'>" + d.votes + "</span>";
+    return "<strong>"+d.name+"</strong><br>"+"<strong>Votes Avg :</strong> <span style='color:red'>" + d.votes + "</span>";
   })
 
 var svg = d3.select(id).append("svg")
@@ -67,6 +67,9 @@ var subset = datas[0].chart2.filter(
                         function(e){
                             return e.author == author;
                         });
+
+console.log("subset");
+console.log(subset);
 var data=[];
 for( i = 0; i < subset.length; i++)
 {
@@ -128,13 +131,13 @@ for( i = 0; i < subset.length; i++)
 
 function type(d) {
   // if()
-  console.log('type');
-  console.log(d);
+  // console.log('type');
+  // console.log(d);
   // d.released = +d.released;
   d.votes = +d.votes;
   // d.frequency = +d.frequency;
 
-  console.log(d);
+  // console.log(d);
   return d;
 }
 }
@@ -152,11 +155,13 @@ datas = dat[0].chart1;
 // console.log(site);
 var dat = [];
 var cat = [];
-var ticks = []
+var ticks = [];
+var names = [];
 for (i=0; i < datas.length; i++)
 {
    // console.log(Math.round(datas[i].value));
    // console.log(datas[i].label);
+
    cat.push(datas[i].label);
    dat.push(Math.round(datas[i].value));
 }
@@ -228,7 +233,8 @@ var rect = d3.select('svg.chart')
               d3.select(id+' svg').remove();
               console.log(cat[i])
               // console.log('here');
-              // console.log(dats);
+              console.log(dats);
+
               vertBar(dats,id, site, cat[i]);
             });
 
