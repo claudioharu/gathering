@@ -52,12 +52,12 @@ function GroupedBarChart(csv){
 	group1.sort(sortNumber);
 	var color1 = d3.scale.ordinal()
 		.domain(group1)
-		.range(['rgb(255,247,251)','rgb(236,231,242)','rgb(208,209,230)','rgb(166,189,219)','rgb(116,169,207)','rgb(54,144,192)','rgb(5,112,176)','rgb(4,90,141)','rgb(2,56,88)']);
+		.range(['rgb(255,247,251)','rgb(236,231,242)','rgb(208,209,230)','rgb(166,189,219)','rgb(116,169,207)','rgb(54,144,192)','rgb(5,112,176)','rgb(4,90,141)','rgb(2,56,88)', 'rgb(0,36,88)']);
 
 	group2.sort(sortNumber);
 	var color2 = d3.scale.ordinal()
 		.domain(group2)
-		.range(['rgb(255,247,251)','rgb(236,231,242)','rgb(208,209,230)','rgb(166,189,219)','rgb(116,169,207)','rgb(54,144,192)','rgb(5,112,176)','rgb(4,90,141)','rgb(2,56,88)']);
+		.range(['rgb(255,247,251)','rgb(236,231,242)','rgb(208,209,230)','rgb(166,189,219)','rgb(116,169,207)','rgb(54,144,192)','rgb(5,112,176)','rgb(4,90,141)','rgb(2,56,88)','rgb(0,36,88)']);
 	
 	console.log([d3.min(group2), d3.max(group2)]);
 	// console.log([d3.min(layers.map(function(d){ return d[1].y;})), d3.max(layers.map(function(d){ return d.value;}))]);

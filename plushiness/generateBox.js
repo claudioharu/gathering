@@ -153,7 +153,7 @@ function generateBox(id, personName, dataCsv)
                 .attr("dy", ".71em")
                 .style("text-anchor", "end")
                 .style("font-size", "16px") 
-                .text("Votes");   
+                .text("Grades");   
               
             // draw x axis  
             svg.append("g")

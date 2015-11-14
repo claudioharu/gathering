@@ -562,7 +562,7 @@ if (array_key_exists("personName", $_REQUEST)){
 										.y(function(d) { return d.value })
 										.margin({top: 30, right: 10, bottom: 50, left: 295})						// .width(600)
 										// .height(500)
-										.showValues(true)           //Show bar value next to each bar.
+										//.showValues(true)           //Show bar value next to each bar.
 										// .tooltips(true)             //Show tooltips on hover.
 										// .transitionDuration(350)
 										.forceY([0,10])
@@ -638,7 +638,7 @@ if (array_key_exists("personName", $_REQUEST)){
 						.y(function(d) { return d.value })
 						.margin({top: 30, right: 10, bottom: 50, left: 295})						// .width(600)
 						// .height(500)
-						.showValues(true)           //Show bar value next to each bar.
+						//.showValues(true)           //Show bar value next to each bar.
 						// .tooltips(true)             //Show tooltips on hover.
 						// .transitionDuration(350)
 						.forceY([0,10])

@@ -703,39 +703,39 @@ d3.json(categSetTreeMap[1], function(error, data) {
 });
 
 
-var sampleDataTreeMap = [
-  {"group": "MangaFox"},
-  {"group": "MangaHere"}
-];
+// var sampleDataTreeMap = [
+//   {"group": "MangaFox"},
+//   {"group": "MangaHere"}
+// ];
 
-var togglesMap = d3plus.form()
-  .container("div.Menu3")
-  .data(sampleDataTreeMap)
-  .focus("MangaFox", function(d){
-      if(d == "MangaFox"){
-        $('.Size').prop('checked',true);
-        $('.Count').prop('checked',false);
+// var togglesMap = d3plus.form()
+//   .container("div.Menu3")
+//   .data(sampleDataTreeMap)
+//   .focus("MangaFox", function(d){
+//       if(d == "MangaFox"){
+//         $('.Size').prop('checked',true);
+//         $('.Count').prop('checked',false);
 
-        $('#chart3').find('div').remove();
-         d3.json(categSetTreeMap[1], function(error, data) {
-            graficoTreeMap(data);
-          });
-      }
-      else{
-        // console.log('mangahere')
-        $('.Size').prop('checked',true);
-        $('.Count').prop('checked',false);
+//         $('#chart3').find('div').remove();
+//          d3.json(categSetTreeMap[1], function(error, data) {
+//             graficoTreeMap(data);
+//           });
+//       }
+//       else{
+//         // console.log('mangahere')
+//         $('.Size').prop('checked',true);
+//         $('.Count').prop('checked',false);
 
-        $('#chart3').find('div').remove();
-        d3.json(categSetTreeMap[0], function(error, data) {
-          // console.log(error);
-          graficoTreeMap(data);
-        });
-      }
-    })
-  .id("group")
-  .type("toggle")
-  .draw();
+//         $('#chart3').find('div').remove();
+//         d3.json(categSetTreeMap[0], function(error, data) {
+//           // console.log(error);
+//           graficoTreeMap(data);
+//         });
+//       }
+//     })
+//   .id("group")
+//   .type("toggle")
+//   .draw();
 
 function graficoTreeMap(data){
   var w = 1280 - 80,
